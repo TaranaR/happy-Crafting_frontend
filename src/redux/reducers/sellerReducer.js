@@ -1,0 +1,145 @@
+import {
+  CREATE_SHOP_REQUEST,
+  CREATE_SHOP_SUCCESS,
+  CREATE_SHOP_FAIL,
+  GET_TYPEOFPROD_REQUEST,
+  GET_TYPEOFPROD_SUCCESS,
+  GET_TYPEOFPROD_FAIL,
+  CREATE_PRODUCT_REQUEST,
+  CREATE_PRODUCT_SUCCESS,
+  CREATE_PRODUCT_FAIL,
+  SELLER_DETAILS_REQUEST,
+  SELLER_DETAILS_SUCCESS,
+  SELLER_DETAILS_FAIL,
+  SELLER_DETAILS_RESET,
+  SELLER_UPDATE_PROFILE_REQUEST,
+  SELLER_UPDATE_PROFILE_SUCCESS,
+  SELLER_UPDATE_PROFILE_RESET,
+  SELLER_UPDATE_PROFILE_FAIL
+} from "../../constants/sellerConstants";
+import { USER_LOGOUT } from "../../constants/userConstants";
+
+export const sellerCreateShopReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CREATE_SHOP_REQUEST:
+      return {
+        loading: true,
+      };
+    case CREATE_SHOP_SUCCESS:
+      return {
+        loading: false,
+        shopInfo: action.payload,
+      };
+    case CREATE_SHOP_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const sellerGetTypeOfProductReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_TYPEOFPROD_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_TYPEOFPROD_SUCCESS:
+      return {
+        loading: false,
+        prodTypeInfo: action.payload,
+      };
+    case GET_TYPEOFPROD_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const sellerCreateProductReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CREATE_PRODUCT_REQUEST:
+      return {
+        loading: true,
+      };
+    case CREATE_PRODUCT_SUCCESS:
+      return {
+        loading: false,
+        prodInfo: action.payload,
+      };
+    case CREATE_PRODUCT_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const sellerProfileReducer = (state = { seller: {} }, action) => {
+  switch (action.type) {
+    case SELLER_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case SELLER_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        seller: action.payload,
+      };
+    case SELLER_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case SELLER_DETAILS_RESET:
+      return {
+        seller: {},
+      };
+    default:
+      return state;
+  }
+};
+
+export const sellerUpdateProfileReducer = (
+  state = { loading: false, success: false, sellerInfo: {} },
+  action
+) => {
+  switch (action.type) {
+    case SELLER_UPDATE_PROFILE_REQUEST:
+      return {
+        loading: true,
+      };
+    case SELLER_UPDATE_PROFILE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        sellerInfo: action.payload,
+      };
+    case SELLER_UPDATE_PROFILE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case SELLER_UPDATE_PROFILE_RESET:
+      return {
+        ...state,
+        success: false,
+      };
+    default:
+      return state;
+  }
+};

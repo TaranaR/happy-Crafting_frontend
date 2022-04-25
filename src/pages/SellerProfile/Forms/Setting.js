@@ -1,0 +1,282 @@
+import { Fragment, useEffect, useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Avatar from "@mui/material/Avatar";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  TextField,
+} from "@mui/material";
+import { storage } from "../../../constants/firebase";
+
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 } from "uuid";
+import { useDispatch, useSelector } from "react-redux";
+import Snackbar from "@mui/material/Snackbar";
+import AlertTitle from "@mui/material/AlertTitle";
+import Alert from "@mui/material/Alert";
+import {
+  getSellerProfile,
+  updateSellerProfile,
+} from "../../../redux/actions/sellerAction";
+import { SELLER_UPDATE_PROFILE_RESET } from "../../../constants/sellerConstants";
+import firebase from "firebase/compat/app";
+
+const useStyles = makeStyles(() => ({
+  root: {
+    marginTop: "13%",
+  },
+}));
+
+export default function Setting(props) {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const [selectedFile, setSelectedFile] = useState("");
+  const [snackOpen, setSnackOpen] = useState(false);
+  const [shopName, setShopName] = useState("");
+  const [shopLogo, setShopLogo] = useState("");
+  const [shopDescription, setShopDescription] = useState("");
+  const [shopLocation, setShopLocation] = useState("");
+
+  const userProfileInfo = useSelector((state) => state.userProfile);
+  const sellerUpdateProfile = useSelector((state) => state.sellerUpdateProfile);
+
+  const { user } = userProfileInfo;
+  const { success, sellerInfo } = sellerUpdateProfile;
+  let fileExtension = "";
+
+  const username = user.username;
+
+  useEffect(() => {
+    if (!props.seller || success) {
+      dispatch({ type: SELLER_UPDATE_PROFILE_RESET });
+      dispatch(getSellerProfile());
+    } else {
+      setShopName(props.seller.shop_name);
+      setShopLogo(props.seller.shop_logo);
+      setShopDescription(props.seller.description);
+      setShopLocation(props.seller.location);
+    }
+  }, [dispatch, props.seller, success]);
+
+  const handleSnackClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackOpen(false);
+  };
+
+  const submitHandler = () => {
+    setSnackOpen(true);
+    if (shopName === "" || shopDescription === "" || shopLocation === "")
+      return;
+
+    const shop = {
+      shop_name: shopName,
+      shop_logo: shopLogo,
+      description: shopDescription,
+      location: shopLocation,
+    };
+
+    dispatch(updateSellerProfile(shop));
+    dispatch({ type: SELLER_UPDATE_PROFILE_RESET });
+    dispatch(getSellerProfile());
+  };
+
+  const imageUploadHandler = (e) => {
+    if (e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
+  if (sellerInfo) {
+    console.log(sellerInfo);
+  }
+
+  const uploadShopLogohandler = () => {
+    // // Delete Existing Shop Logo
+
+    // const fileRef = firebase.storage().refFromURL(shopLogo);
+
+    // console.log("file in database before deleting" + fileRef.exists());
+
+    // fileRef
+    //   .delete()
+    //   .then(() => {
+    //     console.log("file Deleted");
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+
+    // console.log("file in database after deleting" + fileRef.exists());
+
+    //Image Upload
+    console.log(selectedFile);
+
+    if (selectedFile === "") return;
+    //if (sellerInfo) return;
+
+    const imageRef = ref(
+      storage,
+      `images/${username}/${v4()}.${fileExtension}`
+    );
+
+    uploadBytes(imageRef, selectedFile).then(() => {
+      alert("Image uploaded");
+      getDownloadURL(imageRef).then((url) => {
+        setShopLogo(url);
+      });
+    });
+  };
+
+  return (
+    <Fragment>
+      <Container className={classes.root}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} style={{ fontSize: 20 }}>
+            Setting
+          </Grid>
+          <Grid item xs={12}>
+            <Divider style={{ width: "80%" }} />
+          </Grid>
+          <Grid container style={{ margin: "20px", textAlign: "center" }}>
+            <Grid item xs={3} style={{ padding: "15px" }}>
+              Shop Name
+            </Grid>
+            <Grid item xs={9} style={{ textAlign: "left" }}>
+              <TextField
+                size="small"
+                style={{ width: "50vh" }}
+                value={shopName}
+                onChange={(e) => {
+                  setShopName(e.target.value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={3} style={{ padding: "15px" }}>
+              Shop Logo
+            </Grid>
+            <Grid
+              item
+              xs={9}
+              style={{
+                textAlign: "left",
+              }}
+            >
+              <Avatar
+                src={props.seller.shop_logo}
+                style={{
+                  border: "1px solid #D6DCD2",
+                  borderRadius: 5,
+                  transform: "scale(1.5)",
+                  marginLeft: "1vh",
+                  marginTop: "1vh",
+                }}
+                variant="square"
+              />
+
+              <label htmlFor="upload-photo">
+                <input
+                  type="file"
+                  name="upload-photo"
+                  id="upload-photo"
+                  style={{ display: "none", marginTop: "10px" }}
+                  accept="image/*"
+                  onChange={imageUploadHandler}
+                />
+                Change Logo
+                {/* <label id="filename" style={{ marginLeft: "10px" }}>
+                  {selectedFile["name"]}
+                </label> */}
+              </label>
+              <Button
+                id="fileUpload"
+                variant="contained"
+                component="span"
+                style={{
+                  backgroundColor: "#745D3E",
+                  color: "#ffffff",
+                  marginLeft: "10px",
+                }}
+                onClick={uploadShopLogohandler}
+              >
+                Upload
+              </Button>
+            </Grid>
+            <Grid item xs={3} style={{ padding: "15px", marginTop: "12px" }}>
+              Shop Description
+            </Grid>
+            <Grid item xs={9} style={{ textAlign: "left", marginTop: "12px" }}>
+              <TextField
+                size="small"
+                multiline
+                maxRows={5}
+                style={{ width: "50vh" }}
+                value={shopDescription}
+                onChange={(e) => {
+                  setShopDescription(e.target.value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={3} style={{ padding: "15px", marginTop: "10px" }}>
+              Shop Location
+            </Grid>
+            <Grid item xs={9} style={{ textAlign: "left", marginTop: "10px" }}>
+              <TextField
+                size="small"
+                style={{ width: "50vh" }}
+                value={shopLocation}
+                onChange={(e) => {
+                  setShopLocation(e.target.value);
+                }}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              style={{
+                padding: "15px",
+                marginTop: "4%",
+                textAlign: "left",
+                marginLeft: "30%",
+              }}
+            >
+              <Button
+                type="submit"
+                variant="contained"
+                style={{
+                  backgroundColor: "#745D3E",
+                  color: "#ffffff",
+                  width: "150px",
+                }}
+                onClick={submitHandler}
+              >
+                Confirm
+              </Button>
+            </Grid>
+          </Grid>
+          {sellerInfo && (
+            <Snackbar
+              open={snackOpen}
+              autoHideDuration={6000}
+              onClose={handleSnackClose}
+            >
+              <Alert
+                onClose={handleSnackClose}
+                severity="success"
+                sx={{ width: "100%" }}
+              >
+                <AlertTitle>Success</AlertTitle>
+                {sellerInfo.message}
+              </Alert>
+            </Snackbar>
+          )}
+        </Grid>
+      </Container>
+    </Fragment>
+  );
+}
