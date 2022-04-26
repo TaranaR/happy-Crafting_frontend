@@ -14,6 +14,7 @@ import {
   sellerCreateProductReducer,
   sellerProfileReducer,
   sellerUpdateProfileReducer,
+  sellerGetProductBySellerReducer,
 } from "../reducers/sellerReducer";
 
 const rootReducer = combineReducers({
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   sellerCreateProduct: sellerCreateProductReducer,
   sellerProfile: sellerProfileReducer,
   sellerUpdateProfile: sellerUpdateProfileReducer,
+  sellerProductBySeller: sellerGetProductBySellerReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

@@ -97,14 +97,14 @@ export default function UploadProductsForm(props) {
   const submitHandler = () => {
     //create shop
 
-    console.log("name", prodName);
-    console.log("price", prodPrice);
-    console.log("desciption", prodDescription);
-    console.log("type", prodType);
-    console.log("image", prodImage);
-    console.log("size", prodSize);
-    console.log("color", prodColor);
-    console.log("isCust", isCustomizable);
+    // console.log("name", prodName);
+    // console.log("price", prodPrice);
+    // console.log("desciption", prodDescription);
+    // console.log("type", prodType);
+    // console.log("image", prodImage);
+    // console.log("size", prodSize);
+    // console.log("color", prodColor);
+    // console.log("isCust", isCustomizable);
 
     if (
       prodName === "" ||

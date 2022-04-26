@@ -16,9 +16,14 @@ import {
   SELLER_UPDATE_PROFILE_REQUEST,
   SELLER_UPDATE_PROFILE_SUCCESS,
   SELLER_UPDATE_PROFILE_FAIL,
+  GET_TYPEOFPROD_REQUEST,
+  GET_PRODUCTBYSELLER_REQUEST,
+  GET_PRODUCTBYSELLER_SUCCESS,
+  GET_PRODUCTBYSELLER_FAIL,
 } from "../../constants/sellerConstants";
 import axios from "axios";
 import store from "../store";
+import { LOCAL_URL } from "../../constants/global";
 
 export const createSellerShop = (shop) => async (dispatch) => {
   try {
@@ -36,7 +41,7 @@ export const createSellerShop = (shop) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "http://127.0.0.1:8000/api/sellerapi/createShop/",
+      `${LOCAL_URL}/api/sellerapi/createShop/`,
       shop,
       config
     );
@@ -69,7 +74,7 @@ export const uploadShopLogo = (shoplogo) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "http://localhost:8000/api/sellerapi/uploadShopLogo/",
+      `${LOCAL_URL}/api/sellerapi/uploadShopLogo/`,
       shoplogo,
       config
     );
@@ -88,7 +93,7 @@ export const uploadShopLogo = (shoplogo) => async (dispatch) => {
 
 export const getTypeOfProducts = () => async (dispatch) => {
   try {
-    dispatch({ type: GET_TYPEOFPROD_SUCCESS });
+    dispatch({ type: GET_TYPEOFPROD_REQUEST });
 
     const config = {
       headers: {
@@ -97,7 +102,7 @@ export const getTypeOfProducts = () => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      "http://127.0.0.1:8000/api/adminapi/getTypeOfProduct",
+      `${LOCAL_URL}/api/adminapi/getTypeOfProduct`,
       config
     );
 
@@ -126,7 +131,7 @@ export const createSellerProduct = (product) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "http://localhost:8000/api/sellerapi/createProduct/",
+      `${LOCAL_URL}/api/sellerapi/createProduct/`,
       product,
       config
     );
@@ -149,8 +154,6 @@ export const getSellerProfile = () => async (dispatch) => {
 
     const { token } = store.getState().userLogin;
 
-    // const username = localStorage.getItem("username");
-
     const config = {
       headers: {
         "Content-type": "application/json",
@@ -159,7 +162,7 @@ export const getSellerProfile = () => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      "http://127.0.0.1:8000/api/sellerapi/sellerprofile/",
+      `${LOCAL_URL}/api/sellerapi/sellerprofile/`,
       config
     );
 
@@ -189,8 +192,8 @@ export const updateSellerProfile = (shop) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.post(
-      "http://localhost:8000/api/sellerapi/updatesellerprofile/",
+    const { data } = await axios.put(
+      `${LOCAL_URL}/api/sellerapi/updatesellerprofile/`,
       shop,
       config
     );
@@ -203,6 +206,33 @@ export const updateSellerProfile = (shop) => async (dispatch) => {
     dispatch({
       type: SELLER_UPDATE_PROFILE_FAIL,
       palyload: error,
+    });
+  }
+};
+
+export const getProductsBySeller = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_PRODUCTBYSELLER_REQUEST });
+
+    const { token } = store.getState().userLogin;
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/sellerapi/getproducts/`,
+      config
+    );
+
+    dispatch({ type: GET_PRODUCTBYSELLER_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_PRODUCTBYSELLER_FAIL,
+      payload: error,
     });
   }
 };

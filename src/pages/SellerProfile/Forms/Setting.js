@@ -1,14 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@mui/material/Avatar";
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Grid,
-  TextField,
-} from "@mui/material";
+import { Button, Container, Divider, Grid, TextField } from "@mui/material";
 import { storage } from "../../../constants/firebase";
 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -22,7 +15,7 @@ import {
   updateSellerProfile,
 } from "../../../redux/actions/sellerAction";
 import { SELLER_UPDATE_PROFILE_RESET } from "../../../constants/sellerConstants";
-import firebase from "firebase/compat/app";
+// import firebase from "firebase/compat/app";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -255,7 +248,7 @@ export default function Setting(props) {
                 }}
                 onClick={submitHandler}
               >
-                Confirm
+                update
               </Button>
             </Grid>
           </Grid>

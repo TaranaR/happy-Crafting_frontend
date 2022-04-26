@@ -15,7 +15,11 @@ import {
   SELLER_UPDATE_PROFILE_REQUEST,
   SELLER_UPDATE_PROFILE_SUCCESS,
   SELLER_UPDATE_PROFILE_RESET,
-  SELLER_UPDATE_PROFILE_FAIL
+  SELLER_UPDATE_PROFILE_FAIL,
+  GET_PRODUCTBYSELLER_REQUEST,
+  GET_PRODUCTBYSELLER_SUCCESS,
+  GET_PRODUCTBYSELLER_FAIL,
+  CREATE_PRODUCT_RESET,
 } from "../../constants/sellerConstants";
 import { USER_LOGOUT } from "../../constants/userConstants";
 
@@ -81,8 +85,12 @@ export const sellerCreateProductReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
-    case USER_LOGOUT:
+    case CREATE_PRODUCT_RESET:
       return {};
+    case USER_LOGOUT:
+      return {
+        prodInfo: {},
+      };
     default:
       return state;
   }
@@ -139,6 +147,29 @@ export const sellerUpdateProfileReducer = (
         ...state,
         success: false,
       };
+    default:
+      return state;
+  }
+};
+
+export const sellerGetProductBySellerReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_PRODUCTBYSELLER_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_PRODUCTBYSELLER_SUCCESS:
+      return {
+        loading: false,
+        prodInfo: action.payload,
+      };
+    case GET_PRODUCTBYSELLER_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
     default:
       return state;
   }

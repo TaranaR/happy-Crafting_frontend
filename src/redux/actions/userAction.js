@@ -16,6 +16,7 @@ import {
   USER_UPDATE_PROFILE_FAIL,
 } from "../../constants/userConstants";
 import store from "../store";
+import { LOCAL_URL } from "../../constants/global";
 
 export const login = (user) => async (dispatch) => {
   try {
@@ -30,7 +31,7 @@ export const login = (user) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "http://127.0.0.1:8000/api/userapi/login/token/",
+      `${LOCAL_URL}/api/userapi/login/token/`,
       user,
       config
     );
@@ -70,7 +71,7 @@ export const register = (user) => async (dispatch) => {
       },
     };
     const { data } = await axios.post(
-      "http://127.0.0.1:8000/api/userapi/register/",
+      `${LOCAL_URL}/api/userapi/register/`,
       user,
       config
     );
@@ -105,7 +106,7 @@ export const getUserProfile = () => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      "http://127.0.0.1:8000/api/userapi/profile/",
+      `${LOCAL_URL}/api/userapi/profile/`,
       config
     );
 
@@ -135,8 +136,8 @@ export const updateUserProfile = (user) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.post(
-      "http://127.0.0.1:8000/api/userapi/updateProfile/",
+    const { data } = await axios.put(
+      `${LOCAL_URL}/api/userapi/updateProfile/`,
       user,
       config
     );
