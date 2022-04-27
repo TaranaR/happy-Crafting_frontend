@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Container, Grid, Button, Checkbox } from "@material-ui/core";
+import { Container, Grid, Button } from "@material-ui/core";
+import Checkbox from "@mui/material/Checkbox";
 import { TextField } from "@mui/material";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -11,7 +12,9 @@ import { storage } from "../../../constants/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import {
-  getTypeOfProducts,
+  getMainCategory,
+  getSubCategory,
+  getTypeOfProduct,
   createSellerProduct,
 } from "../../../redux/actions/sellerAction";
 
@@ -19,7 +22,15 @@ export default function UploadProductsForm(props) {
   const dispatch = useDispatch();
 
   const [selectedFile, setSelectedFile] = useState("");
-  const getTypeOfProduct = useSelector((state) => state.sellerGetTypeOfProduct);
+  const sellergetMainCategory = useSelector(
+    (state) => state.sellerGetMainCategory
+  );
+  const sellergetSubCategory = useSelector(
+    (state) => state.sellerGetSubCategory
+  );
+  const sellergetTypeOfProduct = useSelector(
+    (state) => state.sellerGetTypeOfProduct
+  );
   const userProfileInfo = useSelector((state) => state.userProfile);
 
   const sellerCreateProdInfo = useSelector(
@@ -27,7 +38,9 @@ export default function UploadProductsForm(props) {
   );
 
   const { user } = userProfileInfo;
-  const { prodTypeInfo } = getTypeOfProduct;
+  const { mainCatInfo } = sellergetMainCategory;
+  const { subCatInfo } = sellergetSubCategory;
+  const { prodTypeInfo } = sellergetTypeOfProduct;
   const { loading, prodInfo, error } = sellerCreateProdInfo;
 
   const username = user.username;
@@ -35,12 +48,18 @@ export default function UploadProductsForm(props) {
   //Create Product
   const [prodName, setProdName] = useState("");
   const [prodPrice, setProdPrice] = useState(0);
+
+  const [prodMainCat, setProdMainCat] = useState("");
+  const [prodSubCat, setProdSubCat] = useState("");
   const [prodType, setProdType] = useState("");
+
   const [prodDescription, setProdDescription] = useState("");
   const [prodImage, setProdImage] = useState("");
   const [prodSize, setProdSize] = useState("");
   const [prodColor, setProdColor] = useState("");
   const [isCustomizable, setIsCustomizable] = useState(false);
+  let main = [];
+  let sub = [];
   let type = [];
   let fileExtension = "";
 
@@ -56,11 +75,19 @@ export default function UploadProductsForm(props) {
   const CustomCheckbox = withStyles(checkBoxStyles)(Checkbox);
 
   useEffect(() => {
-    dispatch(getTypeOfProducts());
+    dispatch(getMainCategory());
   }, []);
 
   if (prodTypeInfo) {
     type = Object.values(prodTypeInfo);
+  }
+
+  if (mainCatInfo) {
+    main = Object.values(mainCatInfo);
+  }
+
+  if (subCatInfo) {
+    sub = Object.values(subCatInfo);
   }
 
   const imageUploadHandler = (e) => {
@@ -90,8 +117,8 @@ export default function UploadProductsForm(props) {
   };
 
   if (selectedFile) {
-    let type = selectedFile.name.split(".");
-    fileExtension = type[type.length - 1];
+    let t = selectedFile.name.split(".");
+    fileExtension = t[t.length - 1];
   }
 
   const submitHandler = () => {
@@ -129,6 +156,15 @@ export default function UploadProductsForm(props) {
     };
 
     dispatch(createSellerProduct(product));
+
+    setProdName("");
+    setProdPrice("");
+    setProdType("");
+    setProdDescription("");
+    setProdImage("");
+    setProdSize("");
+    setProdColor("");
+    setIsCustomizable(false);
   };
 
   return (
@@ -142,6 +178,7 @@ export default function UploadProductsForm(props) {
             <TextField
               size="small"
               fullWidth
+              value={prodName}
               onChange={(e) => {
                 setProdName(e.target.value);
               }}
@@ -155,6 +192,7 @@ export default function UploadProductsForm(props) {
               size="small"
               fullWidth
               type="number"
+              value={prodPrice}
               onChange={(e) => {
                 setProdPrice(e.target.value);
               }}
@@ -167,7 +205,7 @@ export default function UploadProductsForm(props) {
             <Select
               labelId="demo-select-small"
               id="demo-select-small"
-              value={prodType}
+              value={prodMainCat}
               onChange={(e) => {
                 setProdType(e.target.value);
               }}
@@ -178,13 +216,59 @@ export default function UploadProductsForm(props) {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              {type &&
-                type.map((item) => (
-                  <MenuItem key={item.id} value={item.id}>
-                    {item.title}
+              {main &&
+                main.map((item) => (
+                  <MenuItem key={item.id} value={item.main_cat_name}>
+                    {item.main_cat_name}
                   </MenuItem>
                 ))}
             </Select>
+            {prodSubCat && (
+              <Select
+                labelId="demo-select-small"
+                id="demo-select-small"
+                value={prodType}
+                onChange={(e) => {
+                  setProdType(e.target.value);
+                }}
+                fullWidth
+                size="small"
+                displayEmpty
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {type &&
+                  type.map((item) => (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.title}
+                    </MenuItem>
+                  ))}
+              </Select>
+            )}
+            {prodType && (
+              <Select
+                labelId="demo-select-small"
+                id="demo-select-small"
+                value={prodType}
+                onChange={(e) => {
+                  setProdType(e.target.value);
+                }}
+                fullWidth
+                size="small"
+                displayEmpty
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {type &&
+                  type.map((item) => (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.title}
+                    </MenuItem>
+                  ))}
+              </Select>
+            )}
           </Grid>
           <Grid item xs={3} style={{ padding: "15px" }}>
             Description
@@ -195,6 +279,7 @@ export default function UploadProductsForm(props) {
               size="small"
               multiline
               maxRows={5}
+              value={prodDescription}
               onChange={(e) => {
                 setProdDescription(e.target.value);
               }}
@@ -214,9 +299,9 @@ export default function UploadProductsForm(props) {
                 accept="image/*"
               />
               Select Image
-              <label id="filename" style={{ marginLeft: "10px" }}>
+              {/* <label id="filename" style={{ marginLeft: "10px" }}>
                 {selectedFile["name"]}
-              </label>
+              </label> */}
             </label>
             <Button
               id="fileUpload"
@@ -241,6 +326,7 @@ export default function UploadProductsForm(props) {
               size="small"
               multiline
               maxRows={5}
+              value={prodSize}
               onChange={(e) => {
                 setProdSize(e.target.value);
               }}
@@ -254,6 +340,7 @@ export default function UploadProductsForm(props) {
               fullWidth
               size="small"
               multiline
+              value={prodColor}
               maxRows={5}
               onChange={(e) => {
                 setProdColor(e.target.value);
@@ -264,9 +351,18 @@ export default function UploadProductsForm(props) {
             Is Customizable
           </Grid>
           <Grid item xs={9} style={{ textAlign: "left", padding: "5px" }}>
-            <CustomCheckbox
+            {/* <CustomCheckbox
               onChange={(e) => {
                 setIsCustomizable(e.target.checked);
+              }}
+            /> */}
+            <Checkbox
+              checked={isCustomizable}
+              onChange={(e) => {
+                setIsCustomizable(e.target.checked);
+              }}
+              style={{
+                color: "#745D3E",
               }}
             />
           </Grid>

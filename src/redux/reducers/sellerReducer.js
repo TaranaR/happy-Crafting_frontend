@@ -5,6 +5,12 @@ import {
   GET_TYPEOFPROD_REQUEST,
   GET_TYPEOFPROD_SUCCESS,
   GET_TYPEOFPROD_FAIL,
+  GET_MAINCATEGORY_REQUEST,
+  GET_MAINCATEGORY_SUCCESS,
+  GET_MAINCATEGORY_FAIL,
+  GET_SUBCATEGORY_REQUEST,
+  GET_SUBCATEGORY_SUCCESS,
+  GET_SUBCATEGORY_FAIL,
   CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAIL,
@@ -20,6 +26,13 @@ import {
   GET_PRODUCTBYSELLER_SUCCESS,
   GET_PRODUCTBYSELLER_FAIL,
   CREATE_PRODUCT_RESET,
+  SELLER_PRODUCT_UPDATE_REQUEST,
+  SELLER_PRODUCT_UPDATE_SUCCESS,
+  SELLER_PRODUCT_UPDATE_FAIL,
+  SELLER_PRODUCT_UPDATE_RESET,
+  SELLER_PRODUCT_DELETE_REQUEST,
+  SELLER_PRODUCT_DELETE_SUCCESS,
+  SELLER_PRODUCT_DELETE_FAIL,
 } from "../../constants/sellerConstants";
 import { USER_LOGOUT } from "../../constants/userConstants";
 
@@ -35,6 +48,52 @@ export const sellerCreateShopReducer = (state = {}, action) => {
         shopInfo: action.payload,
       };
     case CREATE_SHOP_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const sellerGetMainCategoryReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_MAINCATEGORY_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_MAINCATEGORY_SUCCESS:
+      return {
+        loading: false,
+        mainCatInfo: action.payload,
+      };
+    case GET_MAINCATEGORY_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const sellerGetSubCategoryReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_SUBCATEGORY_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_SUBCATEGORY_SUCCESS:
+      return {
+        loading: false,
+        subCatInfo: action.payload,
+      };
+    case GET_SUBCATEGORY_FAIL:
       return {
         loading: false,
         error: action.payload,
@@ -170,6 +229,58 @@ export const sellerGetProductBySellerReducer = (state = {}, action) => {
       };
     case USER_LOGOUT:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const sellerUpdateProductReducer = (
+  state = { loading: false, success: false, prodUpdatedInfo: {} },
+  action
+) => {
+  switch (action.type) {
+    case SELLER_PRODUCT_UPDATE_REQUEST:
+      return {
+        loading: true,
+      };
+    case SELLER_PRODUCT_UPDATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        prodUpdatedInfo: action.payload,
+      };
+    case SELLER_PRODUCT_UPDATE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case SELLER_PRODUCT_UPDATE_RESET:
+      return {
+        ...state,
+        success: false,
+      };
+    default:
+      return state;
+  }
+};
+
+export const sellerDeleteProductReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SELLER_PRODUCT_DELETE_REQUEST:
+      return {
+        loading: true,
+      };
+    case SELLER_PRODUCT_DELETE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case SELLER_PRODUCT_DELETE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+
     default:
       return state;
   }

@@ -94,14 +94,15 @@ export const getUserProfile = () => async (dispatch) => {
   try {
     dispatch({ type: USER_DETAILS_REQUEST });
 
-    const { token } = store.getState().userLogin;
+    //const { token } = store.getState().userLogin;
 
+    const token = JSON.parse(localStorage.getItem("userInfo"));
     // const username = localStorage.getItem("username");
 
     const config = {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.access}`,
       },
     };
 

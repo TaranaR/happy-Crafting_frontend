@@ -103,9 +103,9 @@ function Header(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const userLogin = useSelector((state) => state.userLogin);
 
-  // const token = JSON.parse(localStorage.getItem("userInfo"));
+  const token = JSON.parse(localStorage.getItem("userInfo"));
 
-  const { token } = userLogin;
+  //const { token } = userLogin;
 
   const searchIconClick = () => {
     setShowSearch((prevstate) => !prevstate);

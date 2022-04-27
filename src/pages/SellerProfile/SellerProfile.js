@@ -42,7 +42,7 @@ export default function SellerProfile() {
   const btnRef = useRef();
   const [isActive, setIsActive] = useState(false);
   const [page, setPage] = useState("SETTING");
-  
+
   const sellerProfile = useSelector((state) => state.sellerProfile);
   const { seller } = sellerProfile;
   let content = "";
@@ -56,9 +56,9 @@ export default function SellerProfile() {
 
   useEffect(() => {
     dispatch(getSellerProfile());
-    if (btnRef.current) {
-      btnRef.current.focus();
-    }
+    // if (btnRef.current) {
+    //   btnRef.current.focus();
+    // }
     console.log(seller);
   }, [dispatch, btnRef]);
 

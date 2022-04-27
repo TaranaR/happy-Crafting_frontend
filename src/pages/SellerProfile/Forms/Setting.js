@@ -153,13 +153,7 @@ export default function Setting(props) {
             <Grid item xs={3} style={{ padding: "15px" }}>
               Shop Logo
             </Grid>
-            <Grid
-              item
-              xs={9}
-              style={{
-                textAlign: "left",
-              }}
-            >
+            <Grid item xs={1}>
               <Avatar
                 src={props.seller.shop_logo}
                 style={{
@@ -171,7 +165,14 @@ export default function Setting(props) {
                 }}
                 variant="square"
               />
-
+            </Grid>
+            <Grid
+              item
+              xs={8}
+              style={{
+                textAlign: "left",
+              }}
+            >
               <label htmlFor="upload-photo">
                 <input
                   type="file"
@@ -179,7 +180,7 @@ export default function Setting(props) {
                   id="upload-photo"
                   style={{ display: "none", marginTop: "10px" }}
                   accept="image/*"
-                  onChange={imageUploadHandler}
+                  onChange={imageUploadHandler.bind(this)}
                 />
                 Change Logo
                 {/* <label id="filename" style={{ marginLeft: "10px" }}>

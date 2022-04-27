@@ -39,7 +39,13 @@ function App() {
   const userLogin = useSelector((state) => state.userLogin);
   const userProfileInfo = useSelector((state) => state.userProfile);
   const { user } = userProfileInfo;
-  const { token } = userLogin;
+
+  console.log(user);
+  //const { token } = userLogin;
+
+  const token = JSON.parse(localStorage.getItem("userInfo"));
+
+  console.log(token.access);
 
   return (
     <div className={classes.root}>
