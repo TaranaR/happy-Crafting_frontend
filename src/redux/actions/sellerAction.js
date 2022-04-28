@@ -34,7 +34,6 @@ import {
   SELLER_PRODUCT_UPDATE_REQUEST,
 } from "../../constants/sellerConstants";
 import axios from "axios";
-import store from "../store";
 import { LOCAL_URL } from "../../constants/global";
 
 export const createSellerShop = (shop) => async (dispatch) => {
@@ -43,12 +42,14 @@ export const createSellerShop = (shop) => async (dispatch) => {
       type: CREATE_SHOP_REQUEST,
     });
 
-    const { token } = store.getState().userLogin;
+    //const { token } = store.getState().userLogin;
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
 
     const config = {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.access}`,
       },
     };
 
@@ -76,12 +77,14 @@ export const uploadShopLogo = (shoplogo) => async (dispatch) => {
       type: IMAGE_UPLOAD_REQUEST,
     });
 
-    const { token } = store.getState().userLogin;
+    // const { token } = store.getState().userLogin;
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
 
     const config = {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.access}`,
       },
     };
 
@@ -128,6 +131,7 @@ export const getMainCategory = () => async (dispatch) => {
 };
 
 export const getSubCategory = (id) => async (dispatch) => {
+  console.log(id);
   try {
     dispatch({ type: GET_SUBCATEGORY_REQUEST });
 
@@ -181,12 +185,13 @@ export const createSellerProduct = (product) => async (dispatch) => {
       type: CREATE_PRODUCT_REQUEST,
     });
 
-    const { token } = store.getState().userLogin;
+    // const { token } = store.getState().userLogin;
+    const token = JSON.parse(localStorage.getItem("userInfo"));
 
     const config = {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.access}`,
       },
     };
 
@@ -245,12 +250,13 @@ export const updateSellerProfile = (shop) => async (dispatch) => {
       type: SELLER_UPDATE_PROFILE_REQUEST,
     });
 
-    const { token } = store.getState().userLogin;
+    // const { token } = store.getState().userLogin;
+    const token = JSON.parse(localStorage.getItem("userInfo"));
 
     const config = {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.access}`,
       },
     };
 
@@ -276,12 +282,14 @@ export const getProductsBySeller = () => async (dispatch) => {
   try {
     dispatch({ type: GET_PRODUCTBYSELLER_REQUEST });
 
-    const { token } = store.getState().userLogin;
+    // const { token } = store.getState().userLogin;
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
 
     const config = {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.access}`,
       },
     };
 
@@ -305,11 +313,14 @@ export const updateSellerProduct = (product) => async (dispatch) => {
       type: SELLER_PRODUCT_UPDATE_REQUEST,
     });
 
-    const { token } = store.getState().userLogin;
+    // const { token } = store.getState().userLogin;
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
     const config = {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.access}`,
       },
     };
 
@@ -337,11 +348,14 @@ export const deleteSellerProduct = (id) => async (dispatch) => {
       type: SELLER_PRODUCT_DELETE_REQUEST,
     });
 
-    const { token } = store.getState().userLogin;
+    // const { token } = store.getState().userLogin;
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
     const config = {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.access}`,
       },
     };
 

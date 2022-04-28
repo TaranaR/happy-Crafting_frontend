@@ -15,8 +15,12 @@ import {
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
 } from "../../constants/userConstants";
-import store from "../store";
 import { LOCAL_URL } from "../../constants/global";
+import {
+  ADMIN_DETAILS_REQUEST,
+  ADMIN_DETAILS_RESET,
+  ADMIN_LOGOUT,
+} from "../../constants/adminConstants";
 
 export const login = (user) => async (dispatch) => {
   try {
@@ -57,6 +61,9 @@ export const logout = () => async (dispatch) => {
 
   dispatch({
     type: USER_LOGOUT,
+  });
+  dispatch({
+    type: ADMIN_DETAILS_RESET,
   });
 };
 
@@ -129,11 +136,14 @@ export const updateUserProfile = (user) => async (dispatch) => {
       type: USER_UPDATE_PROFILE_REQUEST,
     });
 
-    const { token } = store.getState().userLogin;
+    // const { token } = store.getState().userLogin;
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
     const config = {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.access}`,
       },
     };
 

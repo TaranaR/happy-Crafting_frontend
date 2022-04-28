@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import CreateIcon from "@mui/icons-material/Create";
 import LockResetIcon from "@mui/icons-material/LockReset";
-import { getUserProfile } from "../redux/actions/userAction";
-import { updateUserProfile } from "../redux/actions/userAction";
+import { getUserProfile } from "../../redux/actions/userAction";
+import { updateUserProfile } from "../../redux/actions/userAction";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
   Box,
@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import { Label } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
-import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
+import { USER_UPDATE_PROFILE_RESET } from "../../constants/userConstants";
 import Snackbar from "@mui/material/Snackbar";
 import AlertTitle from "@mui/material/AlertTitle";
 import Alert from "@mui/material/Alert";
@@ -106,10 +106,11 @@ export default function MyAccount() {
 
   const userProfile = useSelector((state) => state.userProfile);
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-  const userLogin = useSelector((state) => state.userLogin);
+  //const userLogin = useSelector((state) => state.userLogin);
   const [snackOpen, setSnackOpen] = useState(false);
 
-  const { token } = userLogin;
+  // const { token } = userLogin;
+  const token = JSON.parse(localStorage.getItem("userInfo"));
   const { success, userInfo } = userUpdateProfile;
   const { user } = userProfile;
 
@@ -119,7 +120,7 @@ export default function MyAccount() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!token) {
+    if (!token.access) {
       navigate("/login");
     } else {
       console.log(user);

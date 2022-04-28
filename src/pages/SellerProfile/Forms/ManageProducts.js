@@ -28,15 +28,15 @@ const useStyles = makeStyles(() => ({
     transform: "translate(-50%, -50%)",
     borderRadius: 5,
     width: "45%",
-    height: "90%",
+    maxHeight: "95%",
     //bgcolor: "background.paper",
     backgroundColor: "white",
     boxShadow: 24,
     p: 4,
   },
   formWrapper: {
-    marginTop: "10%",
-    marginRight: "3%",
+    marginTop: "5%",
+    marginRight: "5%",
     textAlign: "center",
 
     "& .MuiOutlinedInput-root": {

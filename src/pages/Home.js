@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
@@ -12,6 +12,10 @@ import startImage from "../Images/mainPage.jpeg";
 import pillow from "/home/dev/Documents/Tarana/Happy-Crafting/happy_crafting_frontend/src/Images/pillow.jpeg";
 import painting from "/home/dev/Documents/Tarana/Happy-Crafting/happy_crafting_frontend/src/Images/painting.jpeg";
 import phoneCase from "/home/dev/Documents/Tarana/Happy-Crafting/happy_crafting_frontend/src/Images/phoneCase.jpeg";
+import { getAdminDetail } from "../redux/actions/adminAction";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { ADMIN_DETAILS_RESET } from "../constants/adminConstants";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -113,6 +117,15 @@ const ImageMarked = styled("span")(({ theme }) => ({
 
 const Home = (props) => {
   const classes = useStyles();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = JSON.parse(localStorage.getItem("userInfo"));
+  useEffect(() => {
+    if (token) {
+      dispatch(getAdminDetail());
+    }
+  }, [dispatch]);
+
   return (
     <Fragment>
       <div className={classes.startImg} style={{ color: "#ffffff" }}>

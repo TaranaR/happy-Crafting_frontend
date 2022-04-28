@@ -21,6 +21,8 @@ import {
   sellerDeleteProductReducer,
 } from "../reducers/sellerReducer";
 
+import { adminDetailReducer } from "../reducers/adminReducer";
+
 const rootReducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
@@ -36,6 +38,7 @@ const rootReducer = combineReducers({
   sellerGetTypeOfProduct: sellerGetTypeOfProductReducer,
   sellerGetMainCategory: sellerGetMainCategoryReducer,
   sellerGetSubCategory: sellerGetSubCategoryReducer,
+  adminDetail: adminDetailReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

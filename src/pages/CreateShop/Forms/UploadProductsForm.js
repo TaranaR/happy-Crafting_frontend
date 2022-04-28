@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, createDispatchHook } from "react-redux";
 import { Container, Grid, Button } from "@material-ui/core";
 import Checkbox from "@mui/material/Checkbox";
 import { TextField } from "@mui/material";
@@ -22,13 +22,13 @@ export default function UploadProductsForm(props) {
   const dispatch = useDispatch();
 
   const [selectedFile, setSelectedFile] = useState("");
-  const sellergetMainCategory = useSelector(
+  const sellerGetMainCategory = useSelector(
     (state) => state.sellerGetMainCategory
   );
-  const sellergetSubCategory = useSelector(
+  const sellerGetSubCategory = useSelector(
     (state) => state.sellerGetSubCategory
   );
-  const sellergetTypeOfProduct = useSelector(
+  const sellerGetTypeOfProduct = useSelector(
     (state) => state.sellerGetTypeOfProduct
   );
   const userProfileInfo = useSelector((state) => state.userProfile);
@@ -38,9 +38,9 @@ export default function UploadProductsForm(props) {
   );
 
   const { user } = userProfileInfo;
-  const { mainCatInfo } = sellergetMainCategory;
-  const { subCatInfo } = sellergetSubCategory;
-  const { prodTypeInfo } = sellergetTypeOfProduct;
+  const { mainCatInfo } = sellerGetMainCategory;
+  const { subCatInfo } = sellerGetSubCategory;
+  const { prodTypeInfo } = sellerGetTypeOfProduct;
   const { loading, prodInfo, error } = sellerCreateProdInfo;
 
   const username = user.username;
@@ -76,6 +76,8 @@ export default function UploadProductsForm(props) {
 
   useEffect(() => {
     dispatch(getMainCategory());
+    // dispatch(getSubCategory());
+    // dispatch(getTypeOfProduct());
   }, []);
 
   if (prodTypeInfo) {
@@ -137,8 +139,7 @@ export default function UploadProductsForm(props) {
       prodName === "" ||
       prodPrice === "" ||
       prodDescription === "" ||
-      prodSize === "" ||
-      prodColor === ""
+      prodSize === ""
     ) {
       console.log("hello");
       return;
@@ -159,6 +160,8 @@ export default function UploadProductsForm(props) {
 
     setProdName("");
     setProdPrice("");
+    setProdMainCat("");
+    setProdSubCat("");
     setProdType("");
     setProdDescription("");
     setProdImage("");
@@ -207,7 +210,9 @@ export default function UploadProductsForm(props) {
               id="demo-select-small"
               value={prodMainCat}
               onChange={(e) => {
-                setProdType(e.target.value);
+                setProdMainCat(e.target.value);
+                console.log(e.target.value);
+                dispatch(getSubCategory(e.target.value));
               }}
               fullWidth
               size="small"
@@ -218,35 +223,37 @@ export default function UploadProductsForm(props) {
               </MenuItem>
               {main &&
                 main.map((item) => (
-                  <MenuItem key={item.id} value={item.main_cat_name}>
+                  <MenuItem key={item.id} value={item.id}>
                     {item.main_cat_name}
                   </MenuItem>
                 ))}
             </Select>
-            {prodSubCat && (
+            {subCatInfo && (
               <Select
                 labelId="demo-select-small"
                 id="demo-select-small"
-                value={prodType}
+                value={prodSubCat}
                 onChange={(e) => {
-                  setProdType(e.target.value);
+                  setProdSubCat(e.target.value);
+                  dispatch(getTypeOfProduct(e.target.value));
                 }}
                 fullWidth
                 size="small"
                 displayEmpty
+                style={{ marginTop: "10px" }}
               >
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                {type &&
-                  type.map((item) => (
+                {sub &&
+                  sub.map((item) => (
                     <MenuItem key={item.id} value={item.id}>
-                      {item.title}
+                      {item.sub_cat_name}
                     </MenuItem>
                   ))}
               </Select>
             )}
-            {prodType && (
+            {prodTypeInfo && (
               <Select
                 labelId="demo-select-small"
                 id="demo-select-small"
@@ -257,6 +264,7 @@ export default function UploadProductsForm(props) {
                 fullWidth
                 size="small"
                 displayEmpty
+                style={{ marginTop: "10px" }}
               >
                 <MenuItem value="">
                   <em>None</em>
@@ -366,7 +374,7 @@ export default function UploadProductsForm(props) {
               }}
             />
           </Grid>
-          <Grid item xs={12} style={{ padding: "15px", marginTop: "6vh" }}>
+          <Grid item xs={12} style={{ padding: "15px", marginTop: "1vh" }}>
             <Button
               type="submit"
               variant="contained"

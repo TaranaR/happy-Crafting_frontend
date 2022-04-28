@@ -7,11 +7,18 @@ import { useDispatch, useSelector } from "react-redux";
 import backImg from "./Images/BackgroundApp.jpeg";
 import CssBaseline from "@mui/material/CssBaseline";
 import Footer from "./pages/global/Footer";
-import Profile from "./pages/Profile";
-import MyAccount from "./pages/MyAccount";
+import Profile from "./pages/UserProfile/Profile";
+import MyAccount from "./pages/UserProfile/MyAccount";
 import CreateShop from "./pages/CreateShop/CreateShop";
 import MyShop from "./pages/CreateShop/MyShop";
 import SellerProfile from "./pages/SellerProfile/SellerProfile";
+import { useEffect } from "react";
+import { getAdminDetail } from "./redux/actions/adminAction";
+import AdminHome from "./pages/Admin/AdminHome";
+import AdminHeader from "./pages/Admin/global/AdminHeader";
+import { getUserProfile } from "./redux/actions/userAction";
+import { ADMIN_DETAILS_RESET } from "./constants/adminConstants";
+import ManageSeller from "./pages/Admin/ManageSeller";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const sections = [
     { title: "Home", url: "/" },
@@ -36,16 +44,41 @@ function App() {
     { title: "Fashion", url: "" },
   ];
 
+  const adminSections = [
+    { title: "Home", url: "/" },
+    { title: "Manage Sellers", url: "/manageseller" },
+    { title: "Manage Users", url: "/" },
+    { title: "Manage Category", url: "/" },
+    { title: "Manage Sub Category", url: "/" },
+    { title: "Manage Type of Products", url: "/" },
+  ];
+
   const userLogin = useSelector((state) => state.userLogin);
   const userProfileInfo = useSelector((state) => state.userProfile);
+  const adminDetail = useSelector((state) => state.adminDetail);
+  const { admin, error } = adminDetail;
   const { user } = userProfileInfo;
-
-  console.log(user);
   //const { token } = userLogin;
-
   const token = JSON.parse(localStorage.getItem("userInfo"));
 
-  console.log(token.access);
+  useEffect(() => {
+    //dispatch(getAdminDetail());
+    if (token) {
+      dispatch(getAdminDetail());
+      //console.log(admin);
+    }
+  }, []);
+
+  // console.log(user);
+  if (admin) {
+    console.log(admin);
+  }
+  if (error) {
+    console.log(error);
+  }
+  //  const { token } = userLogin;
+
+  // console.log(token.access);
 
   return (
     <div className={classes.root}>
@@ -55,12 +88,86 @@ function App() {
           path="/"
           element={
             <>
-              <Header title="Happy Crafting" sections={sections} />
-              <Home />
-              <Footer />
+              {(error && !!admin) ||
+                (admin && !admin.isAdmin && (
+                  <>
+                    <Header title="Happy Crafting" sections={sections} />
+                    <Home />
+                    <Footer />
+                  </>
+                ))}
+              {admin && admin.isAdmin && (
+                <>
+                  <AdminHeader
+                    title="Happy Crafting"
+                    sections={adminSections}
+                  />
+                  <AdminHome />
+                </>
+              )}
             </>
           }
         />
+
+        <Route
+          path="/manageseller"
+          element={
+            <>
+              {(error && !!admin) ||
+                (admin && !admin.isAdmin && (
+                  <>
+                    <Header title="Happy Crafting" sections={sections} />
+                    <Home />
+                    <Footer />
+                  </>
+                ))}
+              {admin && admin.isAdmin && (
+                <>
+                  <AdminHeader
+                    title="Happy Crafting"
+                    sections={adminSections}
+                  />
+                  <ManageSeller />
+                </>
+              )}
+            </>
+          }
+        />
+        {/* <Route
+          path="/"
+          element={
+            <>
+              {!error ||
+                (admin && admin.isAdmin && (
+                  <>
+                    <AdminHeader
+                      title="Happy Crafting"
+                      sections={adminSections}
+                    />
+                    <AdminHome />
+                  </>
+                ))}
+              {(!admin.isAdmin && error) || (
+                <>
+                  <Header title="Happy Crafting" sections={sections} />
+                  <Home />
+                  <Footer />
+                </>
+              )}
+            </>
+          }
+        /> */}
+
+        {/* <Route
+            path="/"
+            element={
+              <>
+                <Header title="Happy Crafting" sections={sections} />
+                <Home />
+                <Footer />
+              </>
+            }
+          /> */}
 
         <Route
           path="/login"
@@ -83,6 +190,7 @@ function App() {
               <>
                 <Header title="Happy Crafting" sections={sections} />
                 {user.is_seller ? <SellerProfile /> : <Profile />}
+
                 <Footer />
               </>
             )) ||
@@ -145,3 +253,12 @@ function App() {
 }
 
 export default App;
+
+// {(error && !!admin) ||
+//   (admin && !admin.isAdmin && (
+//     <>
+//       <Header title="Happy Crafting" sections={sections} />
+//       <Home />
+//       <Footer />
+//     </>
+//   ))}
