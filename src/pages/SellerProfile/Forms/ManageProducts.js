@@ -168,14 +168,6 @@ export default function ManageProducts() {
                       field: "image",
                       headerName: "IMAGE",
                       width: 90,
-                      editable: (params) => {
-                        <input
-                          type="file"
-                          name="upload-photo"
-                          id="upload-photo"
-                          accept="image/*"
-                        />;
-                      },
                       renderCell: (params) => (
                         <img
                           src={params.value}
@@ -222,7 +214,7 @@ export default function ManageProducts() {
                       renderCell: (params) => (params.value ? "Yes" : "No"),
                     },
                   ]}
-                  rows={data ? data : {}}
+                  rows={data ? data : []}
                   // getRowId={(row) => row.internalId}
                 />
               </Box>

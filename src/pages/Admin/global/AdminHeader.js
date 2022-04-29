@@ -32,7 +32,8 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     background: "none",
     height: "12rem",
-    backgroundColor: "#2D2D2D",
+    // backgroundColor: "#2D2D2D",
+    backgroundColor: "#3A3845",
   },
   searchIcon: {
     color: "#ffffff",
@@ -42,7 +43,8 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   titleLink: {
-    color: "#F76C27",
+    // color: "#F76C27",
+    color: "#F7CCAC",
     fontFamily: ["Dancing Script", "cursive"].join(","),
     textDecoration: "none",
   },

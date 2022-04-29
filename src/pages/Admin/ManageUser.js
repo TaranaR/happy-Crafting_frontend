@@ -2,23 +2,23 @@ import { Fragment, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAllSellerDetail,
-  updateSellerStatus,
+  getAllUserDetail,
+  updateUserStatus,
 } from "../../redux/actions/adminAction";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button, Container, Divider, Grid } from "@mui/material";
 import {
-  GET_ALL_SELLERS_RESET,
-  UPDATE_SELLER_STATUS_RESET,
+  GET_ALL_USER_RESET,
+  UPDATE_USER_STATUS_RESET,
 } from "../../constants/adminConstants";
 
 const useStyles = makeStyles(() => ({
   root: {
     marginTop: "3%",
-    marginLeft: "5%",
+    marginLeft: "20%",
     height: "50%",
     padding: "30px",
-    width: "90%",
+    width: "60%",
     textAlign: "center",
     border: "1px solid #B8C1BA",
     //boxShadow: "5px 5px #B8C1BA",
@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ManageSeller() {
+export default function ManageUser() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -38,27 +38,27 @@ export default function ManageSeller() {
   // const [sellerId, setSellerId] = useState("");
   const [data, setData] = useState([]);
 
-  const allSellerDetails = useSelector((state) => state.getAllSellerDetails);
-  const updatedSeller = useSelector((state) => state.updateSellerStatus);
-  const { seller } = allSellerDetails;
-  const { success, message } = updatedSeller;
+  const allUserDetails = useSelector((state) => state.getAllUserDetails);
+  const updatedUser = useSelector((state) => state.updateUserStatus);
+  const { user } = allUserDetails;
+  const { success } = updatedUser;
 
   useEffect(() => {
-    dispatch(getAllSellerDetail());
-    if (!seller || success) {
-      dispatch({ type: UPDATE_SELLER_STATUS_RESET });
-      dispatch(getAllSellerDetail());
+    dispatch(getAllUserDetail());
+    if (!user || success) {
+      dispatch({ type: UPDATE_USER_STATUS_RESET });
+      dispatch(getAllUserDetail());
     } else {
-      setData(seller);
+      setData(user);
     }
-  }, [dispatch, seller, success]);
+  }, [dispatch, user, success]);
 
   return (
     <Fragment>
       <Box className={classes.root}>
         <Grid container>
           <Grid item xs={12} style={{ fontSize: 25, fontWeight: "bold" }}>
-            Manage Sellers
+            Manage Users
           </Grid>
           <Grid item xs={12}>
             <Divider style={{ width: "100%" }} />
@@ -68,12 +68,10 @@ export default function ManageSeller() {
               style={{
                 height: "50vh",
                 width: "100%",
-                // boxShadow:
-                //   "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px",
               }}
             >
               <DataGrid
-                style={{ height: 400 }}
+                style={{ height: 400, textAlign: "center" }}
                 pageSize={pageSize}
                 onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                 rowsPerPageOptions={[5, 10, 20]}
@@ -84,36 +82,20 @@ export default function ManageSeller() {
                 // }}
                 columns={[
                   {
-                    field: "shop_logo",
-                    headerName: "IMAGE",
-                    width: 100,
-                    renderCell: (params) => (
-                      <img
-                        src={params.value}
-                        style={{ height: 70, width: 70, borderRadius: 100 }}
-                      />
-                    ),
+                    field: "email",
+                    headerName: "EMAIL ID",
+                    width: 250,
                   },
                   {
-                    field: "shop_name",
-                    headerName: "SHOP NAME",
-                    width: 150,
+                    field: "username",
+                    headerName: "USERNAME",
+                    width: 250,
                   },
-                  {
-                    field: "location",
-                    headerName: "LOCATION",
-                    width: 150,
-                  },
-                  {
-                    field: "description",
-                    headerName: "DESCRIPTION",
-                    width: 500,
-                  },
-
                   {
                     field: "is_active",
                     headerName: "STATUS",
                     sortable: false,
+                    width: 200,
                     renderCell: (params) => (
                       <Button
                         variant="conained"
@@ -126,9 +108,9 @@ export default function ManageSeller() {
                             id: params.id,
                             is_active: !params.value,
                           };
-                          dispatch(updateSellerStatus(status));
-                          dispatch({ type: UPDATE_SELLER_STATUS_RESET });
-                          dispatch(getAllSellerDetail());
+                          dispatch(updateUserStatus(status));
+                          dispatch({ type: UPDATE_USER_STATUS_RESET });
+                          dispatch(getAllUserDetail());
                         }}
                       >
                         {params.value ? "Active" : "InActive"}

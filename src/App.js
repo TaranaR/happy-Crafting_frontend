@@ -16,9 +16,10 @@ import { useEffect } from "react";
 import { getAdminDetail } from "./redux/actions/adminAction";
 import AdminHome from "./pages/Admin/AdminHome";
 import AdminHeader from "./pages/Admin/global/AdminHeader";
-import { getUserProfile } from "./redux/actions/userAction";
-import { ADMIN_DETAILS_RESET } from "./constants/adminConstants";
 import ManageSeller from "./pages/Admin/ManageSeller";
+import ManageUser from "./pages/Admin/ManageUser";
+import ManageCategory from "./pages/Admin/ManageCategory";
+import ManageSubCategory from "./pages/Admin/ManageSubCategory";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,9 +48,9 @@ function App() {
   const adminSections = [
     { title: "Home", url: "/" },
     { title: "Manage Sellers", url: "/manageseller" },
-    { title: "Manage Users", url: "/" },
-    { title: "Manage Category", url: "/" },
-    { title: "Manage Sub Category", url: "/" },
+    { title: "Manage Users", url: "/manageuser" },
+    { title: "Manage Category", url: "/managecategory" },
+    { title: "Manage Sub Category", url: "/managesubcategory" },
     { title: "Manage Type of Products", url: "/" },
   ];
 
@@ -133,42 +134,78 @@ function App() {
             </>
           }
         />
-        {/* <Route
-          path="/"
+        <Route
+          path="/manageuser"
           element={
             <>
-              {!error ||
-                (admin && admin.isAdmin && (
+              {(error && !!admin) ||
+                (admin && !admin.isAdmin && (
                   <>
-                    <AdminHeader
-                      title="Happy Crafting"
-                      sections={adminSections}
-                    />
-                    <AdminHome />
+                    <Header title="Happy Crafting" sections={sections} />
+                    <Home />
+                    <Footer />
                   </>
                 ))}
-              {(!admin.isAdmin && error) || (
+              {admin && admin.isAdmin && (
                 <>
-                  <Header title="Happy Crafting" sections={sections} />
-                  <Home />
-                  <Footer />
+                  <AdminHeader
+                    title="Happy Crafting"
+                    sections={adminSections}
+                  />
+                  <ManageUser />
                 </>
               )}
             </>
           }
-        /> */}
-
-        {/* <Route
-            path="/"
-            element={
-              <>
-                <Header title="Happy Crafting" sections={sections} />
-                <Home />
-                <Footer />
-              </>
-            }
-          /> */}
-
+        />
+        <Route
+          path="/managecategory"
+          element={
+            <>
+              {(error && !!admin) ||
+                (admin && !admin.isAdmin && (
+                  <>
+                    <Header title="Happy Crafting" sections={sections} />
+                    <Home />
+                    <Footer />
+                  </>
+                ))}
+              {admin && admin.isAdmin && (
+                <>
+                  <AdminHeader
+                    title="Happy Crafting"
+                    sections={adminSections}
+                  />
+                  <ManageCategory />
+                </>
+              )}
+            </>
+          }
+        />
+        <Route
+          path="/managesubcategory"
+          element={
+            <>
+              {(error && !!admin) ||
+                (admin && !admin.isAdmin && (
+                  <>
+                    <Header title="Happy Crafting" sections={sections} />
+                    <Home />
+                    <Footer />
+                  </>
+                ))}
+              {admin && admin.isAdmin && (
+                <>
+                  <AdminHeader
+                    title="Happy Crafting"
+                    sections={adminSections}
+                  />
+                  <ManageSubCategory />
+                </>
+              )}
+            </>
+          }
+        />
         <Route
           path="/login"
           element={

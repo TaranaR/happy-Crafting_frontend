@@ -21,7 +21,20 @@ import {
   sellerDeleteProductReducer,
 } from "../reducers/sellerReducer";
 
-import { adminDetailReducer } from "../reducers/adminReducer";
+import {
+  adminDetailReducer,
+  getAllSellerDetailsReducer,
+  updateSellerStatusReducer,
+  getAllUserDetailsReducer,
+  updateUserStatusReducer,
+  adminCreateMainCategoryReducer,
+  adminDeleteMainCategoryReducer,
+  adminCreateSubCategoryReducer,
+  adminDeleteSubCategoryReducer,
+  adminCreateTypeOfProductReducer,
+  adminDeleteTypeOfProductReducer,
+  adminGetAllSubCategoryReducer,
+} from "../reducers/adminReducer";
 
 const rootReducer = combineReducers({
   userLogin: userLoginReducer,
@@ -39,6 +52,17 @@ const rootReducer = combineReducers({
   sellerGetMainCategory: sellerGetMainCategoryReducer,
   sellerGetSubCategory: sellerGetSubCategoryReducer,
   adminDetail: adminDetailReducer,
+  getAllSellerDetails: getAllSellerDetailsReducer,
+  updateSellerStatus: updateSellerStatusReducer,
+  getAllUserDetails: getAllUserDetailsReducer,
+  updateUserStatus: updateUserStatusReducer,
+  adminCreateMainCategory: adminCreateMainCategoryReducer,
+  adminDeleteMainCategory: adminDeleteMainCategoryReducer,
+  adminCreateSubCategory: adminCreateSubCategoryReducer,
+  adminDeleteSubCategory: adminDeleteSubCategoryReducer,
+  adminCreateTypeOfProduct: adminCreateTypeOfProductReducer,
+  adminDeleteTypeOfProduct: adminDeleteTypeOfProductReducer,
+  adminGetAllSubCategory: adminGetAllSubCategoryReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
