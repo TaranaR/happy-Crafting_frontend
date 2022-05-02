@@ -21,6 +21,16 @@ const useStyles = makeStyles(() => ({
   root: {
     marginTop: "13%",
   },
+  deactivateBtn: {
+    "&.MuiButton-root": {
+      backgroundColor: "#940011",
+      width: "250px",
+      color: "#ffffff",
+      "&:hover": {
+        color: "#D2042D",
+      },
+    },
+  },
 }));
 
 export default function Setting(props) {
@@ -269,6 +279,22 @@ export default function Setting(props) {
               </Alert>
             </Snackbar>
           )}
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={12} style={{ fontSize: 20 }}>
+            Deactivate Shop
+          </Grid>
+          <Grid item xs={12}>
+            <Divider style={{ width: "80%" }} />
+          </Grid>
+
+          <Grid container style={{ margin: "20px", textAlign: "center" }}>
+            <Grid style={{ textAlign: "left" }}>
+              <Button className={classes.deactivateBtn}>
+                Deactivate Account
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
       </Container>
     </Fragment>

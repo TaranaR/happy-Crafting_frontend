@@ -2,13 +2,21 @@ import { Fragment, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import MenuItem from "@mui/material/MenuItem";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import { getMainCategory } from "../../redux/actions/sellerAction";
 import {
   getAllSubCategory,
   createSubCategory,
   deleteSubCategory,
+  getMainCatName,
 } from "../../redux/actions/adminAction";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridCellEditStopReasons } from "@mui/x-data-grid";
 import { Select, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "@mui/material/Modal";
@@ -72,13 +80,11 @@ export default function ManageSubCategory() {
   const getSubCategoryInfo = useSelector(
     (state) => state.adminGetAllSubCategory
   );
-  const createMainCatInfo = useSelector(
-    (state) => state.adminCreateSubCategory
-  );
+  const createSubCatInfo = useSelector((state) => state.adminCreateSubCategory);
 
   const { mainCatInfo } = getMainCategoryInfo;
   const { subCatInfo } = getSubCategoryInfo;
-  const { subCategoryInfo, loading, error } = createMainCatInfo;
+  const { subCategoryInfo, loading, error } = createSubCatInfo;
   let main = [];
 
   useEffect(() => {
@@ -86,6 +92,7 @@ export default function ManageSubCategory() {
     if (!subCatInfo) {
       dispatch(getAllSubCategory());
     } else {
+      //setData(subCatInfo);
       setData(subCatInfo);
     }
   }, [dispatch, subCatInfo]);
@@ -109,15 +116,29 @@ export default function ManageSubCategory() {
   const submitHandler = () => {
     if (subCatName === "" || mainCatId === "") return;
 
-    const type = {
+    const sub = {
       main_cat_id: mainCatId,
       sub_cat_name: subCatName,
     };
-    dispatch(createSubCategory(type));
+    dispatch(createSubCategory(sub));
 
     setSubCatName("");
     setMainCatId("");
   };
+
+  const getMainName = (id) => {
+    dispatch(getMainCategory());
+    let name = "";
+    main &&
+      main.map((item) => {
+        if (item.id === id) {
+          name = item.main_cat_name;
+        }
+        return name;
+      });
+  };
+
+  //Object.values(data).map((item) => console.log(item));
 
   return (
     <Fragment>
@@ -197,7 +218,7 @@ export default function ManageSubCategory() {
           <Grid item xs={12}>
             <Divider style={{ width: "100%" }} />
           </Grid>
-          <Grid xs={12} style={{ textAlign: "right", marginTop: "20px" }}>
+          <Grid item xs={12} style={{ textAlign: "right", marginTop: "20px" }}>
             <Button
               style={{
                 border: "2px solid #06113C",
@@ -246,11 +267,18 @@ export default function ManageSubCategory() {
                   setSubCatId(row.id);
                 }}
                 columns={[
-                  {
-                    field: "main_cat_id",
-                    headerName: "Main Category Name",
-                    width: 300,
-                  },
+                  // {
+                  //   field: "main_cat_id",
+                  //   headerName: "Main Category Name",
+                  //   width: 300,
+                  //   renderCell: (params) => {
+                  //     main.map((item) => {
+                  //       if (item.id === params.value) {
+                  //         return <span>{item.main_cat_name}</span>;
+                  //       }
+                  //     });
+                  //   },
+                  // },
                   {
                     field: "sub_cat_name",
                     headerName: "Sub Category Name",
@@ -260,6 +288,24 @@ export default function ManageSubCategory() {
                 rows={data ? data : []}
                 // getRowId={(row) => row.internalId}
               />
+              {/* <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Main Category</TableCell>
+                      <TableCell>Sub Category Name</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {Object.values(data).map((row) => (
+                      <TableRow>
+                        <TableCell>{row.main_cat_id}</TableCell>
+                        <TableCell>{row.sub_cat_name}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer> */}
             </Box>
           </Grid>
         </Grid>

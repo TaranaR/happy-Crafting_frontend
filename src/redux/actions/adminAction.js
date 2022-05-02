@@ -36,15 +36,13 @@ import {
   GET_ALL_SUB_CATEGORY_REQUEST,
   GET_ALL_SUB_CATEGORY_SUCCESS,
   GET_ALL_SUB_CATEGORY_FAIL,
+  GET_ALL_TYPE_OF_PRODUCT_REQUEST,
+  GET_ALL_TYPE_OF_PRODUCT_SUCCESS,
+  GET_ALL_TYPE_OF_PRODUCT_FAIL,
 } from "../../constants/adminConstants";
 import axios from "axios";
 import { LOCAL_URL } from "../../constants/global";
 import { USER_LOGOUT } from "../../constants/userConstants";
-import {
-  GET_SUBCATEGORY_FAIL,
-  GET_SUBCATEGORY_REQUEST,
-  GET_SUBCATEGORY_SUCCESS,
-} from "../../constants/sellerConstants";
 
 export const getAdminDetail = () => async (dispatch) => {
   try {
@@ -420,3 +418,50 @@ export const getAllSubCategory = () => async (dispatch) => {
     });
   }
 };
+
+export const getAllTypeOfProduct = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_ALL_TYPE_OF_PRODUCT_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/adminapi/getTypeOfProduct/`,
+      config
+    );
+
+    dispatch({ type: GET_ALL_TYPE_OF_PRODUCT_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_ALL_TYPE_OF_PRODUCT_FAIL,
+      payload: error,
+    });
+  }
+};
+
+// export const getMainCatName = async (id) => {
+//   try {
+//     const config = {
+//       headers: {
+//         "Content-type": "application/json",
+//       },
+//     };
+
+//     const { data } = await axios.get(
+//       `${LOCAL_URL}/api/adminapi/getMainCatName/${id}`,
+//       config
+//     );
+
+//     // const { data } = await axios.get(
+//     //   `${LOCAL_URL}/api/adminapi/getMainCatName/${id}`,
+//     //   config
+//     // );
+//     return data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };

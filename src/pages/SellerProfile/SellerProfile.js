@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import Setting from "./Forms/Setting";
 import ManageProducts from "./Forms/ManageProducts";
+import SellerAccount from "./Forms/SellerAccount";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -41,16 +42,18 @@ export default function SellerProfile() {
   const dispatch = useDispatch();
   const btnRef = useRef();
   const [isActive, setIsActive] = useState(false);
-  const [page, setPage] = useState("SETTING");
+  const [page, setPage] = useState("MY ACCOUNT");
 
   const sellerProfile = useSelector((state) => state.sellerProfile);
   const { seller } = sellerProfile;
   let content = "";
 
-  if (page === "SETTING") {
+  if (page === "SHOP PROFILE") {
     content = <Setting seller={seller} />;
   } else if (page === "MANAGE PRODUCTS") {
     content = <ManageProducts />;
+  } else if (page === "MY ACCOUNT") {
+    content = <SellerAccount />;
   }
   // let button = isActive ? classes.activeBtn : classes.inactiveBtn;
 
@@ -88,7 +91,6 @@ export default function SellerProfile() {
             <Box style={{ justifyContent: "center", display: "flex" }}>
               <Divider style={{ width: "30vh", marginTop: "10px" }} />
             </Box>
-
             <Box
               style={{
                 textAlign: "center",
@@ -103,7 +105,24 @@ export default function SellerProfile() {
                   setPage(e.target.innerText);
                 }}
               >
-                Setting
+                MY ACCOUNT
+              </Button>
+            </Box>
+            <Box
+              style={{
+                textAlign: "center",
+                marginTop: "20px",
+              }}
+            >
+              <Button
+                className={classes.button}
+                variant="contained"
+                ref={btnRef}
+                onClick={(e) => {
+                  setPage(e.target.innerText);
+                }}
+              >
+                SHOP PROFILE
               </Button>
             </Box>
             <Box

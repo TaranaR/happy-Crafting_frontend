@@ -65,11 +65,11 @@ const useStyles = makeStyles(() => ({
   },
   deactivateBtn: {
     "&.MuiButton-root": {
-      backgroundColor: "#D2042D",
+      backgroundColor: "#940011",
       width: "30vh",
       color: "#ffffff",
       "&:hover": {
-        color: "#D2042D",
+        color: "#940011",
         backgroundColor: "#ffffff",
       },
     },

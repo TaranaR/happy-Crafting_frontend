@@ -44,6 +44,9 @@ import {
   GET_ALL_SUB_CATEGORY_REQUEST,
   GET_ALL_SUB_CATEGORY_SUCCESS,
   GET_ALL_SUB_CATEGORY_FAIL,
+  GET_ALL_TYPE_OF_PRODUCT_REQUEST,
+  GET_ALL_TYPE_OF_PRODUCT_SUCCESS,
+  GET_ALL_TYPE_OF_PRODUCT_FAIL,
 } from "../../constants/adminConstants";
 import { USER_DETAILS_RESET } from "../../constants/userConstants";
 
@@ -330,6 +333,29 @@ export const adminGetAllSubCategoryReducer = (state = {}, action) => {
         subCatInfo: action.payload,
       };
     case GET_ALL_SUB_CATEGORY_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case ADMIN_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const adminGetAllTypeOfProductReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_ALL_TYPE_OF_PRODUCT_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_ALL_TYPE_OF_PRODUCT_SUCCESS:
+      return {
+        loading: false,
+        typeInfo: action.payload,
+      };
+    case GET_ALL_TYPE_OF_PRODUCT_FAIL:
       return {
         loading: false,
         error: action.payload,

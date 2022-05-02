@@ -20,6 +20,7 @@ import ManageSeller from "./pages/Admin/ManageSeller";
 import ManageUser from "./pages/Admin/ManageUser";
 import ManageCategory from "./pages/Admin/ManageCategory";
 import ManageSubCategory from "./pages/Admin/ManageSubCategory";
+import ManageTypeOfProduct from "./pages/Admin/ManageTypeOfProduct";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +52,7 @@ function App() {
     { title: "Manage Users", url: "/manageuser" },
     { title: "Manage Category", url: "/managecategory" },
     { title: "Manage Sub Category", url: "/managesubcategory" },
-    { title: "Manage Type of Products", url: "/" },
+    { title: "Manage Type of Products", url: "/managetypeofproduct" },
   ];
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -201,6 +202,31 @@ function App() {
                     sections={adminSections}
                   />
                   <ManageSubCategory />
+                </>
+              )}
+            </>
+          }
+        />
+
+        <Route
+          path="/managetypeofproduct"
+          element={
+            <>
+              {(error && !!admin) ||
+                (admin && !admin.isAdmin && (
+                  <>
+                    <Header title="Happy Crafting" sections={sections} />
+                    <Home />
+                    <Footer />
+                  </>
+                ))}
+              {admin && admin.isAdmin && (
+                <>
+                  <AdminHeader
+                    title="Happy Crafting"
+                    sections={adminSections}
+                  />
+                  <ManageTypeOfProduct />
                 </>
               )}
             </>
