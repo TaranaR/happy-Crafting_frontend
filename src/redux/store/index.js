@@ -6,6 +6,9 @@ import {
   userRegisterReducer,
   userProfileReducer,
   userUpdateProfileReducer,
+  userGetRandom4ProductReducer,
+  userGetProductDetailsReducer,
+  userGetSellerByIdReducer,
 } from "../reducers/userReducer";
 
 import {
@@ -38,10 +41,15 @@ import {
 } from "../reducers/adminReducer";
 
 const rootReducer = combineReducers({
+  //user
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userProfile: userProfileReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  userGetRandom4Product: userGetRandom4ProductReducer,
+  userGetProductDetails: userGetProductDetailsReducer,
+  userGetSellerById: userGetSellerByIdReducer,
+  //seller
   sellerCreateShop: sellerCreateShopReducer,
   sellerCreateProduct: sellerCreateProductReducer,
   sellerProfile: sellerProfileReducer,
@@ -52,6 +60,7 @@ const rootReducer = combineReducers({
   sellerGetTypeOfProduct: sellerGetTypeOfProductReducer,
   sellerGetMainCategory: sellerGetMainCategoryReducer,
   sellerGetSubCategory: sellerGetSubCategoryReducer,
+  //admin
   adminDetail: adminDetailReducer,
   getAllSellerDetails: getAllSellerDetailsReducer,
   updateSellerStatus: updateSellerStatusReducer,

@@ -205,6 +205,8 @@ export default function ManageProducts() {
                       headerName: "COLOR",
                       width: 150,
                       editable: true,
+                      renderCell: (params) =>
+                        params.value ? params.value : "---",
                     },
                     {
                       field: "is_customizable",

@@ -77,8 +77,8 @@ export default function Login(props) {
                 required
                 variant="outlined"
                 id="email"
-                label="Email"
-                name="email"
+                label="Username"
+                name="username"
                 inputRef={usernameInputRef}
               />
             </Grid>

@@ -14,6 +14,15 @@ import {
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_RESET,
+  GET_RANDOM_4_PRODUCTS_REQUEST,
+  GET_RANDOM_4_PRODUCTS_SUCCESS,
+  GET_RANDOM_4_PRODUCTS_FAIL,
+  GET_PRODUCT_DETAILS_REQUEST,
+  GET_PRODUCT_DETAILS_SUCCESS,
+  GET_PRODUCT_DETAILS_FAIL,
+  GET_SELLER_BY_ID_REQUEST,
+  GET_SELLER_BY_ID_SUCCESS,
+  GET_SELLER_BY_ID_FAIL,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -114,6 +123,69 @@ export const userUpdateProfileReducer = (
       return {
         ...state,
         success: false,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userGetRandom4ProductReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_RANDOM_4_PRODUCTS_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_RANDOM_4_PRODUCTS_SUCCESS:
+      return {
+        loading: false,
+        randProd: action.payload,
+      };
+    case GET_RANDOM_4_PRODUCTS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userGetProductDetailsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_PRODUCT_DETAILS_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_PRODUCT_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        prodInfo: action.payload,
+      };
+    case GET_PRODUCT_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userGetSellerByIdReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_SELLER_BY_ID_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_SELLER_BY_ID_SUCCESS:
+      return {
+        loading: false,
+        sellerInfo: action.payload,
+      };
+    case GET_SELLER_BY_ID_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
       };
     default:
       return state;

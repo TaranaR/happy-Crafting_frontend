@@ -8,23 +8,35 @@ import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import startImage from "../Images/mainPage.jpeg";
+import startImage from "../Images/mainPage1.jpeg";
 import pillow from "/home/dev/Documents/Tarana/Happy-Crafting/happy_crafting_frontend/src/Images/pillow.jpeg";
 import painting from "/home/dev/Documents/Tarana/Happy-Crafting/happy_crafting_frontend/src/Images/painting.jpeg";
 import phoneCase from "/home/dev/Documents/Tarana/Happy-Crafting/happy_crafting_frontend/src/Images/phoneCase.jpeg";
 import { getAdminDetail } from "../redux/actions/adminAction";
+import { getRandom4Products } from "../redux/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { ADMIN_DETAILS_RESET } from "../constants/adminConstants";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    marginTop: "10%",
+    height: "50vh",
+    width: "90%",
+    marginLeft: "5%",
+    marginRight: "5%",
+    backgroundColor: "#D5C6B1",
+    textAlign: "center",
+  },
   startImg: {
     backgroundImage: `url(${startImage})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     height: "76vh",
-    width: "100%",
+    width: "90%",
+    marginTop: "2%",
+    marginLeft: "5%",
+    marginRight: "5%",
     padding: "5rem",
   },
   textWrapper: {
@@ -37,7 +49,7 @@ const images = [
   {
     url: pillow,
     title: "Pillow",
-    width: "40%",
+    width: "30%",
   },
   {
     url: painting,
@@ -53,6 +65,7 @@ const images = [
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: "relative",
+  margin: "15px",
   height: 200,
   [theme.breakpoints.down("sm")]: {
     width: "100% !important", // Overrides inline-style
@@ -119,16 +132,21 @@ const Home = (props) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const getRandom4Product = useSelector((state) => state.userGetRandom4Product);
+  const { randProd } = getRandom4Product;
   const token = JSON.parse(localStorage.getItem("userInfo"));
   useEffect(() => {
+    dispatch(getRandom4Products());
     if (token) {
       dispatch(getAdminDetail());
     }
   }, [dispatch]);
 
+  console.log(randProd);
+
   return (
     <Fragment>
-      <div className={classes.startImg} style={{ color: "#ffffff" }}>
+      <div className={classes.startImg} style={{ color: "#000000" }}>
         <Container className={classes.textWrapper}>
           <h1>Designed by artists, made by us, just for you.</h1>
           <h1>~~~~~~~~~~~~~~~</h1>
@@ -175,7 +193,55 @@ const Home = (props) => {
 
         {/* <img src={startImage} className={classes.startImg} /> */}
       </div>
-      <Container className={classes.root}>Home</Container>
+      <Box className={classes.root}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} style={{ fontSize: 30 }}>
+            Get Started
+          </Grid>
+          <Grid item xs={12} style={{ fontSize: 20 }}>
+            Choose from millions of different designs and pair your favorites
+            with over 90 different products.
+          </Grid>
+          {/* <Grid item xs={12}>
+            {randProd &&
+              Object.values(randProd).map((item) => {
+                return <div key={item.id}>{item.name}</div>;
+              })}
+          </Grid> */}
+          <Grid
+            container
+            justifyItems="center"
+            spacing={2}
+            style={{
+              width: "80%",
+              marginLeft: "15%",
+              marginRight: "10%",
+            }}
+          >
+            {randProd &&
+              Object.values(randProd).map((item) => {
+                return (
+                  <Grid
+                    container
+                    item
+                    xs={3}
+                    style={{
+                      padding: 0,
+                      marginTop: "8%",
+                    }}
+                  >
+                    <NavLink to={`/products/${item.id}`}>
+                      <img
+                        src={item.image}
+                        style={{ height: "20vh", width: "20vh" }}
+                      />
+                    </NavLink>
+                  </Grid>
+                );
+              })}
+          </Grid>
+        </Grid>
+      </Box>
     </Fragment>
   );
 };

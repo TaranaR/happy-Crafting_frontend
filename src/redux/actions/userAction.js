@@ -14,6 +14,15 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
+  GET_RANDOM_4_PRODUCTS_REQUEST,
+  GET_RANDOM_4_PRODUCTS_SUCCESS,
+  GET_RANDOM_4_PRODUCTS_FAIL,
+  GET_PRODUCT_DETAILS_FAIL,
+  GET_PRODUCT_DETAILS_REQUEST,
+  GET_PRODUCT_DETAILS_SUCCESS,
+  GET_SELLER_BY_ID_REQUEST,
+  GET_SELLER_BY_ID_SUCCESS,
+  GET_SELLER_BY_ID_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import {
@@ -21,6 +30,7 @@ import {
   ADMIN_DETAILS_RESET,
   ADMIN_LOGOUT,
 } from "../../constants/adminConstants";
+import { async } from "@firebase/util";
 
 export const login = (user) => async (dispatch) => {
   try {
@@ -162,5 +172,68 @@ export const updateUserProfile = (user) => async (dispatch) => {
       type: USER_UPDATE_PROFILE_FAIL,
       palyload: error,
     });
+  }
+};
+
+export const getRandom4Products = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_RANDOM_4_PRODUCTS_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/getRandom4Product/`,
+      config
+    );
+
+    dispatch({ type: GET_RANDOM_4_PRODUCTS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: GET_RANDOM_4_PRODUCTS_FAIL, payload: error });
+  }
+};
+
+export const getProductDetails = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_PRODUCT_DETAILS_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/getProductById/${id}`,
+      config
+    );
+
+    dispatch({ type: GET_PRODUCT_DETAILS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: GET_PRODUCT_DETAILS_FAIL, payload: error });
+  }
+};
+
+export const getSellerById = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_SELLER_BY_ID_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/getSellerById/${id}`,
+      config
+    );
+
+    dispatch({ type: GET_SELLER_BY_ID_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: GET_SELLER_BY_ID_FAIL, payload: error });
   }
 };

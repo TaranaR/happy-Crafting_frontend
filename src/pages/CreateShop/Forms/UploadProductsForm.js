@@ -14,7 +14,6 @@ import { v4 } from "uuid";
 import {
   getMainCategory,
   getSubCategory,
-  getTypeOfProduct,
   createSellerProduct,
 } from "../../../redux/actions/sellerAction";
 
@@ -28,9 +27,9 @@ export default function UploadProductsForm(props) {
   const sellerGetSubCategory = useSelector(
     (state) => state.sellerGetSubCategory
   );
-  const sellerGetTypeOfProduct = useSelector(
-    (state) => state.sellerGetTypeOfProduct
-  );
+  // const sellerGetTypeOfProduct = useSelector(
+  //   (state) => state.sellerGetTypeOfProduct
+  // );
   const userProfileInfo = useSelector((state) => state.userProfile);
 
   const sellerCreateProdInfo = useSelector(
@@ -40,7 +39,7 @@ export default function UploadProductsForm(props) {
   const { user } = userProfileInfo;
   const { mainCatInfo } = sellerGetMainCategory;
   const { subCatInfo } = sellerGetSubCategory;
-  const { prodTypeInfo } = sellerGetTypeOfProduct;
+  //const { prodTypeInfo } = sellerGetTypeOfProduct;
   const { loading, prodInfo, error } = sellerCreateProdInfo;
 
   const username = user.username;
@@ -51,7 +50,7 @@ export default function UploadProductsForm(props) {
 
   const [prodMainCat, setProdMainCat] = useState("");
   const [prodSubCat, setProdSubCat] = useState("");
-  const [prodType, setProdType] = useState("");
+  //const [prodType, setProdType] = useState("");
 
   const [prodDescription, setProdDescription] = useState("");
   const [prodImage, setProdImage] = useState("");
@@ -60,7 +59,7 @@ export default function UploadProductsForm(props) {
   const [isCustomizable, setIsCustomizable] = useState(false);
   let main = [];
   let sub = [];
-  let type = [];
+  //let type = [];
   let fileExtension = "";
 
   const checkBoxStyles = (theme) => ({
@@ -80,9 +79,9 @@ export default function UploadProductsForm(props) {
     // dispatch(getTypeOfProduct());
   }, []);
 
-  if (prodTypeInfo) {
-    type = Object.values(prodTypeInfo);
-  }
+  // if (prodTypeInfo) {
+  //   type = Object.values(prodTypeInfo);
+  // }
 
   if (mainCatInfo) {
     main = Object.values(mainCatInfo);
@@ -146,7 +145,7 @@ export default function UploadProductsForm(props) {
     }
 
     const product = {
-      type_cat_id: prodType,
+      sub_cat_id: prodSubCat,
       name: prodName,
       price: prodPrice,
       description: prodDescription,
@@ -162,7 +161,7 @@ export default function UploadProductsForm(props) {
     setProdPrice("");
     setProdMainCat("");
     setProdSubCat("");
-    setProdType("");
+    //setProdType("");
     setProdDescription("");
     setProdImage("");
     setProdSize("");
@@ -235,7 +234,7 @@ export default function UploadProductsForm(props) {
                 value={prodSubCat}
                 onChange={(e) => {
                   setProdSubCat(e.target.value);
-                  dispatch(getTypeOfProduct(e.target.value));
+                  //dispatch(getTypeOfProduct(e.target.value));
                 }}
                 fullWidth
                 size="small"
@@ -253,7 +252,7 @@ export default function UploadProductsForm(props) {
                   ))}
               </Select>
             )}
-            {prodTypeInfo && (
+            {/* {prodTypeInfo && (
               <Select
                 labelId="demo-select-small"
                 id="demo-select-small"
@@ -276,7 +275,7 @@ export default function UploadProductsForm(props) {
                     </MenuItem>
                   ))}
               </Select>
-            )}
+            )} */}
           </Grid>
           <Grid item xs={3} style={{ padding: "15px" }}>
             Description
