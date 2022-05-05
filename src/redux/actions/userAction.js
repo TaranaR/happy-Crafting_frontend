@@ -23,6 +23,12 @@ import {
   GET_SELLER_BY_ID_REQUEST,
   GET_SELLER_BY_ID_SUCCESS,
   GET_SELLER_BY_ID_FAIL,
+  GET_USER_BY_ID_REQUEST,
+  GET_USER_BY_ID_SUCCESS,
+  GET_USER_BY_ID_FAIL,
+  GET_RANDOM_SUB_CATEGORY_REQUEST,
+  GET_RANDOM_SUB_CATEGORY_SUCCESS,
+  GET_RANDOM_SUB_CATEGORY_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import {
@@ -235,5 +241,47 @@ export const getSellerById = (id) => async (dispatch) => {
     dispatch({ type: GET_SELLER_BY_ID_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: GET_SELLER_BY_ID_FAIL, payload: error });
+  }
+};
+
+export const getUserById = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_USER_BY_ID_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/getUserById/${id}`,
+      config
+    );
+
+    dispatch({ type: GET_USER_BY_ID_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: GET_USER_BY_ID_FAIL, payload: error });
+  }
+};
+
+export const getRandomSubCategory = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_RANDOM_SUB_CATEGORY_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/getRandomSubCategory/`,
+      config
+    );
+
+    dispatch({ type: GET_RANDOM_SUB_CATEGORY_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: GET_RANDOM_SUB_CATEGORY_FAIL, payload: error });
   }
 };

@@ -123,7 +123,7 @@ export default function ManageProducts() {
             <Divider style={{ width: "80%" }} />
           </Grid>
           <Grid container style={{ margin: "20px", textAlign: "right" }}>
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <Button
                 style={{
                   border: "2px solid #745D3E",

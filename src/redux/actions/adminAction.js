@@ -363,7 +363,7 @@ export const createTypeOfProduct = (type) => async (dispatch) => {
   }
 };
 
-export const deleteTypeOfProduct = (id) => async (dispatch) => {
+export const  deleteTypeOfProduct = (id) => async (dispatch) => {
   try {
     dispatch({
       type: DELETE_TYPE_OF_PRODUCT_REQUEST,

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Header from "./pages/global/Header";
 import Home from "./pages/Home";
@@ -14,6 +15,7 @@ import MyShop from "./pages/CreateShop/MyShop";
 import SellerProfile from "./pages/SellerProfile/SellerProfile";
 import { useEffect } from "react";
 import { getAdminDetail } from "./redux/actions/adminAction";
+import { getMainCategory } from "./redux/actions/sellerAction";
 import AdminHome from "./pages/Admin/AdminHome";
 import AdminHeader from "./pages/Admin/global/AdminHeader";
 import ManageSeller from "./pages/Admin/ManageSeller";
@@ -36,15 +38,21 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const dispatch = useDispatch();
+  let sections = [{ title: "Home", url: "/" }];
+  const sellerGetMainCategory = useSelector(
+    (state) => state.sellerGetMainCategory
+  );
+  const { mainCatInfo } = sellerGetMainCategory;
   const classes = useStyles();
-  const sections = [
-    { title: "Home", url: "/" },
-    { title: "Wall Art", url: "" },
-    { title: "House Decor", url: "" },
-    { title: "Furniture", url: "" },
-    { title: "Bed & Bath", url: "" },
-    { title: "Fashion", url: "" },
-  ];
+
+  // const sections = [
+  //   { title: "Home", url: "/" },
+  //   { title: "Wall Art", url: "" },
+  //   { title: "House Decor", url: "" },
+  //   { title: "Furniture", url: "" },
+  //   { title: "Bed & Bath", url: "" },
+  //   { title: "Fashion", url: "" },
+  // ];
 
   const adminSections = [
     { title: "Home", url: "/" },
@@ -54,6 +62,26 @@ function App() {
     { title: "Manage Sub Category", url: "/managesubcategory" },
   ];
 
+  if (mainCatInfo) {
+    mainCatInfo.map((item) => {
+      return sections.push({
+        title: item.main_cat_name,
+        url: item.main_cat_name.replace(/ /g, ""),
+      });
+    });
+  }
+
+  console.log(sections);
+
+  useEffect(() => {
+    //dispatch(getAdminDetail());
+    dispatch(getMainCategory());
+    if (token) {
+      dispatch(getAdminDetail());
+      //console.log(admin);
+    }
+  }, [dispatch]);
+
   const userLogin = useSelector((state) => state.userLogin);
   const userProfileInfo = useSelector((state) => state.userProfile);
   const adminDetail = useSelector((state) => state.adminDetail);
@@ -62,21 +90,13 @@ function App() {
   //const { token } = userLogin;
   const token = JSON.parse(localStorage.getItem("userInfo"));
 
-  useEffect(() => {
-    //dispatch(getAdminDetail());
-    if (token) {
-      dispatch(getAdminDetail());
-      //console.log(admin);
-    }
-  }, []);
-
   // console.log(user);
-  if (admin) {
-    console.log(admin);
-  }
-  if (error) {
-    console.log(error);
-  }
+  // if (admin) {
+  //   console.log(admin);
+  // }
+  // if (error) {
+  //   console.log(error);
+  // }
   //  const { token } = userLogin;
 
   // console.log(token.access);

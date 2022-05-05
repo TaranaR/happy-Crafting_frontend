@@ -6,6 +6,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Box, Container, Grid, Button, TextField } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
+import Review from "../components/Review";
+
 const useStyles = makeStyles(() => ({
   root: {
     marginTop: "10vh",
@@ -18,6 +20,7 @@ export default function ProductDetails() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [prodQty, setProdQty] = useState(0);
+
   const usergetProductDetails = useSelector(
     (state) => state.userGetProductDetails
   );
@@ -25,19 +28,20 @@ export default function ProductDetails() {
   const { sellerInfo } = userGetSellerById;
   const { prodInfo } = usergetProductDetails;
   const prodId = params.prodId;
-  let qty;
+  let reviews = [];
 
   useEffect(() => {
     dispatch(getProductDetails(prodId));
-
-    if (prodInfo) {
-      console.log("hello");
-      dispatch(getSellerById(prodInfo["seller_id"]));
-    }
   }, [dispatch]);
 
-  //   prodInfo && console.log(prodInfo);
-  //   sellerInfo && console.log("Seller", sellerInfo);
+  useEffect(() => {
+    if (prodInfo) {
+      dispatch(getSellerById(prodInfo["seller_id"]));
+    }
+  }, [dispatch, prodInfo]);
+
+  //prodInfo && console.log(prodInfo);
+  //sellerInfo && console.log("Seller", sellerInfo);
 
   const incrementQtyHandler = () => {
     setProdQty((prevState) => prevState + 1);
@@ -48,6 +52,10 @@ export default function ProductDetails() {
       setProdQty((prevState) => prevState - 1);
     }
   };
+
+  if (prodInfo) {
+    reviews = prodInfo["reviews"];
+  }
 
   return (
     <Fragment>
@@ -89,7 +97,14 @@ export default function ProductDetails() {
             <Grid item xs={12}>
               BY {sellerInfo && sellerInfo["shop_name"]}
             </Grid>
-            <Grid item xs={12} style={{ marginTop: "10%", color: "#237E39" }}>
+            <Grid
+              item
+              xs={12}
+              style={{
+                marginTop: "6%",
+                color: "#237E39",
+              }}
+            >
               ₹{prodInfo && prodInfo["price"]}
             </Grid>
             <Grid item xs={12} style={{ marginTop: "10%", fontSize: 20 }}>
@@ -104,9 +119,7 @@ export default function ProductDetails() {
             <Grid item xs={12} style={{ marginTop: "2%" }}>
               <Box
                 style={{
-                  //   border: "1px solid grey",
-                  //   borderRadius: 5,
-                  width: "23vh",
+                  width: "100%",
                 }}
               >
                 <Button
@@ -121,13 +134,14 @@ export default function ProductDetails() {
                   style={{
                     width: "50px",
                     border: "none",
+                    marginLeft: "10px",
                   }}
                   value={prodQty}
                 />
 
                 <Button
                   onClick={incrementQtyHandler}
-                  style={{ color: "#000000" }}
+                  style={{ color: "#000000", marginLeft: "10px" }}
                 >
                   +
                 </Button>
@@ -146,8 +160,17 @@ export default function ProductDetails() {
       </Container>
       <Container className={classes.root}>
         <Grid container spacing={8}>
-          <Grid item xs={6} style={{ fontSize: 25 }}>
-            Reviews
+          <Grid item xs={6}>
+            {reviews.length > 0 && (
+              <Grid item xs={12} style={{ fontSize: 25 }}>
+                Reviews
+              </Grid>
+            )}
+
+            {reviews &&
+              reviews.map((item) => {
+                return <Review item={item} key={item.id} />;
+              })}
           </Grid>
         </Grid>
       </Container>

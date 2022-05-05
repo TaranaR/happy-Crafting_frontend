@@ -13,21 +13,35 @@ import pillow from "/home/dev/Documents/Tarana/Happy-Crafting/happy_crafting_fro
 import painting from "/home/dev/Documents/Tarana/Happy-Crafting/happy_crafting_frontend/src/Images/painting.jpeg";
 import phoneCase from "/home/dev/Documents/Tarana/Happy-Crafting/happy_crafting_frontend/src/Images/phoneCase.jpeg";
 import { getAdminDetail } from "../redux/actions/adminAction";
-import { getRandom4Products } from "../redux/actions/userAction";
+import {
+  getRandomSubCategory,
+  getRandom4Products,
+} from "../redux/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { ADMIN_DETAILS_RESET } from "../constants/adminConstants";
+import { Button } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "10%",
-    height: "50vh",
+    height: "80%",
     width: "90%",
     marginLeft: "5%",
     marginRight: "5%",
-    backgroundColor: "#D5C6B1",
+    //backgroundColor: "#C4DDFF",
     textAlign: "center",
   },
+
+  typeLink: {
+    //textDecoration: "none",
+    color: "#22577E",
+    "&:hover": {
+      color: "#A97155",
+      border: "1",
+    },
+  },
+
   startImg: {
     backgroundImage: `url(${startImage})`,
     backgroundRepeat: "no-repeat",
@@ -133,16 +147,23 @@ const Home = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const getRandom4Product = useSelector((state) => state.userGetRandom4Product);
+  const userGetRandomSubCategory = useSelector(
+    (state) => state.userGetRandomSubCategory
+  );
   const { randProd } = getRandom4Product;
+  const { randSubCat } = userGetRandomSubCategory;
   const token = JSON.parse(localStorage.getItem("userInfo"));
+
   useEffect(() => {
     dispatch(getRandom4Products());
+    dispatch(getRandomSubCategory());
     if (token) {
       dispatch(getAdminDetail());
     }
   }, [dispatch]);
 
   console.log(randProd);
+  console.log(randSubCat);
 
   return (
     <Fragment>
@@ -193,7 +214,7 @@ const Home = (props) => {
 
         {/* <img src={startImage} className={classes.startImg} /> */}
       </div>
-      <Box className={classes.root}>
+      <Box className={classes.root} style={{ backgroundColor: "#C4DDFF" }}>
         <Grid container spacing={2}>
           <Grid item xs={12} style={{ fontSize: 30 }}>
             Get Started
@@ -202,12 +223,7 @@ const Home = (props) => {
             Choose from millions of different designs and pair your favorites
             with over 90 different products.
           </Grid>
-          {/* <Grid item xs={12}>
-            {randProd &&
-              Object.values(randProd).map((item) => {
-                return <div key={item.id}>{item.name}</div>;
-              })}
-          </Grid> */}
+
           <Grid
             container
             justifyItems="center"
@@ -223,6 +239,7 @@ const Home = (props) => {
                 return (
                   <Grid
                     container
+                    key={item.id}
                     item
                     xs={3}
                     style={{
@@ -239,6 +256,81 @@ const Home = (props) => {
                   </Grid>
                 );
               })}
+            <Grid item xs={12} style={{ marginTop: "4%" }}>
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: "#000000",
+                  width: "50%",
+                  marginBottom: "6%",
+                }}
+              >
+                Explore Now
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box className={classes.root} style={{ backgroundColor: "#FFEEEE" }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} style={{ fontSize: 30 }}>
+            Shop by Types
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            style={{ fontSize: 20, margin: "30px", marginTop: 0 }}
+          >
+            Select your desired product from multiple range of product types and
+            get inspired to decorate your house or your work place. Get inspired
+            and also inspire others.
+          </Grid>
+          <Grid
+            container
+            justifyItems="center"
+            spacing={2}
+            style={{
+              width: "80%",
+              marginLeft: "10%",
+              marginRight: "10%",
+            }}
+          >
+            <Grid
+              container
+              item
+              xs={12}
+              style={{
+                padding: 0,
+                margin: "5%",
+                marginTop: "3%",
+                fontSize: 20,
+              }}
+            >
+              {randSubCat &&
+                Object.values(randSubCat)
+                  .slice(0, 4)
+                  .map((item) => {
+                    return (
+                      <Grid item xs={6}>
+                        <NavLink to={`/`} className={classes.typeLink}>
+                          {item.sub_cat_name}
+                        </NavLink>
+                      </Grid>
+                    );
+                  })}
+              {randSubCat &&
+                Object.values(randSubCat)
+                  .slice(4)
+                  .map((item) => {
+                    return (
+                      <Grid item xs={6}>
+                        <NavLink to={`/`} className={classes.typeLink}>
+                          {item.sub_cat_name}
+                        </NavLink>
+                      </Grid>
+                    );
+                  })}
+            </Grid>
           </Grid>
         </Grid>
       </Box>

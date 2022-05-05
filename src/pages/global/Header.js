@@ -119,6 +119,7 @@ function Header(props) {
   const handleClose = (e) => {
     if (e.target.innerText === "Logout") {
       dispatch(logout());
+      navigate("/");
     } else if (e.target.innerText === "Profile") {
       navigate("/profile");
     } else if (e.target.innerText === "My Account") {

@@ -23,6 +23,13 @@ import {
   GET_SELLER_BY_ID_REQUEST,
   GET_SELLER_BY_ID_SUCCESS,
   GET_SELLER_BY_ID_FAIL,
+  GET_USER_BY_ID_REQUEST,
+  GET_USER_BY_ID_SUCCESS,
+  GET_USER_BY_ID_FAIL,
+  GET_USER_BY_ID_RESET,
+  GET_RANDOM_SUB_CATEGORY_REQUEST,
+  GET_RANDOM_SUB_CATEGORY_SUCCESS,
+  GET_RANDOM_SUB_CATEGORY_FAIL,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -183,6 +190,52 @@ export const userGetSellerByIdReducer = (state = {}, action) => {
         sellerInfo: action.payload,
       };
     case GET_SELLER_BY_ID_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userGetUserByIdReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_USER_BY_ID_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_USER_BY_ID_SUCCESS:
+      return {
+        loading: false,
+        userInfo: action.payload,
+      };
+    case GET_USER_BY_ID_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case GET_USER_BY_ID_RESET:
+      return {
+        userInfo: {},
+      };
+    default:
+      return state;
+  }
+};
+
+export const userGetRandomSubCategoryReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_RANDOM_SUB_CATEGORY_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_RANDOM_SUB_CATEGORY_SUCCESS:
+      return {
+        loading: false,
+        randSubCat: action.payload,
+      };
+    case GET_RANDOM_SUB_CATEGORY_FAIL:
       return {
         loading: false,
         error: action.payload,

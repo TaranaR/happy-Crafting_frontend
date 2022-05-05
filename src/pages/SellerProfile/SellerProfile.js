@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
   button: {
     padding: "10px",
     backgroundColor: "#F0E9E1",
-    width: "30vh",
+    width: "70%",
     "&:focus": {
       borderLeft: "5px solid black",
     },

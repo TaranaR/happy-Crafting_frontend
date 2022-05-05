@@ -9,6 +9,8 @@ import {
   userGetRandom4ProductReducer,
   userGetProductDetailsReducer,
   userGetSellerByIdReducer,
+  userGetUserByIdReducer,
+  userGetRandomSubCategoryReducer,
 } from "../reducers/userReducer";
 
 import {
@@ -37,7 +39,6 @@ import {
   adminCreateTypeOfProductReducer,
   adminDeleteTypeOfProductReducer,
   adminGetAllSubCategoryReducer,
-  adminGetAllTypeOfProductReducer,
 } from "../reducers/adminReducer";
 
 const rootReducer = combineReducers({
@@ -49,6 +50,8 @@ const rootReducer = combineReducers({
   userGetRandom4Product: userGetRandom4ProductReducer,
   userGetProductDetails: userGetProductDetailsReducer,
   userGetSellerById: userGetSellerByIdReducer,
+  userGetUserById: userGetUserByIdReducer,
+  userGetRandomSubCategory: userGetRandomSubCategoryReducer,
   //seller
   sellerCreateShop: sellerCreateShopReducer,
   sellerCreateProduct: sellerCreateProductReducer,
@@ -73,7 +76,6 @@ const rootReducer = combineReducers({
   adminCreateTypeOfProduct: adminCreateTypeOfProductReducer,
   adminDeleteTypeOfProduct: adminDeleteTypeOfProductReducer,
   adminGetAllSubCategory: adminGetAllSubCategoryReducer,
-  adminGetAllTypeOfProduct: adminGetAllTypeOfProductReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
