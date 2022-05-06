@@ -45,6 +45,14 @@ function App() {
   const { mainCatInfo } = sellerGetMainCategory;
   const classes = useStyles();
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const userProfileInfo = useSelector((state) => state.userProfile);
+  const adminDetail = useSelector((state) => state.adminDetail);
+  const { admin, error } = adminDetail;
+  const { user } = userProfileInfo;
+  //const { token } = userLogin;
+  const token = JSON.parse(localStorage.getItem("userInfo"));
+
   // const sections = [
   //   { title: "Home", url: "/" },
   //   { title: "Wall Art", url: "" },
@@ -71,7 +79,7 @@ function App() {
     });
   }
 
-  console.log(sections);
+  //console.log(sections);
 
   useEffect(() => {
     //dispatch(getAdminDetail());
@@ -81,14 +89,6 @@ function App() {
       //console.log(admin);
     }
   }, [dispatch]);
-
-  const userLogin = useSelector((state) => state.userLogin);
-  const userProfileInfo = useSelector((state) => state.userProfile);
-  const adminDetail = useSelector((state) => state.adminDetail);
-  const { admin, error } = adminDetail;
-  const { user } = userProfileInfo;
-  //const { token } = userLogin;
-  const token = JSON.parse(localStorage.getItem("userInfo"));
 
   // console.log(user);
   // if (admin) {
@@ -113,7 +113,7 @@ function App() {
                 (admin && !admin.isAdmin && (
                   <>
                     <Header title="Happy Crafting" sections={sections} />
-                    <Home />
+                    <Home sections={sections} />
                     <Footer />
                   </>
                 ))}

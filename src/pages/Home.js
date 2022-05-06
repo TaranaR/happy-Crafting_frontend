@@ -16,11 +16,13 @@ import { getAdminDetail } from "../redux/actions/adminAction";
 import {
   getRandomSubCategory,
   getRandom4Products,
+  getRandomProductByCategory,
 } from "../redux/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { ADMIN_DETAILS_RESET } from "../constants/adminConstants";
 import { Button } from "@mui/material";
+import ProductByCategory from "../components/ProductsByCategory";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -146,24 +148,31 @@ const Home = (props) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const getRandom4Product = useSelector((state) => state.userGetRandom4Product);
+  const usergetRandom4Product = useSelector(
+    (state) => state.userGetRandom4Product
+  );
+
   const userGetRandomSubCategory = useSelector(
     (state) => state.userGetRandomSubCategory
   );
-  const { randProd } = getRandom4Product;
+  const { randProd } = usergetRandom4Product;
+
   const { randSubCat } = userGetRandomSubCategory;
   const token = JSON.parse(localStorage.getItem("userInfo"));
 
   useEffect(() => {
     dispatch(getRandom4Products());
     dispatch(getRandomSubCategory());
+    // let cat = "Wall Art";
+    // dispatch(getRandomProductByCategory(cat));
     if (token) {
       dispatch(getAdminDetail());
     }
   }, [dispatch]);
 
   console.log(randProd);
-  console.log(randSubCat);
+  // console.log(randSubCat);
+  //console.log(randProdCat);
 
   return (
     <Fragment>
@@ -250,7 +259,11 @@ const Home = (props) => {
                     <NavLink to={`/products/${item.id}`}>
                       <img
                         src={item.image}
-                        style={{ height: "20vh", width: "20vh" }}
+                        style={{
+                          height: "20vh",
+                          width: "20vh",
+                          borderRadius: 10,
+                        }}
                       />
                     </NavLink>
                   </Grid>
@@ -311,7 +324,7 @@ const Home = (props) => {
                   .slice(0, 4)
                   .map((item) => {
                     return (
-                      <Grid item xs={6}>
+                      <Grid item xs={6} key={item.id}>
                         <NavLink to={`/`} className={classes.typeLink}>
                           {item.sub_cat_name}
                         </NavLink>
@@ -323,7 +336,7 @@ const Home = (props) => {
                   .slice(4)
                   .map((item) => {
                     return (
-                      <Grid item xs={6}>
+                      <Grid item xs={6} key={item.id}>
                         <NavLink to={`/`} className={classes.typeLink}>
                           {item.sub_cat_name}
                         </NavLink>
@@ -331,6 +344,27 @@ const Home = (props) => {
                     );
                   })}
             </Grid>
+          </Grid>
+        </Grid>
+      </Box>
+
+      <Box className={classes.root} style={{ backgroundColor: "#A8DBD5" }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} style={{ fontSize: 30, marginTop: "3%" }}>
+            Wall Art
+          </Grid>
+          <Grid item xs={12}>
+            <ProductByCategory cat="Wall Art" />
+          </Grid>
+        </Grid>
+      </Box>
+      <Box className={classes.root} style={{ backgroundColor: "#EDCDBB" }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} style={{ fontSize: 30, marginTop: "3%" }}>
+            Fashion
+          </Grid>
+          <Grid item xs={12}>
+            <ProductByCategory cat="Fashion" />
           </Grid>
         </Grid>
       </Box>

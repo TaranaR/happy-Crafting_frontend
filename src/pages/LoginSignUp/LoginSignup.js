@@ -11,7 +11,7 @@ import { register } from "../../redux/actions/userAction";
 import { login } from "../../redux/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import CssBaseline from "@mui/material/CssBaseline";
-import backLogin from "../../Images/backLogin.jpeg";
+import backLogin from "../../Images/backLogin1.jpeg";
 import { Balcony, Label } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
     height: "550px",
     width: "400px",
     position: "absolute",
+    backgroundColor: "#E9D5DA",
 
     "& .MuiTextField-root": {
       margin: theme.spacing(1),
@@ -117,13 +118,17 @@ export default function LoginSignup(props) {
                 margin: 10,
                 marginTop: 25,
                 padding: 10,
-                color: "#BD8B28",
+                color: "#00000",
               }}
             >
               Happy Crafting
             </Typography>
           </Grid>
-          <Grid item xs={6}>
+          <Grid
+            item
+            xs={6}
+            // style={{ backgroundColor: "#000000", height: "102vh" }}
+          >
             <Box className={classes.boxWrapper}>{content}</Box>
           </Grid>
         </Grid>

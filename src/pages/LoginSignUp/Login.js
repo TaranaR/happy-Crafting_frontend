@@ -61,11 +61,11 @@ export default function Login(props) {
       maxWidth="xs"
       className={props.classes.formWrapper}
     >
-      <Box sx={{ marginTop: 10 }}>
+      <Box sx={{ marginTop: 8 }}>
         <Typography
           component="h1"
           variant="h3"
-          style={{ textAlign: "center", color: "#5C3428" }}
+          style={{ textAlign: "center", color: "#000000" }}
         >
           Login
         </Typography>
@@ -111,7 +111,7 @@ export default function Login(props) {
                 sx={{
                   mt: 3,
                   mb: 2,
-                  background: "#5C3428",
+                  background: "#000000",
                   color: "#ffffff",
                   fontWeight: "bold",
                   "&:hover": {
@@ -132,7 +132,7 @@ export default function Login(props) {
                 sx={{
                   mt: 3,
                   mb: 2,
-                  background: "#5C3428",
+                  background: "#00000",
                   color: "#ffffff",
                   fontWeight: "bold",
                   "&:hover": {
@@ -145,7 +145,11 @@ export default function Login(props) {
               </LoadingButton>
             )}
           </Grid>
-          <Grid container justifyContent="flex-end">
+          <Grid
+            container
+            justifyContent="flex-end"
+            style={{ marginTop: "10px" }}
+          >
             <Grid item xs>
               <NavLink to="#" style={{ color: "#000000" }}>
                 Forgot password?

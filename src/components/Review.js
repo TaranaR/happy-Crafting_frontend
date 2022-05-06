@@ -25,9 +25,9 @@ export default function Review(props) {
     }
   }, [dispatch]);
 
-  if (userInfo) {
-    console.log(userInfo);
-  }
+  // if (userInfo) {
+  //   console.log(userInfo);
+  // }
 
   return (
     <Fragment>

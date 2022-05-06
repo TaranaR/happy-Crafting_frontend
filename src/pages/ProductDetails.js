@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+
 import { getProductDetails, getSellerById } from "../redux/actions/userAction";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Container, Grid, Button, TextField } from "@mui/material";
@@ -11,6 +12,7 @@ import Review from "../components/Review";
 const useStyles = makeStyles(() => ({
   root: {
     marginTop: "10vh",
+
     //border: "1px solid black",
   },
 }));
@@ -18,25 +20,43 @@ const useStyles = makeStyles(() => ({
 export default function ProductDetails() {
   const params = useParams();
   const classes = useStyles();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [prodQty, setProdQty] = useState(0);
-
+  const [isLiked, setIsLiked] = useState(false);
   const usergetProductDetails = useSelector(
     (state) => state.userGetProductDetails
   );
   const userGetSellerById = useSelector((state) => state.userGetSellerById);
+  const userProfile = useSelector((state) => state.userProfile);
+  const { user } = userProfile;
   const { sellerInfo } = userGetSellerById;
   const { prodInfo } = usergetProductDetails;
   const prodId = params.prodId;
   let reviews = [];
+  let likeBtn = "";
+
+  const token = JSON.parse(localStorage.getItem("userInfo"));
 
   useEffect(() => {
     dispatch(getProductDetails(prodId));
+    window.scrollTo({
+      top: 0,
+      behavior: "auto",
+    });
   }, [dispatch]);
 
   useEffect(() => {
     if (prodInfo) {
       dispatch(getSellerById(prodInfo["seller_id"]));
+    }
+  }, [dispatch, prodInfo]);
+
+  useEffect(() => {
+    if (prodInfo) {
+      if (prodInfo["reviews"].length >= 1) {
+        setIsLiked(true);
+      }
     }
   }, [dispatch, prodInfo]);
 
@@ -53,9 +73,23 @@ export default function ProductDetails() {
     }
   };
 
+  const linkHandler = () => {
+    if (token) {
+      setIsLiked((prevState) => !prevState);
+    } else {
+      navigate("/login");
+    }
+  };
+
   if (prodInfo) {
     reviews = prodInfo["reviews"];
   }
+
+  if (user) {
+    console.log("profile", user);
+  }
+
+  console.log(isLiked);
 
   return (
     <Fragment>
@@ -83,15 +117,23 @@ export default function ProductDetails() {
                 {prodInfo && prodInfo["name"]}
               </Grid>
               <Grid item xs={6} style={{ textAlign: "right", fontSize: 20 }}>
-                <FavoriteIcon
-                  style={{
-                    color: "red",
-                    marginRight: "2%",
-                    marginTop: "2%",
-                    //border: "1px solid red",
-                  }}
-                />
-                {prodInfo && prodInfo["reviews"].length}
+                <Button style={{ color: "#000000" }} onClick={linkHandler}>
+                  <FavoriteIcon
+                    style={{
+                      // color: isLiked ? "red" : "#7A7B7F",
+                      color:
+                        reviews.length > 0
+                          ? "red"
+                          : isLiked
+                          ? "red"
+                          : "#7A7B7F",
+                      marginRight: "2%",
+                      marginTop: "2%",
+                      //border: "1px solid red",
+                    }}
+                  />
+                  {prodInfo && prodInfo["reviews"].length}
+                </Button>
               </Grid>
             </Grid>
             <Grid item xs={12}>

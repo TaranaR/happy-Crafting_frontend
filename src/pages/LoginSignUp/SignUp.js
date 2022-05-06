@@ -57,7 +57,7 @@ export default function SignUp(props) {
         <Typography
           component="h1"
           variant="h3"
-          style={{ textAlign: "center", color: "#5C3428" }}
+          style={{ textAlign: "center", color: "#000000" }}
         >
           Sign up
         </Typography>
@@ -104,7 +104,7 @@ export default function SignUp(props) {
                 sx={{
                   mt: 3,
                   mb: 2,
-                  background: "#5C3428",
+                  background: "#000000",
                   color: "#ffffff",
                   fontWeight: "bold",
                   "&:hover": {
@@ -126,7 +126,7 @@ export default function SignUp(props) {
                 sx={{
                   mt: 3,
                   mb: 2,
-                  background: "#5C3428",
+                  background: "#000000",
                   color: "#ffffff",
                   fontWeight: "bold",
                   "&:hover": {

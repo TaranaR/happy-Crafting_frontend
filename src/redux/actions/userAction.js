@@ -29,6 +29,9 @@ import {
   GET_RANDOM_SUB_CATEGORY_REQUEST,
   GET_RANDOM_SUB_CATEGORY_SUCCESS,
   GET_RANDOM_SUB_CATEGORY_FAIL,
+  GET_RANDOM_PRODUCT_BY_CATEGORY_REQUEST,
+  GET_RANDOM_PRODUCT_BY_CATEGORY_SUCCESS,
+  GET_RANDOM_PRODUCT_BY_CATEGORY_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import {
@@ -185,9 +188,12 @@ export const getRandom4Products = () => async (dispatch) => {
   try {
     dispatch({ type: GET_RANDOM_4_PRODUCTS_REQUEST });
 
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
     const config = {
       headers: {
         "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
       },
     };
 
@@ -283,5 +289,32 @@ export const getRandomSubCategory = () => async (dispatch) => {
     dispatch({ type: GET_RANDOM_SUB_CATEGORY_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: GET_RANDOM_SUB_CATEGORY_FAIL, payload: error });
+  }
+};
+
+export const getRandomProductByCategory = (cat) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_RANDOM_PRODUCT_BY_CATEGORY_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/getRandomProductByCategory/${cat}`,
+      config
+    );
+    dispatch({
+      type: GET_RANDOM_PRODUCT_BY_CATEGORY_SUCCESS,
+      payload: { [cat]: data },
+    });
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: GET_RANDOM_PRODUCT_BY_CATEGORY_FAIL, payload: error });
   }
 };
