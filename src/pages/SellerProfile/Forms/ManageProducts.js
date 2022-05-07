@@ -171,7 +171,7 @@ export default function ManageProducts() {
                       renderCell: (params) => (
                         <img
                           src={params.value}
-                          style={{ height: 60, width: 60, borderRadius: 100 }}
+                          style={{ height: 60, width: 60, borderRadius: 10 }}
                         />
                       ),
                     },

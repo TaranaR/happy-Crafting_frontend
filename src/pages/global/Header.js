@@ -42,9 +42,9 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
   },
   appBarWrapper: {
-    width: "100 %",
-    margin: "0 auto",
-    marginTop: "2rem",
+    width: "100%",
+    //margin: "0 auto",
+    marginTop: "3%",
   },
   navlink: {
     textDecoration: "none",
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   linkWrapper: {
-    margin: 10,
+    margin: "1%",
     justifyContent: "space-between",
     fontWeight: 700,
   },

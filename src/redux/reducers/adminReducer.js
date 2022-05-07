@@ -44,11 +44,7 @@ import {
   GET_ALL_SUB_CATEGORY_REQUEST,
   GET_ALL_SUB_CATEGORY_SUCCESS,
   GET_ALL_SUB_CATEGORY_FAIL,
-  GET_ALL_TYPE_OF_PRODUCT_REQUEST,
-  GET_ALL_TYPE_OF_PRODUCT_SUCCESS,
-  GET_ALL_TYPE_OF_PRODUCT_FAIL,
 } from "../../constants/adminConstants";
-import { USER_DETAILS_RESET } from "../../constants/userConstants";
 
 export const adminDetailReducer = (state = { admin: {} }, action) => {
   switch (action.type) {

@@ -92,7 +92,6 @@ export default function ManageSubCategory() {
     if (!subCatInfo) {
       dispatch(getAllSubCategory());
     } else {
-      //setData(subCatInfo);
       setData(subCatInfo);
     }
   }, [dispatch, subCatInfo]);
@@ -126,17 +125,17 @@ export default function ManageSubCategory() {
     setMainCatId("");
   };
 
-  const getMainName = (id) => {
-    dispatch(getMainCategory());
-    let name = "";
-    main &&
-      main.map((item) => {
-        if (item.id === id) {
-          name = item.main_cat_name;
-        }
-        return name;
-      });
-  };
+  // const getMainName = (id) => {
+  //   dispatch(getMainCategory());
+  //   let name = "";
+  //   main &&
+  //     main.map((item) => {
+  //       if (item.id === id) {
+  //         name = item.main_cat_name;
+  //       }
+  //       return name;
+  //     });
+  // };
 
   //Object.values(data).map((item) => console.log(item));
 

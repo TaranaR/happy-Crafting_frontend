@@ -43,17 +43,24 @@ export default function SignUp(props) {
       return;
     }
     setSnackOpen(false);
-    if (userInfo) {
+    // if (userInfo) {
+    //   navigate("/login");
+    // }
+  };
+
+  if (userInfo) {
+    if (userInfo.detail) {
       navigate("/login");
     }
-  };
+  }
+
   return (
     <Container
       component="main"
       maxWidth="xs"
       className={props.classes.formWrapper}
     >
-      <Box sx={{ marginTop: 10 }}>
+      <Box sx={{ marginTop: "15%" }}>
         <Typography
           component="h1"
           variant="h3"
@@ -61,7 +68,7 @@ export default function SignUp(props) {
         >
           Sign up
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: "3%" }}>
           <Grid container spacing={2}>
             <Grid item>
               <TextField
@@ -70,6 +77,7 @@ export default function SignUp(props) {
                 label="Email Address"
                 name="email"
                 inputRef={emailInputRef}
+                sx={{ width: "155%" }}
               />
             </Grid>
             <Grid item>
@@ -79,6 +87,7 @@ export default function SignUp(props) {
                 label="User Name"
                 name="UserName"
                 inputRef={usernameInputRef}
+                sx={{ width: "155%" }}
               />
             </Grid>
             <Grid item>
@@ -90,11 +99,12 @@ export default function SignUp(props) {
                 type="password"
                 id="password"
                 inputRef={passwordInputRef}
+                sx={{ width: "155%" }}
               />
             </Grid>
           </Grid>
           <Grid
-            sx={{ width: "75%", alignContent: "center", marginLeft: "3rem" }}
+            sx={{ width: "75%", alignContent: "center", marginLeft: "10%" }}
           >
             {!loading && (
               <Button
@@ -102,8 +112,8 @@ export default function SignUp(props) {
                 fullWidth
                 variant="contained"
                 sx={{
-                  mt: 3,
-                  mb: 2,
+                  mt: "3%",
+                  mb: "2%",
                   background: "#000000",
                   color: "#ffffff",
                   fontWeight: "bold",
@@ -122,18 +132,18 @@ export default function SignUp(props) {
                 variant="outlined"
                 type="submit"
                 fullWidth
-                loadingIndicator
-                sx={{
-                  mt: 3,
-                  mb: 2,
-                  background: "#000000",
-                  color: "#ffffff",
-                  fontWeight: "bold",
-                  "&:hover": {
-                    backgroundColor: "#fff",
-                    color: "#000000",
-                  },
-                }}
+                loadingIndicator="Loading...."
+                // sx={{
+                //   mt: 3,
+                //   mb: 2,
+                //   background: "#000000",
+                //   color: "#ffffff",
+                //   fontWeight: "bold",
+                //   "&:hover": {
+                //     backgroundColor: "#fff",
+                //     color: "#000000",
+                //   },
+                // }}
               >
                 Sign Up
               </LoadingButton>
@@ -148,7 +158,7 @@ export default function SignUp(props) {
           </Grid>
         </Box>
       </Box>
-      {userInfo && (
+      {/* {userInfo && (
         <Snackbar
           open={snackOpen}
           autoHideDuration={5000}
@@ -163,7 +173,7 @@ export default function SignUp(props) {
             {userInfo.detail}
           </Alert>
         </Snackbar>
-      )}
+      )} */}
 
       {error && (
         <Snackbar

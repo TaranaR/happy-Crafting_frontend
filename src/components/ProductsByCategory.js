@@ -32,6 +32,31 @@ const useStyles = makeStyles(() => ({
       width: "100%",
     },
   },
+  imgLink: {
+    tDecoration: "none",
+    position: "relative",
+    color: "#733C3C",
+    "&:hover": {
+      color: "#000000",
+      border: "1",
+    },
+    "&:before": {
+      content: "''",
+      position: "absolute",
+      width: "0",
+      height: "5px",
+      bottom: "-25px",
+      left: "50%",
+      transform: "translate(-50%,0%)",
+      backgroundColor: "#1C658C",
+      visibility: "hidden",
+      transition: "all 0.3s ease-in-out",
+    },
+    "&:hover:before": {
+      visibility: "visible",
+      width: "100%",
+    },
+  },
 }));
 
 export default function ProductByCategory(props) {
@@ -39,7 +64,6 @@ export default function ProductByCategory(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    //dispatch({ type: GET_RANDOM_PRODUCT_BY_CATEGORY_RESET });
     dispatch(getRandomProductByCategory(props.cat));
   }, [dispatch]);
 
@@ -66,26 +90,27 @@ export default function ProductByCategory(props) {
             return (
               item[props.cat] &&
               Object.values(item[props.cat]).map((i) => {
-                // console.log("i", i);
                 return (
                   <Grid
-                    container
                     key={i.id}
                     item
                     xs={4}
                     style={{
                       marginTop: "1%",
-                      padding: "10px",
+                      //padding: "10px",
                     }}
                   >
                     <Grid item xs={12}>
-                      <NavLink to={`/products/${i.id}`}>
+                      <NavLink
+                        to={`/products/${i.id}`}
+                        className={classes.imgLink}
+                      >
                         <img
                           src={i.image}
                           style={{
                             height: "20vh",
                             width: "20vh",
-                            border: "5px solid #534340",
+                            // border: "5px solid #534340",
                             borderRadius: 10,
                           }}
                         />

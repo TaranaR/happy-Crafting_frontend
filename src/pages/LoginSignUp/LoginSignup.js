@@ -12,39 +12,49 @@ import { login } from "../../redux/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import CssBaseline from "@mui/material/CssBaseline";
 import backLogin from "../../Images/backLogin1.jpeg";
-import { Balcony, Label } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundImage: `url(${backLogin})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    height: "102vh",
+    backgroundPosition: "center",
+    position: "fixed",
+    height: "100%",
+    width: "100%",
     color: "black",
+    WebkitBackgroundSize: "cover",
+    MozBackgroundSize: "cover",
+    OBackgroundSize: "cover",
   },
 
   boxWrapper: {
-    marginLeft: "5rem",
-    marginTop: "6rem",
+    //marginLeft: "20%",
+    marginTop: "14%",
+    marginRight: "5%",
     padding: 50,
-    height: "75vh",
+    height: "100%",
     textAlign: "center",
+    //border: "1px solid black",
   },
   formWrapper: {
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
+    //border: "1px solid black",
     boxShadow: "2px 0px 10px rgb(109,110,110)",
     backdropFilter: "blur(25)",
     borderRadius: "20px",
-    height: "550px",
-    width: "400px",
+    height: "65%",
+    minHeight: "65%",
+    width: "50%",
     position: "absolute",
     backgroundColor: "#E9D5DA",
 
     "& .MuiTextField-root": {
       margin: theme.spacing(1),
       background: "#ffffff",
-      width: "380px",
+      //width: "380px",
+      width: "155%",
       borderRadius: 5,
     },
     "& .MuiButtonBase-root": {
@@ -107,7 +117,7 @@ export default function LoginSignup(props) {
     <Fragment>
       <Box className={classes.root}>
         <CssBaseline />
-        <Grid container spacing={2}>
+        <Grid container>
           <Grid item xs={6}>
             <Typography
               variant="h1"
@@ -115,8 +125,8 @@ export default function LoginSignup(props) {
                 flex: 1,
                 fontFamily: ["Dancing Script", "cursive"].join(","),
                 fontWeight: 500,
-                margin: 10,
-                marginTop: 25,
+                margin: "10%",
+                marginTop: "25%",
                 padding: 10,
                 color: "#00000",
               }}

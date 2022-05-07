@@ -34,12 +34,7 @@ import {
   GET_RANDOM_PRODUCT_BY_CATEGORY_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
-import {
-  ADMIN_DETAILS_REQUEST,
-  ADMIN_DETAILS_RESET,
-  ADMIN_LOGOUT,
-} from "../../constants/adminConstants";
-import { async } from "@firebase/util";
+import { ADMIN_DETAILS_RESET } from "../../constants/adminConstants";
 
 export const login = (user) => async (dispatch) => {
   try {

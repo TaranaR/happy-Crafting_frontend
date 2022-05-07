@@ -39,8 +39,8 @@ const useStyles = makeStyles((theme) => ({
     //textDecoration: "none",
     color: "#22577E",
     "&:hover": {
+      textDecoration: "none",
       color: "#A97155",
-      border: "1",
     },
   },
 
@@ -57,7 +57,6 @@ const useStyles = makeStyles((theme) => ({
   },
   textWrapper: {
     textAlign: "center",
-    opacity: 1,
   },
 }));
 

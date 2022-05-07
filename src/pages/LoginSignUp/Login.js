@@ -61,7 +61,11 @@ export default function Login(props) {
       maxWidth="xs"
       className={props.classes.formWrapper}
     >
-      <Box sx={{ marginTop: 8 }}>
+      <Box
+        sx={{
+          marginTop: "15%",
+        }}
+      >
         <Typography
           component="h1"
           variant="h3"
@@ -69,9 +73,13 @@ export default function Login(props) {
         >
           Login
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 5 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ mt: "10%", marginBottom: "10%" }}
+        >
           {/* <Grid container spacing={2} style={{ marginLeft: "4rem" }}> */}
-          <Grid container spacing={2}>
+          <Grid container spacing={1}>
             <Grid item>
               <TextField
                 required
@@ -101,7 +109,11 @@ export default function Login(props) {
             />
           </Grid>
           <Grid
-            sx={{ width: "75%", alignContent: "center", marginLeft: "3rem" }}
+            sx={{
+              width: "75%",
+              alignContent: "center",
+              marginLeft: "10%",
+            }}
           >
             {!loading && (
               <Button
