@@ -5,6 +5,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { TextField } from "@mui/material";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { styled } from "@mui/material/styles";
 import { withStyles } from "@material-ui/styles";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
@@ -62,16 +63,20 @@ export default function UploadProductsForm(props) {
   //let type = [];
   let fileExtension = "";
 
-  const checkBoxStyles = (theme) => ({
-    root: {
-      "&$checked": {
-        color: "#745D3E",
-      },
-    },
-    checked: {},
-  });
+  // const checkBoxStyles = (theme) => ({
+  //   root: {
+  //     "&$checked": {
+  //       color: "#745D3E",
+  //     },
+  //   },
+  //   checked: {},
+  // });
 
-  const CustomCheckbox = withStyles(checkBoxStyles)(Checkbox);
+  // const CustomCheckbox = withStyles(checkBoxStyles)(Checkbox);
+
+  if (error) {
+    console.log(error);
+  }
 
   useEffect(() => {
     dispatch(getMainCategory());
@@ -101,7 +106,15 @@ export default function UploadProductsForm(props) {
     //Image Upload
     console.log(selectedFile);
 
-    if (selectedFile === "") return;
+    if (
+      prodName === "" ||
+      prodPrice === "" ||
+      prodDescription === "" ||
+      selectedFile === ""
+    ) {
+      //console.log("hello");
+      return;
+    }
     if (prodInfo) return;
 
     const imageRef = ref(
@@ -109,12 +122,15 @@ export default function UploadProductsForm(props) {
       `images/${username}/${v4()}.${fileExtension}`
     );
 
-    uploadBytes(imageRef, selectedFile).then(() => {
-      alert("Image uploaded");
-      getDownloadURL(imageRef).then((url) => {
-        setProdImage(url);
+    if (!prodImage) {
+      console.log("first time");
+      uploadBytes(imageRef, selectedFile).then(() => {
+        alert("Image uploaded");
+        getDownloadURL(imageRef).then((url) => {
+          setProdImage(url);
+        });
       });
-    });
+    }
   };
 
   if (selectedFile) {
@@ -125,24 +141,17 @@ export default function UploadProductsForm(props) {
   const submitHandler = () => {
     //create shop
 
-    // console.log("name", prodName);
-    // console.log("price", prodPrice);
-    // console.log("desciption", prodDescription);
-    // console.log("type", prodType);
-    // console.log("image", prodImage);
-    // console.log("size", prodSize);
-    // console.log("color", prodColor);
-    // console.log("isCust", isCustomizable);
-
     if (
       prodName === "" ||
       prodPrice === "" ||
       prodDescription === "" ||
       prodSize === ""
     ) {
-      console.log("hello");
+      // console.log("hello");
       return;
     }
+
+    // console.log(prodImage);
 
     const product = {
       sub_cat_id: prodSubCat,
@@ -157,16 +166,17 @@ export default function UploadProductsForm(props) {
 
     dispatch(createSellerProduct(product));
 
-    setProdName("");
-    setProdPrice("");
-    setProdMainCat("");
-    setProdSubCat("");
-    //setProdType("");
-    setProdDescription("");
-    setProdImage("");
-    setProdSize("");
-    setProdColor("");
-    setIsCustomizable(false);
+    if (!loading) {
+      setProdName("");
+      setProdPrice("");
+      setProdMainCat("");
+      setProdSubCat("");
+      setProdDescription("");
+      setProdImage("");
+      setProdSize("");
+      setProdColor("");
+      setIsCustomizable(false);
+    }
   };
 
   return (
@@ -306,9 +316,9 @@ export default function UploadProductsForm(props) {
                 accept="image/*"
               />
               Select Image
-              {/* <label id="filename" style={{ marginLeft: "10px" }}>
+              <label id="filename" style={{ marginLeft: "10px" }}>
                 {selectedFile["name"]}
-              </label> */}
+              </label>
             </label>
             <Button
               id="fileUpload"
@@ -374,22 +384,39 @@ export default function UploadProductsForm(props) {
             />
           </Grid>
           <Grid item xs={12} style={{ padding: "15px", marginTop: "1vh" }}>
-            <Button
-              type="submit"
-              variant="contained"
-              style={{
-                backgroundColor: "#745D3E",
-                color: "#ffffff",
-                width: "150px",
-                height: "30px",
-              }}
-              onClick={submitHandler}
-            >
-              Confirm
-            </Button>
+            {!loading && (
+              <Button
+                type="submit"
+                variant="contained"
+                style={{
+                  backgroundColor: "#745D3E",
+                  color: "#ffffff",
+                  width: "150px",
+                  height: "30px",
+                }}
+                onClick={submitHandler}
+              >
+                Confirm
+              </Button>
+            )}
+            {loading && (
+              <LoadingButton
+                loading
+                variant="contained"
+                loadingPosition="start"
+                style={{
+                  backgroundColor: "#745D3E",
+                  color: "#ffffff",
+                  width: "150px",
+                  height: "30px",
+                }}
+              >
+                Confirm
+              </LoadingButton>
+            )}
           </Grid>
           <Grid item xs={12}>
-            {loading && "Loading...."}
+            {/* {loading && <CircularProgress style={{ color: "#745D3E" }} />} */}
             {prodInfo && prodInfo.message}
             {error && error}
           </Grid>

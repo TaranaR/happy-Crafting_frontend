@@ -32,6 +32,12 @@ import {
   GET_RANDOM_PRODUCT_BY_CATEGORY_REQUEST,
   GET_RANDOM_PRODUCT_BY_CATEGORY_SUCCESS,
   GET_RANDOM_PRODUCT_BY_CATEGORY_FAIL,
+  GET_ALL_PRODUCT_BY_CATEGORY_REQUEST,
+  GET_ALL_PRODUCT_BY_CATEGORY_SUCCESS,
+  GET_ALL_PRODUCT_BY_CATEGORY_FAIL,
+  GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_REQUEST,
+  GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_FAIL,
+  GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_SUCCESS,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import { ADMIN_DETAILS_RESET } from "../../constants/adminConstants";
@@ -311,5 +317,60 @@ export const getRandomProductByCategory = (cat) => async (dispatch) => {
   } catch (error) {
     console.log(error);
     dispatch({ type: GET_RANDOM_PRODUCT_BY_CATEGORY_FAIL, payload: error });
+  }
+};
+
+export const getAllProductByCategory = (cat) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_ALL_PRODUCT_BY_CATEGORY_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/getAllProductByCategory/${cat}`,
+      config
+    );
+    dispatch({
+      type: GET_ALL_PRODUCT_BY_CATEGORY_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({ type: GET_ALL_PRODUCT_BY_CATEGORY_FAIL, payload: error });
+  }
+};
+
+export const getSubCategoryByMainCategoryName = (name) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_REQUEST });
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/getSubCategoryByMainCategoryName/${name}`,
+      config
+    );
+
+    dispatch({
+      type: GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_FAIL,
+      palyload: error,
+    });
   }
 };

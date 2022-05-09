@@ -23,6 +23,8 @@ import ManageUser from "./pages/Admin/ManageUser";
 import ManageCategory from "./pages/Admin/ManageCategory";
 import ManageSubCategory from "./pages/Admin/ManageSubCategory";
 import ProductDetails from "./pages/ProductDetails";
+import AllProductsByCategory from "./pages/AllProductsByType";
+import ProductCategoryPage from "./pages/ProductCategoryPage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +47,6 @@ function App() {
   const { mainCatInfo } = sellerGetMainCategory;
   const classes = useStyles();
 
-  const userLogin = useSelector((state) => state.userLogin);
   const userProfileInfo = useSelector((state) => state.userProfile);
   const adminDetail = useSelector((state) => state.adminDetail);
   const { admin, error } = adminDetail;
@@ -135,6 +136,16 @@ function App() {
             <>
               <Header title="Happy Crafting" sections={sections} />
               <ProductDetails />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/WallArt"
+          element={
+            <>
+              <Header title="Happy Crafting" sections={sections} />
+              <ProductCategoryPage cat={"Wall Art"} />
               <Footer />
             </>
           }

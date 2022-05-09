@@ -12,8 +12,6 @@ import Review from "../components/Review";
 const useStyles = makeStyles(() => ({
   root: {
     marginTop: "10vh",
-
-    //border: "1px solid black",
   },
 }));
 

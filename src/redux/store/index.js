@@ -12,6 +12,8 @@ import {
   userGetUserByIdReducer,
   userGetRandomSubCategoryReducer,
   userGetRandomProductByCategoryReducer,
+  userGetAllRandomProductByCategoryReducer,
+  userGetSubCatgoryByMainCategoryNameReducer,
 } from "../reducers/userReducer";
 
 import {
@@ -54,6 +56,9 @@ const rootReducer = combineReducers({
   userGetUserById: userGetUserByIdReducer,
   userGetRandomSubCategory: userGetRandomSubCategoryReducer,
   userGetRandomProductByCategory: userGetRandomProductByCategoryReducer,
+  userGetAllRandomProductByCategory: userGetAllRandomProductByCategoryReducer,
+  userGetSubCatgoryByMainCategoryName:
+    userGetSubCatgoryByMainCategoryNameReducer,
   //seller
   sellerCreateShop: sellerCreateShopReducer,
   sellerCreateProduct: sellerCreateProductReducer,

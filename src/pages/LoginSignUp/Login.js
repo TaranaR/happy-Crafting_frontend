@@ -147,10 +147,6 @@ export default function Login(props) {
                   background: "#00000",
                   color: "#ffffff",
                   fontWeight: "bold",
-                  "&:hover": {
-                    backgroundColor: "#fff",
-                    color: "#000000",
-                  },
                 }}
               >
                 Login

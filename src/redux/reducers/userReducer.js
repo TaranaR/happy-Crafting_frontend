@@ -34,6 +34,12 @@ import {
   GET_RANDOM_PRODUCT_BY_CATEGORY_SUCCESS,
   GET_RANDOM_PRODUCT_BY_CATEGORY_FAIL,
   GET_RANDOM_PRODUCT_BY_CATEGORY_RESET,
+  GET_ALL_PRODUCT_BY_CATEGORY_REQUEST,
+  GET_ALL_PRODUCT_BY_CATEGORY_SUCCESS,
+  GET_ALL_PRODUCT_BY_CATEGORY_FAIL,
+  GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_REQUEST,
+  GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_SUCCESS,
+  GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_FAIL,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -280,6 +286,54 @@ export const userGetRandomProductByCategoryReducer = (
       };
     default:
       // console.log("state", state);
+      return state;
+  }
+};
+
+export const userGetAllRandomProductByCategoryReducer = (
+  state = {},
+  action
+) => {
+  switch (action.type) {
+    case GET_ALL_PRODUCT_BY_CATEGORY_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_ALL_PRODUCT_BY_CATEGORY_SUCCESS:
+      return {
+        loading: false,
+        prodCat: action.payload,
+      };
+    case GET_ALL_PRODUCT_BY_CATEGORY_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userGetSubCatgoryByMainCategoryNameReducer = (
+  state = {},
+  action
+) => {
+  switch (action.type) {
+    case GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_SUCCESS:
+      return {
+        loading: false,
+        subCatInfo: action.payload,
+      };
+    case GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
       return state;
   }
 };

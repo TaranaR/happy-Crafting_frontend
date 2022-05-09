@@ -231,7 +231,6 @@ function Header(props) {
               <NavLink
                 className={classes.navlink}
                 key={section.title}
-                variant="body2"
                 to={section.url}
                 sx={{ p: 1, flexShrink: 0 }}
               >

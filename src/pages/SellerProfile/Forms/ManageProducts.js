@@ -151,13 +151,16 @@ export default function ManageProducts() {
             </Grid>
 
             <Grid item xs={12} style={{ marginTop: "20px" }}>
-              <Box style={{ height: 500, width: "100%" }}>
+              <Box style={{ height: 530, width: "100%" }}>
                 <DataGrid
                   pageSize={pageSize}
                   onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                   rowsPerPageOptions={[5, 10, 20]}
                   pagination
                   checkboxSelection
+                  disableColumnSelector
+                  disableColumnFilter
+                  disableColumnMenu
                   rowHeight={80}
                   onCellClick={(row) => {
                     setProdId(row.id);
@@ -166,6 +169,7 @@ export default function ManageProducts() {
                   columns={[
                     {
                       field: "image",
+                      sortable: false,
                       headerName: "IMAGE",
                       width: 90,
                       renderCell: (params) => (
@@ -177,24 +181,28 @@ export default function ManageProducts() {
                     },
                     {
                       field: "name",
+                      sortable: false,
                       headerName: "NAME",
                       width: 250,
                       editable: true,
                     },
                     {
                       field: "price",
+                      sortable: false,
                       headerName: "PRICE",
                       width: 80,
                       editable: true,
                     },
                     {
                       field: "description",
+                      sortable: false,
                       headerName: "DESCRIPTION",
                       width: 500,
                       editable: true,
                     },
                     {
                       field: "size",
+                      sortable: false,
                       headerName: "SIZE",
                       width: 80,
                       editable: true,
@@ -202,6 +210,7 @@ export default function ManageProducts() {
 
                     {
                       field: "color",
+                      sortable: false,
                       headerName: "COLOR",
                       width: 150,
                       editable: true,
@@ -210,6 +219,7 @@ export default function ManageProducts() {
                     },
                     {
                       field: "is_customizable",
+                      sortable: false,
                       headerName: "IS_CUSTOMIZABLE",
                       width: 150,
                       editable: true,
