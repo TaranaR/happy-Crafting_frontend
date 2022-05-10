@@ -40,6 +40,9 @@ import {
   GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_REQUEST,
   GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_SUCCESS,
   GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_FAIL,
+  GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_REQUEST,
+  GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_SUCCESS,
+  GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_FAIL,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -290,29 +293,29 @@ export const userGetRandomProductByCategoryReducer = (
   }
 };
 
-export const userGetAllRandomProductByCategoryReducer = (
-  state = {},
-  action
-) => {
-  switch (action.type) {
-    case GET_ALL_PRODUCT_BY_CATEGORY_REQUEST:
-      return {
-        loading: true,
-      };
-    case GET_ALL_PRODUCT_BY_CATEGORY_SUCCESS:
-      return {
-        loading: false,
-        prodCat: action.payload,
-      };
-    case GET_ALL_PRODUCT_BY_CATEGORY_FAIL:
-      return {
-        loading: false,
-        error: action.payload,
-      };
-    default:
-      return state;
-  }
-};
+// export const userGetAllRandomProductByCategoryReducer = (
+//   state = {},
+//   action
+// ) => {
+//   switch (action.type) {
+//     case GET_ALL_PRODUCT_BY_CATEGORY_REQUEST:
+//       return {
+//         loading: true,
+//       };
+//     case GET_ALL_PRODUCT_BY_CATEGORY_SUCCESS:
+//       return {
+//         loading: false,
+//         prodCat: action.payload,
+//       };
+//     case GET_ALL_PRODUCT_BY_CATEGORY_FAIL:
+//       return {
+//         loading: false,
+//         error: action.payload,
+//       };
+//     default:
+//       return state;
+//   }
+// };
 
 export const userGetSubCatgoryByMainCategoryNameReducer = (
   state = {},
@@ -332,6 +335,30 @@ export const userGetSubCatgoryByMainCategoryNameReducer = (
       return {
         loading: false,
         error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userGetAllProductsBySubCategoryNameReducer = (
+  state = {},
+  action
+) => {
+  switch (action.type) {
+    case GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_SUCCESS:
+      return {
+        loading: false,
+        allProdSub: action.payload,
+      };
+    case GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_FAIL:
+      return {
+        loading: false,
+        allProdSub: action.payload,
       };
     default:
       return state;

@@ -92,6 +92,14 @@ const useStyles = makeStyles((theme) => ({
       width: "auto",
     },
   },
+  // accountCircle: {
+  //   "&:before": {
+  //     transform: "scale3d(1.5, 1.5, 5)",
+  //   },
+  //   "&:hover": {
+  //     transform: "scale3d(1.5, 1.5, 5)",
+  //   },
+  // },
 }));
 
 function Header(props) {
@@ -178,7 +186,7 @@ function Header(props) {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  <AccountCircle />
+                  <AccountCircle className={classes.accountCircle} />
                 </IconButton>
 
                 <Menu

@@ -23,7 +23,7 @@ import ManageUser from "./pages/Admin/ManageUser";
 import ManageCategory from "./pages/Admin/ManageCategory";
 import ManageSubCategory from "./pages/Admin/ManageSubCategory";
 import ProductDetails from "./pages/ProductDetails";
-import AllProductsByCategory from "./pages/AllProductsByType";
+import AllProductsBySubCategory from "./pages/AllProductsBySubCategory";
 import ProductCategoryPage from "./pages/ProductCategoryPage";
 
 const useStyles = makeStyles((theme) => ({
@@ -75,7 +75,7 @@ function App() {
     mainCatInfo.map((item) => {
       return sections.push({
         title: item.main_cat_name,
-        url: item.main_cat_name.replace(/ /g, ""),
+        url: `/${item.main_cat_name.replace(/ /g, "")}`,
       });
     });
   }
@@ -140,16 +140,39 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/WallArt"
-          element={
-            <>
-              <Header title="Happy Crafting" sections={sections} />
-              <ProductCategoryPage cat={"Wall Art"} />
-              <Footer />
-            </>
-          }
-        />
+
+        {sections.map((item) => {
+          return (
+            <Route
+              path={`/${item.url}`}
+              key={item.title}
+              element={
+                <>
+                  <Header title="Happy Crafting" sections={sections} />
+                  <ProductCategoryPage cat={`${item.title}`} />
+                  <Footer />
+                </>
+              }
+            />
+          );
+        })}
+
+        {sections.map((item) => {
+          return (
+            <Route
+              path={`/:subname`}
+              key={item.title}
+              element={
+                <>
+                  <Header title="Happy Crafting" sections={sections} />
+                  <AllProductsBySubCategory />
+                  <Footer />
+                </>
+              }
+            />
+          );
+        })}
+
         <Route
           path="/manageseller"
           element={

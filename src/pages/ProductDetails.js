@@ -58,9 +58,6 @@ export default function ProductDetails() {
     }
   }, [dispatch, prodInfo]);
 
-  //prodInfo && console.log(prodInfo);
-  //sellerInfo && console.log("Seller", sellerInfo);
-
   const incrementQtyHandler = () => {
     setProdQty((prevState) => prevState + 1);
   };
@@ -82,12 +79,6 @@ export default function ProductDetails() {
   if (prodInfo) {
     reviews = prodInfo["reviews"];
   }
-
-  if (user) {
-    console.log("profile", user);
-  }
-
-  console.log(isLiked);
 
   return (
     <Fragment>

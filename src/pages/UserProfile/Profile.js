@@ -9,11 +9,13 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Avatar from "@mui/material/Avatar";
 import { Typography } from "@material-ui/core";
 import CreateIcon from "@mui/icons-material/Create";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProfile } from "../../redux/actions/userAction";
+import userLogo from "../../Images/userProfile.gif";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -72,7 +74,7 @@ export default function Profile() {
         <Box
           style={{
             marginTop: "4rem",
-            // border: "1px solid black",
+            //border: "1px solid black",
             height: "20vh",
             fontSize: 100,
             textAlign: "center",
@@ -85,6 +87,14 @@ export default function Profile() {
               color: "grey",
             }}
           />
+
+          {/* <Avatar
+            src={`${userLogo}`}
+            fontSize="large"
+            style={{
+              transform: "scale(3)",
+            }}
+          /> */}
           <Typography variant="h3" className={classes.typographyClass}>
             {user.username}
             <IconButton onClick={editProfileHandler}>

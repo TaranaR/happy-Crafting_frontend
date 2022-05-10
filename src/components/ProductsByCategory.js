@@ -60,6 +60,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function ProductByCategory(props) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -70,6 +71,8 @@ export default function ProductByCategory(props) {
   const userGetRandomProductByCategory = useSelector(
     (state) => state.userGetRandomProductByCategory
   );
+
+  let linkname = props.cat.replace(/ /g, "");
   const { randProdCat } = userGetRandomProductByCategory;
 
   return (
@@ -138,6 +141,9 @@ export default function ProductByCategory(props) {
               backgroundColor: "#000000",
               width: "50%",
               marginBottom: "6%",
+            }}
+            onClick={() => {
+              navigate(`/${linkname}`);
             }}
           >
             Explore More

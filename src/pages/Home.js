@@ -169,10 +169,6 @@ const Home = (props) => {
     }
   }, [dispatch]);
 
-  console.log(randProd);
-  // console.log(randSubCat);
-  //console.log(randProdCat);
-
   return (
     <Fragment>
       <div className={classes.startImg} style={{ color: "#000000" }}>
@@ -324,7 +320,11 @@ const Home = (props) => {
                   .map((item) => {
                     return (
                       <Grid item xs={6} key={item.id}>
-                        <NavLink to={`/`} className={classes.typeLink}>
+                        <NavLink
+                          to={`/${item.sub_cat_name}`}
+                          //state={{ cat: `${item.sub_cat_name}` }}
+                          className={classes.typeLink}
+                        >
                           {item.sub_cat_name}
                         </NavLink>
                       </Grid>
@@ -336,7 +336,10 @@ const Home = (props) => {
                   .map((item) => {
                     return (
                       <Grid item xs={6} key={item.id}>
-                        <NavLink to={`/`} className={classes.typeLink}>
+                        <NavLink
+                          to={`/${item.sub_cat_name}`}
+                          className={classes.typeLink}
+                        >
                           {item.sub_cat_name}
                         </NavLink>
                       </Grid>
