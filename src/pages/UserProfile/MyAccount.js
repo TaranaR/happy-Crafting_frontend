@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import CreateIcon from "@mui/icons-material/Create";
 import LockResetIcon from "@mui/icons-material/LockReset";
-import { getUserProfile } from "../../redux/actions/userAction";
-import { updateUserProfile } from "../../redux/actions/userAction";
+import {
+  updateUserProfile,
+  getUserProfile,
+  getCartDataByUser,
+} from "../../redux/actions/userAction";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
   Box,
@@ -118,6 +121,10 @@ export default function MyAccount() {
   const [email, setEmail] = useState("");
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCartDataByUser());
+  }, [dispatch]);
 
   useEffect(() => {
     if (!token.access) {

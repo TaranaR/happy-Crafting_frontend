@@ -62,7 +62,6 @@ export default function SellerProfile() {
     // if (btnRef.current) {
     //   btnRef.current.focus();
     // }
-    console.log(seller);
   }, [dispatch, btnRef]);
 
   return (

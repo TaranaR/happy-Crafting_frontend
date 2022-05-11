@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Grid, Container, Button } from "@material-ui/core";
@@ -10,6 +10,8 @@ import StepLabel from "@mui/material/StepLabel";
 import CreateShopForm from "./Forms/CreateShopForm";
 import UploadProductsForm from "./Forms/UploadProductsForm";
 import StartSellingForm from "./Forms/StartSellingForm";
+import { useDispatch } from "react-redux";
+import { getCartDataByUser } from "../../redux/actions/userAction";
 
 const steps = [
   "Create Shop",
@@ -45,6 +47,7 @@ const useStyles = makeStyles(() => ({
 
 export default function CreateShop() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [activeStep, setActiveStep] = useState(0);
 
   const navigate = useNavigate();
@@ -56,6 +59,10 @@ export default function CreateShop() {
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
+
+  useEffect(() => {
+    dispatch(getCartDataByUser());
+  }, [dispatch]);
 
   let content = "";
 

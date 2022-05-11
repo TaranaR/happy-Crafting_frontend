@@ -14,7 +14,10 @@ import { Typography } from "@material-ui/core";
 import CreateIcon from "@mui/icons-material/Create";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserProfile } from "../../redux/actions/userAction";
+import {
+  getUserProfile,
+  getCartDataByUser,
+} from "../../redux/actions/userAction";
 import userLogo from "../../Images/userProfile.gif";
 
 const useStyles = makeStyles(() => ({
@@ -54,6 +57,7 @@ export default function Profile() {
   const { user } = userProfile;
 
   useEffect(() => {
+    dispatch(getCartDataByUser());
     dispatch(getUserProfile());
   }, [dispatch]);
 

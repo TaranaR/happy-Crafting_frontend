@@ -41,9 +41,19 @@ import {
   GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_REQUEST,
   GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_SUCCESS,
   GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_FAIL,
+  GET_SUBCATEGORY_BY_SUBCATEGORY_NAME_REQUEST,
+  GET_SUBCATEGORY_BY_SUBCATEGORY_NAME_SUCCESS,
+  GET_SUBCATEGORY_BY_SUBCATEGORY_NAME_FAIL,
+  ADD_TO_CART_FAIL,
+  ADD_TO_CART_REQUEST,
+  ADD_TO_CART_SUCCESS,
+  GET_CART_DATA_BY_USER_REQUEST,
+  GET_CART_DATA_BY_USER_SUCCESS,
+  GET_CART_DATA_BY_USER_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import { ADMIN_DETAILS_RESET } from "../../constants/adminConstants";
+import { async } from "@firebase/util";
 
 export const login = (user) => async (dispatch) => {
   try {
@@ -402,6 +412,88 @@ export const getAllProductsBySubCategoryName = (sub) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_FAIL,
+      payload: error,
+    });
+  }
+};
+
+export const getSubCategoryBySubCategoryName = (sub) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_SUBCATEGORY_BY_SUBCATEGORY_NAME_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/getSubCategoryBySubCategoryName/${sub}`,
+      config
+    );
+    dispatch({
+      type: GET_SUBCATEGORY_BY_SUBCATEGORY_NAME_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_SUBCATEGORY_BY_SUBCATEGORY_NAME_FAIL,
+      payload: error,
+    });
+  }
+};
+
+export const addToCart = (cart) => async (dispatch) => {
+  try {
+    dispatch({ type: ADD_TO_CART_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.post(
+      `${LOCAL_URL}/api/userapi/addToCart/`,
+      cart,
+      config
+    );
+    dispatch({ type: ADD_TO_CART_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: ADD_TO_CART_FAIL, payload: error });
+  }
+};
+
+export const getCartDataByUser = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_CART_DATA_BY_USER_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/getCartDataByUser/`,
+      config
+    );
+    dispatch({
+      type: GET_CART_DATA_BY_USER_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_CART_DATA_BY_USER_FAIL,
       payload: error,
     });
   }

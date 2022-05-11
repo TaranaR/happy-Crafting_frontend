@@ -1,17 +1,38 @@
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-
-import { getProductDetails, getSellerById } from "../redux/actions/userAction";
+import Modal from "@mui/material/Modal";
+import {
+  getProductDetails,
+  getCartDataByUser,
+  getSellerById,
+  addToCart,
+} from "../redux/actions/userAction";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Container, Grid, Button, TextField } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 import Review from "../components/Review";
+import AddedProductToCart from "../components/AddedProductToCart";
+import { GET_CART_DATA_BY_USER_RESET } from "../constants/userConstants";
 
 const useStyles = makeStyles(() => ({
   root: {
     marginTop: "10vh",
+  },
+  modelWrapper: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    borderRadius: 10,
+    width: "30%",
+    //height: "65%",
+    maxHeight: "75%",
+    textAlign: "center",
+    backgroundColor: "white",
+    boxShadow: 24,
+    p: 4,
   },
 }));
 
@@ -20,16 +41,22 @@ export default function ProductDetails() {
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [prodQty, setProdQty] = useState(0);
+
+  const [prodQty, setProdQty] = useState(1);
+  const [qty, setQty] = useState(1);
+  const [open, setOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+
   const usergetProductDetails = useSelector(
     (state) => state.userGetProductDetails
   );
   const userGetSellerById = useSelector((state) => state.userGetSellerById);
   const userProfile = useSelector((state) => state.userProfile);
+  const userAddToCart = useSelector((state) => state.userAddToCart);
   const { user } = userProfile;
   const { sellerInfo } = userGetSellerById;
   const { prodInfo } = usergetProductDetails;
+  const { cartData, loading: cartLoading } = userAddToCart;
   const prodId = params.prodId;
   let reviews = [];
   let likeBtn = "";
@@ -37,7 +64,12 @@ export default function ProductDetails() {
   const token = JSON.parse(localStorage.getItem("userInfo"));
 
   useEffect(() => {
+    dispatch(getCartDataByUser());
+  }, [cartData]);
+
+  useEffect(() => {
     dispatch(getProductDetails(prodId));
+    dispatch(getCartDataByUser());
     window.scrollTo({
       top: 0,
       behavior: "auto",
@@ -58,19 +90,41 @@ export default function ProductDetails() {
     }
   }, [dispatch, prodInfo]);
 
+  const handleClose = () => setOpen(false);
+
   const incrementQtyHandler = () => {
     setProdQty((prevState) => prevState + 1);
   };
 
   const decrementQtyHandler = () => {
-    if (prodQty > 0) {
+    if (prodQty > 1) {
       setProdQty((prevState) => prevState - 1);
     }
   };
 
-  const linkHandler = () => {
+  const likeHandler = () => {
     if (token) {
       setIsLiked((prevState) => !prevState);
+    } else {
+      navigate("/login");
+    }
+  };
+
+  const addToCartHandler = () => {
+    if (token) {
+      const cart = {
+        quantity: prodQty,
+        product: prodInfo["id"],
+      };
+      // if (!cartData) {
+      dispatch(addToCart(cart));
+
+      //setInterval(() => setOpen(true), 700);
+      if (!cartLoading) {
+        setOpen(true);
+        dispatch({ type: GET_CART_DATA_BY_USER_RESET });
+        dispatch(getCartDataByUser());
+      }
     } else {
       navigate("/login");
     }
@@ -82,6 +136,17 @@ export default function ProductDetails() {
 
   return (
     <Fragment>
+      {open && (
+        <Modal open={open} onClose={handleClose}>
+          <Box className={classes.modelWrapper}>
+            <AddedProductToCart
+              cartData={cartData}
+              prodInfo={prodInfo}
+              qty={prodQty}
+            />
+          </Box>
+        </Modal>
+      )}
       <Container className={classes.root}>
         <Grid container spacing={8}>
           <Grid item xs={6}>
@@ -106,7 +171,7 @@ export default function ProductDetails() {
                 {prodInfo && prodInfo["name"]}
               </Grid>
               <Grid item xs={6} style={{ textAlign: "right", fontSize: 20 }}>
-                <Button style={{ color: "#000000" }} onClick={linkHandler}>
+                <Button style={{ color: "#000000" }} onClick={likeHandler}>
                   <FavoriteIcon
                     style={{
                       // color: isLiked ? "red" : "#7A7B7F",
@@ -182,8 +247,10 @@ export default function ProductDetails() {
               <Button
                 variant="contained"
                 style={{ backgroundColor: "#745D3E", width: "100%" }}
+                onClick={addToCartHandler}
               >
-                Add to Cart
+                {cartLoading && "Loading...."}
+                {!cartLoading && "Add to Cart"}
               </Button>
             </Grid>
           </Grid>

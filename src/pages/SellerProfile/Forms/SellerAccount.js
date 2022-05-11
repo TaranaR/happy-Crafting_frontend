@@ -83,7 +83,6 @@ export default function SellerAccount() {
     if (!token.access) {
       navigate("/login");
     } else {
-      console.log(user);
       if (!user || !user.email || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserProfile());

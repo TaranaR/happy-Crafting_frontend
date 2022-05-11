@@ -25,6 +25,8 @@ import ManageSubCategory from "./pages/Admin/ManageSubCategory";
 import ProductDetails from "./pages/ProductDetails";
 import AllProductsBySubCategory from "./pages/AllProductsBySubCategory";
 import ProductCategoryPage from "./pages/ProductCategoryPage";
+import { getCartDataByUser } from "./redux/actions/userAction";
+import ViewCart from "./pages/ViewCart";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const dispatch = useDispatch();
+  // const [cartCount, setCartCount] = useState(0);
   let sections = [{ title: "Home", url: "/" }];
   const sellerGetMainCategory = useSelector(
     (state) => state.sellerGetMainCategory
@@ -49,19 +52,25 @@ function App() {
 
   const userProfileInfo = useSelector((state) => state.userProfile);
   const adminDetail = useSelector((state) => state.adminDetail);
+  // const userGetCartDataByUser = useSelector(
+  //   (state) => state.userGetCartDataByUser
+  // );
+  // const { cartData } = userGetCartDataByUser;
   const { admin, error } = adminDetail;
   const { user } = userProfileInfo;
   //const { token } = userLogin;
   const token = JSON.parse(localStorage.getItem("userInfo"));
 
-  // const sections = [
-  //   { title: "Home", url: "/" },
-  //   { title: "Wall Art", url: "" },
-  //   { title: "House Decor", url: "" },
-  //   { title: "Furniture", url: "" },
-  //   { title: "Bed & Bath", url: "" },
-  //   { title: "Fashion", url: "" },
-  // ];
+  // useEffect(() => {
+  //   dispatch(getCartDataByUser());
+  // }, [dispatch]);
+
+  // useEffect(() => {
+  //   cartData &&
+  //     cartData.map((item) => {
+  //       setCartCount((prevState) => prevState + item.quantity);
+  //     });
+  // }, [cartData]);
 
   const adminSections = [
     { title: "Home", url: "/" },
@@ -80,8 +89,6 @@ function App() {
     });
   }
 
-  //console.log(sections);
-
   useEffect(() => {
     //dispatch(getAdminDetail());
     dispatch(getMainCategory());
@@ -90,17 +97,6 @@ function App() {
       //console.log(admin);
     }
   }, [dispatch]);
-
-  // console.log(user);
-  // if (admin) {
-  //   console.log(admin);
-  // }
-  // if (error) {
-  //   console.log(error);
-  // }
-  //  const { token } = userLogin;
-
-  // console.log(token.access);
 
   return (
     <div className={classes.root}>
@@ -298,6 +294,19 @@ function App() {
             (!token && <Navigate to="/" />)
           }
         />
+        <Route
+          path="/viewcart"
+          element={
+            (token && (
+              <>
+                <Header title="Happy Crafting" sections={sections} />
+                <ViewCart />
+                <Footer />
+              </>
+            )) ||
+            (!token && <Navigate to="/" />)
+          }
+        />
 
         {/* <Route
           path="/sellerprofile"
@@ -354,12 +363,3 @@ function App() {
 }
 
 export default App;
-
-// {(error && !!admin) ||
-//   (admin && !admin.isAdmin && (
-//     <>
-//       <Header title="Happy Crafting" sections={sections} />
-//       <Home />
-//       <Footer />
-//     </>
-//   ))}

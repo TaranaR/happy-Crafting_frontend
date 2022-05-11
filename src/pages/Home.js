@@ -17,6 +17,7 @@ import {
   getRandomSubCategory,
   getRandom4Products,
   getRandomProductByCategory,
+  getCartDataByUser,
 } from "../redux/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -157,7 +158,19 @@ const Home = (props) => {
   const { randProd } = usergetRandom4Product;
 
   const { randSubCat } = userGetRandomSubCategory;
+
+  const userGetCartDataByUser = useSelector(
+    (state) => state.userGetCartDataByUser
+  );
+  const { cartData } = userGetCartDataByUser;
+
   const token = JSON.parse(localStorage.getItem("userInfo"));
+
+  useEffect(() => {
+    if (!cartData) {
+      dispatch(getCartDataByUser());
+    }
+  }, [dispatch, cartData]);
 
   useEffect(() => {
     dispatch(getRandom4Products());

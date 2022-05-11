@@ -10,18 +10,20 @@ import { Menu, MenuItem } from "@material-ui/core";
 import { AccountCircle } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { InputBase } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@material-ui/core";
 import { NavLink, useNavigate } from "react-router-dom";
 import { makeStyles, alpha } from "@material-ui/core/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { logout } from "../../redux/actions/userAction";
+import Badge from "@mui/material/Badge";
 import { Avatar } from "@mui/material";
 import { Divider, ListItemIcon } from "@material-ui/core";
 import { PersonAdd } from "@mui/icons-material";
 import CreateIcon from "@mui/icons-material/Create";
 import { Logout } from "@mui/icons-material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { getCartDataByUser } from "../../redux/actions/userAction";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -105,15 +107,27 @@ const useStyles = makeStyles((theme) => ({
 function Header(props) {
   const classes = useStyles();
   const [showSearch, setShowSearch] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const { sections, title } = props;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const userLogin = useSelector((state) => state.userLogin);
 
-  const token = JSON.parse(localStorage.getItem("userInfo"));
+  const userGetCartDataByUser = useSelector(
+    (state) => state.userGetCartDataByUser
+  );
+  const { cartData } = userGetCartDataByUser;
 
-  //const { token } = userLogin;
+  useEffect(() => {
+    setCartCount(0);
+    cartData &&
+      cartData.map((item) => {
+        setCartCount((prevState) => prevState + item.quantity);
+      });
+  }, [cartData]);
+
+  const token = JSON.parse(localStorage.getItem("userInfo"));
 
   const searchIconClick = () => {
     setShowSearch((prevstate) => !prevstate);
@@ -175,8 +189,14 @@ function Header(props) {
             )}
             {token && (
               <div>
-                <IconButton>
-                  <ShoppingCartIcon style={{ color: "white" }} />
+                <IconButton
+                  onClick={() => {
+                    navigate("/viewcart");
+                  }}
+                >
+                  <Badge badgeContent={cartCount} color="primary">
+                    <ShoppingCartIcon style={{ color: "white" }} />
+                  </Badge>
                 </IconButton>
                 <IconButton
                   aria-owns={Boolean(anchorEl) ? "account-menu" : undefined}

@@ -43,6 +43,16 @@ import {
   GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_REQUEST,
   GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_SUCCESS,
   GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_FAIL,
+  GET_SUBCATEGORY_BY_SUBCATEGORY_NAME_REQUEST,
+  GET_SUBCATEGORY_BY_SUBCATEGORY_NAME_SUCCESS,
+  GET_SUBCATEGORY_BY_SUBCATEGORY_NAME_FAIL,
+  ADD_TO_CART_REQUEST,
+  ADD_TO_CART_SUCCESS,
+  ADD_TO_CART_FAIL,
+  GET_CART_DATA_BY_USER_REQUEST,
+  GET_CART_DATA_BY_USER_SUCCESS,
+  GET_CART_DATA_BY_USER_FAIL,
+  GET_CART_DATA_BY_USER_RESET,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -114,6 +124,8 @@ export const userProfileReducer = (state = { user: {} }, action) => {
       return {
         user: {},
       };
+    // case USER_LOGOUT:
+    //   return {};
     default:
       return state;
   }
@@ -360,6 +372,80 @@ export const userGetAllProductsBySubCategoryNameReducer = (
         loading: false,
         allProdSub: action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+export const userGetSubCategoryBySubCategoryNameReducer = (
+  state = {},
+  action
+) => {
+  switch (action.type) {
+    case GET_SUBCATEGORY_BY_SUBCATEGORY_NAME_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_SUBCATEGORY_BY_SUBCATEGORY_NAME_SUCCESS:
+      return {
+        loading: false,
+        subCatName: action.payload,
+      };
+    case GET_SUBCATEGORY_BY_SUBCATEGORY_NAME_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userAddToCartReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADD_TO_CART_REQUEST:
+      return {
+        loading: true,
+      };
+    case ADD_TO_CART_SUCCESS:
+      return {
+        loading: false,
+        cartData: action.payload,
+      };
+    case ADD_TO_CART_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userGetCartDataByUserReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_CART_DATA_BY_USER_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_CART_DATA_BY_USER_SUCCESS:
+      return {
+        loading: false,
+        cartData: action.payload,
+      };
+    case GET_CART_DATA_BY_USER_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case GET_CART_DATA_BY_USER_RESET:
+      return {
+        cartData: {},
+      };
+    case USER_LOGOUT:
+      return {};
     default:
       return state;
   }
