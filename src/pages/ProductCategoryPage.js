@@ -44,14 +44,14 @@ const useStyles = makeStyles(() => ({
   },
   mainContainer: {
     marginTop: "5%",
-    height: "60vh",
+    height: "60%",
     backgroundImage: `url(${indexBg})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
   },
   slider: {
     position: "relative",
-    height: "50vh",
+    height: "100%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -66,8 +66,8 @@ const useStyles = makeStyles(() => ({
     transform: "scale(1.08)",
   },
   image: {
-    width: "550px",
-    height: "300px",
+    width: "100%",
+    height: "100%",
   },
   rightArrow: {
     position: "absolute",

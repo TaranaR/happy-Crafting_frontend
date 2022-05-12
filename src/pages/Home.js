@@ -24,6 +24,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { ADMIN_DETAILS_RESET } from "../constants/adminConstants";
 import { Button } from "@mui/material";
 import ProductByCategory from "../components/ProductsByCategory";
+import { getMainCategory } from "../redux/actions/sellerAction";
+import { GET_RANDOM_PRODUCT_BY_CATEGORY_RESET } from "../constants/userConstants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -148,21 +150,28 @@ const Home = (props) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const usergetRandom4Product = useSelector(
     (state) => state.userGetRandom4Product
   );
-
   const userGetRandomSubCategory = useSelector(
     (state) => state.userGetRandomSubCategory
   );
-  const { randProd } = usergetRandom4Product;
-
-  const { randSubCat } = userGetRandomSubCategory;
-
   const userGetCartDataByUser = useSelector(
     (state) => state.userGetCartDataByUser
   );
+  const sellerGetMainCategory = useSelector(
+    (state) => state.sellerGetMainCategory
+  );
+  const userGetRandomProductByCategory = useSelector(
+    (state) => state.userGetRandomProductByCategory
+  );
+
+  const { randProdCat } = userGetRandomProductByCategory;
+  const { randProd } = usergetRandom4Product;
+  const { randSubCat } = userGetRandomSubCategory;
   const { cartData } = userGetCartDataByUser;
+  const { mainCatInfo } = sellerGetMainCategory;
 
   const token = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -175,12 +184,36 @@ const Home = (props) => {
   useEffect(() => {
     dispatch(getRandom4Products());
     dispatch(getRandomSubCategory());
-    // let cat = "Wall Art";
-    // dispatch(getRandomProductByCategory(cat));
+    if (!mainCatInfo) {
+      dispatch(getMainCategory());
+    }
     if (token) {
       dispatch(getAdminDetail());
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (mainCatInfo) {
+      mainCatInfo.map((item) => {
+        dispatch(getRandomProductByCategory(item.main_cat_name));
+      });
+    }
+  }, [dispatch, mainCatInfo]);
+
+  function getColor() {
+    return (
+      "hsl(" +
+      360 * Math.random() +
+      "," +
+      (25 + 30 * Math.random()) +
+      "%," +
+      (85 + 10 * Math.random()) +
+      "%)"
+    );
+  }
+  // const getProductByCategory = (cat) => {
+  //   dispatch(getRandomProductByCategory(cat));
+  // };
 
   return (
     <Fragment>
@@ -363,7 +396,29 @@ const Home = (props) => {
         </Grid>
       </Box>
 
-      <Box className={classes.root} style={{ backgroundColor: "#A8DBD5" }}>
+      {mainCatInfo &&
+        mainCatInfo.map((item) => {
+          return (
+            <Box
+              className={classes.root}
+              style={{ backgroundColor: `${getColor()}` }}
+            >
+              <Grid container spacing={2}>
+                <Grid item xs={12} style={{ fontSize: 30, marginTop: "3%" }}>
+                  {item.main_cat_name}
+                </Grid>
+                <Grid item xs={12}>
+                  <ProductByCategory
+                    cat={item.main_cat_name}
+                    randProdCat={randProdCat}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+          );
+        })}
+
+      {/* <Box className={classes.root} style={{ backgroundColor: "#A8DBD5" }}>
         <Grid container spacing={2}>
           <Grid item xs={12} style={{ fontSize: 30, marginTop: "3%" }}>
             Wall Art
@@ -449,7 +504,7 @@ const Home = (props) => {
             <ProductByCategory cat="Fashion" />
           </Grid>
         </Grid>
-      </Box>
+      </Box> */}
     </Fragment>
   );
 };

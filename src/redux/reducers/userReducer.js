@@ -53,6 +53,13 @@ import {
   GET_CART_DATA_BY_USER_SUCCESS,
   GET_CART_DATA_BY_USER_FAIL,
   GET_CART_DATA_BY_USER_RESET,
+  GET_PRODUCT_BY_ID_REQUEST,
+  GET_PRODUCT_BY_ID_SUCCESS,
+  GET_PRODUCT_BY_ID_FAIL,
+  GET_PRODUCT_BY_ID_RESET,
+  REMOVE_PRODUCT_FROM_CART_REQUEST,
+  REMOVE_PRODUCT_FROM_CART_SUCCESS,
+  REMOVE_PRODUCT_FROM_CART_FAIL,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -300,7 +307,6 @@ export const userGetRandomProductByCategoryReducer = (
         randProdCat: [],
       };
     default:
-      // console.log("state", state);
       return state;
   }
 };
@@ -446,6 +452,60 @@ export const userGetCartDataByUserReducer = (state = {}, action) => {
       };
     case USER_LOGOUT:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const userGetProductByIdReducer = (
+  state = {
+    prodInfo: [],
+    loading: false,
+    error: {},
+  },
+  action
+) => {
+  switch (action.type) {
+    case GET_PRODUCT_BY_ID_REQUEST:
+      return {
+        loading: true,
+        prodInfo: [],
+      };
+    case GET_PRODUCT_BY_ID_SUCCESS:
+      return {
+        loading: false,
+        prodInfo: [...state.prodInfo, action.payload],
+      };
+    case GET_PRODUCT_BY_ID_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case GET_PRODUCT_BY_ID_RESET:
+      return {
+        prodInfo: [],
+      };
+    default:
+      return state;
+  }
+};
+
+export const userRemoveProductFromCartReducer = (state = {}, action) => {
+  switch (action.type) {
+    case REMOVE_PRODUCT_FROM_CART_REQUEST:
+      return {
+        loading: true,
+      };
+    case REMOVE_PRODUCT_FROM_CART_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case REMOVE_PRODUCT_FROM_CART_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

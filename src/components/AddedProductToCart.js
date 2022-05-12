@@ -10,30 +10,31 @@ export default function AddedProductToCart(props) {
 
   //console.log(props.cartData["quantity"]);
 
-  //   const incrementQtyHandler = () => {
-  //     setProdQty((prevState) => prevState + 1);
-  //     addToCartHandler(props.qty + 1);
-  //   };
+  const incrementQtyHandler = () => {
+    setProdQty((prevState) => prevState + 1);
+    const cart = {
+      quantity: 1,
+      product: props.prodInfo["id"],
+    };
 
-  //   const decrementQtyHandler = () => {
-  //     if (prodQty > 1) {
-  //       setProdQty((prevState) => prevState - 1);
-  //     }
-  //     addToCartHandler(props.qty - 1);
-  //   };
+    dispatch(addToCart(cart));
+  };
 
-  //   const addToCartHandler = (qty) => {
-  //     const cart = {
-  //       quantity: qty,
-  //       product: props.prodInfo["id"],
-  //     };
+  const decrementQtyHandler = () => {
+    if (prodQty > 1) {
+      setProdQty((prevState) => prevState - 1);
+      const cart = {
+        quantity: -1,
+        product: props.prodInfo["id"],
+      };
 
-  //     dispatch(addToCart(cart));
-  //   };
+      dispatch(addToCart(cart));
+    }
+  };
 
-  //   useEffect(() => {
-  //     setProdQty(props.qty);
-  //   }, []);
+  useEffect(() => {
+    setProdQty(props.qty);
+  }, []);
 
   return (
     <Fragment>
@@ -55,7 +56,7 @@ export default function AddedProductToCart(props) {
             {props.prodInfo["name"]}
           </Grid>
 
-          {/* <Grid item xs={12}>
+          <Grid item xs={12}>
             <Button onClick={decrementQtyHandler} style={{ color: "#000000" }}>
               -
             </Button>
@@ -68,13 +69,12 @@ export default function AddedProductToCart(props) {
                 // marginLeft: "10px",
               }}
               value={prodQty}
-              onChange={addToCartHandler}
             />
 
             <Button onClick={incrementQtyHandler} style={{ color: "#000000" }}>
               +
             </Button>
-          </Grid> */}
+          </Grid>
           <Grid item xs={12}>
             ₹{props.prodInfo["price"]}
           </Grid>

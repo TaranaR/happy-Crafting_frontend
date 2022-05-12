@@ -61,19 +61,11 @@ const useStyles = makeStyles(() => ({
 
 export default function ProductByCategory(props) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
+  const randProdCat = props.randProdCat;
   const classes = useStyles();
 
-  useEffect(() => {
-    dispatch(getRandomProductByCategory(props.cat));
-  }, [dispatch]);
-
-  const userGetRandomProductByCategory = useSelector(
-    (state) => state.userGetRandomProductByCategory
-  );
-
   let linkname = props.cat.replace(/ /g, "");
-  const { randProdCat } = userGetRandomProductByCategory;
 
   return (
     <Fragment>

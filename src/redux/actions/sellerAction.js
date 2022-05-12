@@ -131,7 +131,6 @@ export const getMainCategory = () => async (dispatch) => {
 };
 
 export const getSubCategory = (id) => async (dispatch) => {
-  // console.log("In", id);
   try {
     dispatch({ type: GET_SUBCATEGORY_REQUEST });
 

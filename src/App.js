@@ -27,6 +27,7 @@ import AllProductsBySubCategory from "./pages/AllProductsBySubCategory";
 import ProductCategoryPage from "./pages/ProductCategoryPage";
 import { getCartDataByUser } from "./redux/actions/userAction";
 import ViewCart from "./pages/ViewCart";
+import UserWindow from "./pages/ex";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -110,6 +111,7 @@ function App() {
                 (admin && !admin.isAdmin && (
                   <>
                     <Header title="Happy Crafting" sections={sections} />
+                    <UserWindow />
                     <Home sections={sections} />
                     <Footer />
                   </>

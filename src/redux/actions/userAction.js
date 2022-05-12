@@ -50,6 +50,12 @@ import {
   GET_CART_DATA_BY_USER_REQUEST,
   GET_CART_DATA_BY_USER_SUCCESS,
   GET_CART_DATA_BY_USER_FAIL,
+  GET_PRODUCT_BY_ID_REQUEST,
+  GET_PRODUCT_BY_ID_SUCCESS,
+  GET_PRODUCT_BY_ID_FAIL,
+  REMOVE_PRODUCT_FROM_CART_REQUEST,
+  REMOVE_PRODUCT_FROM_CART_SUCCESS,
+  REMOVE_PRODUCT_FROM_CART_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import { ADMIN_DETAILS_RESET } from "../../constants/adminConstants";
@@ -495,6 +501,58 @@ export const getCartDataByUser = () => async (dispatch) => {
     dispatch({
       type: GET_CART_DATA_BY_USER_FAIL,
       payload: error,
+    });
+  }
+};
+
+export const getProductById = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_PRODUCT_BY_ID_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/getProductById/${id}`,
+      config
+    );
+
+    dispatch({ type: GET_PRODUCT_BY_ID_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: GET_PRODUCT_BY_ID_FAIL, payload: error });
+  }
+};
+
+export const removeProductFromCart = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: REMOVE_PRODUCT_FROM_CART_REQUEST,
+    });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.delete(
+      `${LOCAL_URL}/api/userapi/removeProductFromCart/${id}`,
+      config
+    );
+
+    dispatch({
+      type: REMOVE_PRODUCT_FROM_CART_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: REMOVE_PRODUCT_FROM_CART_FAIL,
+      palyload: error,
     });
   }
 };
