@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
 import { getUserProfile } from "../../../redux/actions/userAction";
 import Snackbar from "@mui/material/Snackbar";
 import AlertTitle from "@mui/material/AlertTitle";
@@ -19,9 +20,17 @@ import {
 import Modal from "@mui/material/Modal";
 import ChangePassword from "../../ChangePassword";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "13%",
+    [theme.breakpoints.down("md")]: {
+      marginTop: "10%",
+      textAlign: "left",
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "10%",
+      textAlign: "center",
+    },
   },
   deactivateBtn: {
     "&.MuiButton-root": {
@@ -51,6 +60,12 @@ const useStyles = makeStyles(() => ({
     marginRight: "5%",
     textAlign: "center",
 
+    // [theme.breakpoints.down("sm")]: {
+    //   "&.MuiOutlinedInput-root": {
+    //     width: "10px",
+    //   },
+    // },
+
     "& .MuiOutlinedInput-root": {
       "&:hover fieldset": {
         borderColor: "#3F3422",
@@ -60,10 +75,16 @@ const useStyles = makeStyles(() => ({
       },
     },
   },
+  changePwdBtns: {
+    [theme.breakpoints.down("sm")]: {
+      textAlign: "center",
+    },
+  },
 }));
 
 export default function SellerAccount() {
   const classes = useStyles();
+  const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [snackOpen, setSnackOpen] = useState(false);
@@ -130,32 +151,78 @@ export default function SellerAccount() {
             My Account
           </Grid>
           <Grid item xs={12}>
-            <Divider style={{ width: "80%" }} />
+            <Divider />
           </Grid>
           <Grid container style={{ margin: "20px", textAlign: "center" }}>
-            <Grid item xs={3} style={{ padding: "15px" }}>
+            <Grid item xs={12} lg={3} md={3} style={{ padding: "15px" }}>
               UserName
             </Grid>
-            <Grid item xs={9} style={{ textAlign: "left" }}>
+            <Grid
+              item
+              xs={12}
+              lg={9}
+              md={9}
+              sx={{
+                textAlign: "left",
+                [theme.breakpoints.down("sm")]: {
+                  textAlign: "center",
+                },
+                [theme.breakpoints.down("md")]: {
+                  textAlign: "center",
+                },
+              }}
+            >
               <TextField
                 size="small"
                 sx={{
                   backgroundColor: "#F8F9FB",
                   width: "50vh",
+                  [theme.breakpoints.down("sm")]: {
+                    width: "100%",
+                  },
+                  [theme.breakpoints.down("md")]: {
+                    width: "100%",
+                  },
                 }}
                 padding={0.5}
                 value={user ? user.username : ""}
                 disabled
               />
             </Grid>
-            <Grid item xs={3} style={{ padding: "15px" }}>
+            <Grid
+              item
+              xs={12}
+              lg={3}
+              md={3}
+              sx={{
+                padding: "15px",
+              }}
+            >
               Name
             </Grid>
-            <Grid item xs={9} style={{ textAlign: "left" }}>
+            <Grid
+              item
+              xs={12}
+              lg={9}
+              md={9}
+              sx={{
+                textAlign: "left",
+                [theme.breakpoints.down("sm")]: { textAlign: "center" },
+                [theme.breakpoints.down("md")]: { textAlign: "center" },
+              }}
+            >
               <TextField
                 size="small"
                 fullWidth
-                sx={{ width: "50vh" }}
+                sx={{
+                  width: "50vh",
+                  [theme.breakpoints.down("sm")]: {
+                    width: "100%",
+                  },
+                  [theme.breakpoints.down("md")]: {
+                    width: "100%",
+                  },
+                }}
                 padding={0.5}
                 value={name}
                 onChange={(e) => {
@@ -163,14 +230,32 @@ export default function SellerAccount() {
                 }}
               />
             </Grid>
-            <Grid item xs={3} style={{ padding: "15px" }}>
+            <Grid item xs={12} lg={3} md={3} style={{ padding: "15px" }}>
               Email Address
             </Grid>
-            <Grid item xs={9} style={{ textAlign: "left" }}>
+            <Grid
+              item
+              xs={12}
+              lg={9}
+              md={9}
+              sx={{
+                textAlign: "left",
+                [theme.breakpoints.down("sm")]: { textAlign: "center" },
+                [theme.breakpoints.down("md")]: { textAlign: "center" },
+              }}
+            >
               <TextField
                 size="small"
                 fullWidth
-                sx={{ width: "50vh" }}
+                sx={{
+                  width: "50vh",
+                  [theme.breakpoints.down("sm")]: {
+                    width: "100%",
+                  },
+                  [theme.breakpoints.down("md")]: {
+                    width: "100%",
+                  },
+                }}
                 padding={0.5}
                 value={email}
                 onChange={(e) => {
@@ -185,7 +270,8 @@ export default function SellerAccount() {
                 padding: "15px",
                 marginTop: "2%",
                 textAlign: "left",
-                marginLeft: "30%",
+                //marginLeft: "30%",
+                textAlign: "center",
               }}
             >
               <Button
@@ -193,7 +279,7 @@ export default function SellerAccount() {
                 style={{
                   backgroundColor: "#745D3E",
                   color: "#ffffff",
-                  width: "150px",
+                  width: "180px",
                 }}
                 onClick={profileUpdateHandler}
               >
@@ -207,10 +293,20 @@ export default function SellerAccount() {
             Change Password
           </Grid>
           <Grid item xs={12}>
-            <Divider style={{ width: "80%" }} />
+            <Divider />
           </Grid>
           <Grid container style={{ margin: "20px", textAlign: "center" }}>
-            <Grid style={{ textAlign: "left" }}>
+            <Grid
+              xs={12}
+              sx={{
+                textAlign: "left",
+                [theme.breakpoints.down("sm")]: { textAlign: "center" },
+                [theme.breakpoints.down("md")]: { textAlign: "center" },
+                // [theme.breakpoints.only("sm")]: {
+                //   textAlign: "left",
+                // },
+              }}
+            >
               <Button
                 variant="contained"
                 style={{
@@ -225,13 +321,21 @@ export default function SellerAccount() {
             </Grid>
           </Grid>
           <Grid container style={{ margin: "20px", textAlign: "center" }}>
-            <Grid style={{ textAlign: "left" }}>
+            <Grid
+              xs={12}
+              sx={{
+                textAlign: "left",
+                [theme.breakpoints.down("sm")]: { textAlign: "center" },
+                [theme.breakpoints.down("md")]: { textAlign: "center" },
+              }}
+            >
               <Button className={classes.deactivateBtn}>
                 Deactivate Account
               </Button>
             </Grid>
           </Grid>
         </Grid>
+
         {userInfo && (
           <Snackbar
             open={snackOpen}

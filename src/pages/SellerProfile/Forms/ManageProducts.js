@@ -2,24 +2,34 @@ import { Fragment, useEffect, useState, useCallback } from "react";
 import { Button, Grid, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 import {
   updateSellerProduct,
   getProductsBySeller,
   deleteSellerProduct,
 } from "../../../redux/actions/sellerAction";
+import { useTheme } from "@mui/material/styles";
 import { DataGrid } from "@mui/x-data-grid";
 import Modal from "@mui/material/Modal";
-import { Divider } from "@material-ui/core";
+import { ButtonBase, Divider } from "@material-ui/core";
 import UploadProductsForm from "../../CreateShop/Forms/UploadProductsForm";
 import {
   CREATE_PRODUCT_RESET,
   SELLER_PRODUCT_UPDATE_RESET,
 } from "../../../constants/sellerConstants";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "13%",
+    [theme.breakpoints.down("md")]: {
+      marginTop: "10%",
+      textAlign: "left",
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "10%",
+      textAlign: "center",
+    },
   },
   modelWrapper: {
     position: "absolute",
@@ -50,8 +60,35 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const AddDeleteBtn = styled(ButtonBase)(({ theme }) => ({
+  border: "2px solid #745D3E",
+  borderRadius: 25,
+  color: "#745D3E",
+  width: "170px",
+  [theme.breakpoints.down("sm")]: {
+    width: "170px",
+    height: "30px",
+    margin: "3px",
+    marginLeft: 0,
+  },
+  [theme.breakpoints.down("md")]: {
+    width: "170px",
+    height: "30px",
+    marginLeft: 0,
+  },
+  [theme.breakpoints.down("lg")]: {
+    width: "170px",
+    height: "30px",
+  },
+  [theme.breakpoints.up("lg")]: {
+    width: "170px",
+    height: "30px",
+  },
+}));
+
 export default function ManageProducts() {
   const classes = useStyles();
+  const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [pageSize, setPageSize] = useState(5);
   const [data, setData] = useState("");
@@ -120,34 +157,35 @@ export default function ManageProducts() {
             Manage Products
           </Grid>
           <Grid item xs={12}>
-            <Divider style={{ width: "80%" }} />
+            <Divider />
           </Grid>
-          <Grid container style={{ margin: "20px", textAlign: "right" }}>
-            <Grid item xs={12}>
-              <Button
-                style={{
-                  border: "2px solid #745D3E",
-                  borderRadius: 25,
-                  color: "#745D3E",
-                  width: "170px",
-                }}
-                onClick={handleOpen}
-              >
+          <Grid
+            container
+            sx={{
+              margin: "20px",
+              textAlign: "right",
+              [theme.breakpoints.down("sm")]: {
+                textAlign: "center",
+              },
+              [theme.breakpoints.down("md")]: {
+                textAlign: "center",
+              },
+            }}
+          >
+            <Grid item xs={12} lg={12} md={12}>
+              <AddDeleteBtn onClick={handleOpen} style={{ marginRight: "1%" }}>
                 <AddIcon style={{ marginRight: "5px" }} />
                 Add Product
-              </Button>
-              <Button
+              </AddDeleteBtn>
+              <AddDeleteBtn
                 style={{
                   border: "2px solid #BA2C3C",
-                  borderRadius: 25,
                   color: "#BA2C3C",
-                  width: "170px",
-                  marginLeft: "20px",
                 }}
                 onClick={deleteProductHandler}
               >
                 Delete
-              </Button>
+              </AddDeleteBtn>
             </Grid>
 
             <Grid item xs={12} style={{ marginTop: "20px" }}>

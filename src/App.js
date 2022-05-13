@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: "100vh",
     background: "none",
+    width: "100%",
     // backgroundImage: `url(${backImg})`,
     // backgroundRepeat: "no-repeat",
     // backgroundSize: "cover",
@@ -111,7 +112,6 @@ function App() {
                 (admin && !admin.isAdmin && (
                   <>
                     <Header title="Happy Crafting" sections={sections} />
-                    <UserWindow />
                     <Home sections={sections} />
                     <Footer />
                   </>

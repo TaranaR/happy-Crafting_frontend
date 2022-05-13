@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@mui/material/Avatar";
 import { Button, Container, Divider, Grid, TextField } from "@mui/material";
 import { storage } from "../../../constants/firebase";
-
+import { useTheme } from "@mui/material/styles";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,9 +17,17 @@ import {
 import { SELLER_UPDATE_PROFILE_RESET } from "../../../constants/sellerConstants";
 // import firebase from "firebase/compat/app";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "13%",
+    [theme.breakpoints.down("md")]: {
+      marginTop: "10%",
+      textAlign: "left",
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "10%",
+      textAlign: "center",
+    },
   },
   deactivateBtn: {
     "&.MuiButton-root": {
@@ -36,6 +44,7 @@ const useStyles = makeStyles(() => ({
 export default function Setting(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const [selectedFile, setSelectedFile] = useState("");
   const [snackOpen, setSnackOpen] = useState(false);
@@ -144,13 +153,13 @@ export default function Setting(props) {
             Setting
           </Grid>
           <Grid item xs={12}>
-            <Divider style={{ width: "80%" }} />
+            <Divider />
           </Grid>
           <Grid container style={{ margin: "20px", textAlign: "center" }}>
-            <Grid item xs={3} style={{ padding: "15px" }}>
+            <Grid item xs={12} lg={3} md={3} style={{ padding: "15px" }}>
               Shop Name
             </Grid>
-            <Grid item xs={9} style={{ textAlign: "left" }}>
+            <Grid item xs={12} lg={9} md={9} style={{ textAlign: "left" }}>
               <TextField
                 size="small"
                 style={{ width: "50vh" }}
@@ -160,10 +169,10 @@ export default function Setting(props) {
                 }}
               />
             </Grid>
-            <Grid item xs={3} style={{ padding: "15px" }}>
+            <Grid item xs={12} lg={3} md={3} style={{ padding: "15px" }}>
               Shop Logo
             </Grid>
-            <Grid item xs={1}>
+            <Grid item xs={1} lg={1} md={1}>
               <Avatar
                 src={props.seller.shop_logo}
                 style={{
@@ -178,7 +187,9 @@ export default function Setting(props) {
             </Grid>
             <Grid
               item
-              xs={8}
+              xs={12}
+              lg={8}
+              md={8}
               style={{
                 textAlign: "left",
               }}
@@ -211,10 +222,22 @@ export default function Setting(props) {
                 Upload
               </Button>
             </Grid>
-            <Grid item xs={3} style={{ padding: "15px", marginTop: "12px" }}>
+            <Grid
+              item
+              xs={12}
+              lg={3}
+              md={3}
+              style={{ padding: "15px", marginTop: "12px" }}
+            >
               Shop Description
             </Grid>
-            <Grid item xs={9} style={{ textAlign: "left", marginTop: "12px" }}>
+            <Grid
+              item
+              xs={12}
+              lg={9}
+              md={9}
+              style={{ textAlign: "left", marginTop: "12px" }}
+            >
               <TextField
                 size="small"
                 multiline
@@ -226,10 +249,22 @@ export default function Setting(props) {
                 }}
               />
             </Grid>
-            <Grid item xs={3} style={{ padding: "15px", marginTop: "10px" }}>
+            <Grid
+              item
+              xs={12}
+              lg={3}
+              md={3}
+              style={{ padding: "15px", marginTop: "10px" }}
+            >
               Shop Location
             </Grid>
-            <Grid item xs={9} style={{ textAlign: "left", marginTop: "10px" }}>
+            <Grid
+              item
+              xs={12}
+              lg={9}
+              md={9}
+              style={{ textAlign: "left", marginTop: "10px" }}
+            >
               <TextField
                 size="small"
                 style={{ width: "50vh" }}
@@ -246,7 +281,8 @@ export default function Setting(props) {
                 padding: "15px",
                 marginTop: "4%",
                 textAlign: "left",
-                marginLeft: "30%",
+                textAlign: "center",
+                //marginLeft: "30%",
               }}
             >
               <Button
@@ -255,7 +291,7 @@ export default function Setting(props) {
                 style={{
                   backgroundColor: "#745D3E",
                   color: "#ffffff",
-                  width: "150px",
+                  width: "180px",
                 }}
                 onClick={submitHandler}
               >
@@ -285,14 +321,17 @@ export default function Setting(props) {
             Deactivate Shop
           </Grid>
           <Grid item xs={12}>
-            <Divider style={{ width: "80%" }} />
+            <Divider />
           </Grid>
 
-          <Grid container style={{ margin: "20px", textAlign: "center" }}>
-            <Grid style={{ textAlign: "left" }}>
-              <Button className={classes.deactivateBtn}>
-                Deactivate Account
-              </Button>
+          <Grid
+            container
+            style={{
+              margin: "20px",
+            }}
+          >
+            <Grid xs={12}>
+              <Button className={classes.deactivateBtn}>Deactivate Shop</Button>
             </Grid>
           </Grid>
         </Grid>

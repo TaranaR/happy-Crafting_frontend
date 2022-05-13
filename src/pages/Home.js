@@ -7,6 +7,7 @@ import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import { Container } from "@material-ui/core";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import startImage from "../Images/mainPage1.jpeg";
 import pillow from "/home/dev/Documents/Tarana/Happy-Crafting/happy_crafting_frontend/src/Images/pillow.jpeg";
@@ -26,6 +27,13 @@ import { Button } from "@mui/material";
 import ProductByCategory from "../components/ProductsByCategory";
 import { getMainCategory } from "../redux/actions/sellerAction";
 import { GET_RANDOM_PRODUCT_BY_CATEGORY_RESET } from "../constants/userConstants";
+import { red, green, blue } from "@mui/material/colors";
+
+const TextSize = styled("div")(({ theme }) => ({
+  [theme.breakpoints.down("md")]: {
+    fontSize: 10,
+  },
+}));
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
     width: "90%",
     marginLeft: "5%",
     marginRight: "5%",
-    //backgroundColor: "#C4DDFF",
     textAlign: "center",
   },
 
@@ -51,12 +58,12 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: `url(${startImage})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    height: "76vh",
+    height: "70%",
     width: "90%",
     marginTop: "2%",
     marginLeft: "5%",
     marginRight: "5%",
-    padding: "5rem",
+    padding: "5%",
   },
   textWrapper: {
     textAlign: "center",
@@ -83,10 +90,14 @@ const images = [
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: "relative",
-  margin: "15px",
+  margin: "10px",
   height: 200,
+  [theme.breakpoints.down("md")]: {
+    width: "100% !important",
+    height: 100,
+  },
   [theme.breakpoints.down("sm")]: {
-    width: "100% !important", // Overrides inline-style
+    width: "100% !important",
     height: 100,
   },
   "&:hover, &.Mui-focusVisible": {
@@ -211,18 +222,21 @@ const Home = (props) => {
       "%)"
     );
   }
+
   // const getProductByCategory = (cat) => {
   //   dispatch(getRandomProductByCategory(cat));
   // };
 
   return (
     <Fragment>
-      <div className={classes.startImg} style={{ color: "#000000" }}>
+      {/* <div className={classes.startImg} style={{ color: "#000000" }}> */}
+      <Box className={classes.startImg}>
         <Container className={classes.textWrapper}>
-          <h1>Designed by artists, made by us, just for you.</h1>
-          <h1>~~~~~~~~~~~~~~~</h1>
-          <h1>Featured Products</h1>
-
+          <TextSize>
+            <h1>Designed by artists, made by us, just for you.</h1>
+            <h1>~~~~~~~~~~~</h1>
+            <h1>Featured Products</h1>
+          </TextSize>
           <Box
             sx={{
               display: "flex",
@@ -261,14 +275,19 @@ const Home = (props) => {
             ))}
           </Box>
         </Container>
+      </Box>
 
-        {/* <img src={startImage} className={classes.startImg} /> */}
-      </div>
-      <Box className={classes.root} style={{ backgroundColor: "#C4DDFF" }}>
+      {/* <img src={startImage} className={classes.startImg} /> */}
+      {/* </div> */}
+      <Box
+        className={classes.root}
+        style={{ backgroundColor: "#C4DDFF", textAlign: "center" }}
+      >
         <Grid container spacing={2}>
           <Grid item xs={12} style={{ fontSize: 30 }}>
             Get Started
           </Grid>
+
           <Grid item xs={12} style={{ fontSize: 20 }}>
             Choose from millions of different designs and pair your favorites
             with over 90 different products.
@@ -276,12 +295,12 @@ const Home = (props) => {
 
           <Grid
             container
-            justifyItems="center"
             spacing={2}
             style={{
               width: "80%",
               marginLeft: "15%",
               marginRight: "10%",
+              textAlign: "center",
             }}
           >
             {randProd &&
@@ -291,10 +310,14 @@ const Home = (props) => {
                     container
                     key={item.id}
                     item
-                    xs={3}
+                    xs={12}
+                    md={3}
+                    lg={3}
                     style={{
                       padding: 0,
                       marginTop: "8%",
+                      display: "flex",
+                      justifyContent: "space-around",
                     }}
                   >
                     <NavLink to={`/products/${item.id}`}>
@@ -365,10 +388,9 @@ const Home = (props) => {
                   .slice(0, 4)
                   .map((item) => {
                     return (
-                      <Grid item xs={6} key={item.id}>
+                      <Grid item xs={12} md={6} lg={6} key={item.id}>
                         <NavLink
                           to={`/${item.sub_cat_name}`}
-                          //state={{ cat: `${item.sub_cat_name}` }}
                           className={classes.typeLink}
                         >
                           {item.sub_cat_name}
@@ -381,7 +403,7 @@ const Home = (props) => {
                   .slice(4)
                   .map((item) => {
                     return (
-                      <Grid item xs={6} key={item.id}>
+                      <Grid item xs={12} md={6} lg={6} key={item.id}>
                         <NavLink
                           to={`/${item.sub_cat_name}`}
                           className={classes.typeLink}
@@ -402,6 +424,7 @@ const Home = (props) => {
             <Box
               className={classes.root}
               style={{ backgroundColor: `${getColor()}` }}
+              key={item.id}
             >
               <Grid container spacing={2}>
                 <Grid item xs={12} style={{ fontSize: 30, marginTop: "3%" }}>

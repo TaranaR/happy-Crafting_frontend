@@ -75,7 +75,7 @@ export default function ProductByCategory(props) {
         spacing={2}
         style={{
           width: "80%",
-          marginLeft: "12%",
+          marginLeft: "10%",
           marginRight: "10%",
           marginTop: 0,
         }}
@@ -89,7 +89,9 @@ export default function ProductByCategory(props) {
                   <Grid
                     key={i.id}
                     item
-                    xs={4}
+                    xs={12}
+                    md={4}
+                    lg={4}
                     style={{
                       marginTop: "1%",
                       //padding: "10px",
@@ -105,6 +107,8 @@ export default function ProductByCategory(props) {
                           style={{
                             height: "20vh",
                             width: "20vh",
+                            // height: "20vh",
+                            // width: "55%",
                             // border: "5px solid #534340",
                             borderRadius: 10,
                           }}

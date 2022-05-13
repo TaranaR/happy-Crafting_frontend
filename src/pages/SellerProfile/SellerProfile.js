@@ -35,6 +35,10 @@ const useStyles = makeStyles(() => ({
     backgroundColor: "#F0E9E1",
     width: "30vh",
   },
+  menuBtn: {
+    textAlign: "center",
+    marginTop: "20px",
+  },
 }));
 
 export default function SellerProfile() {
@@ -68,7 +72,7 @@ export default function SellerProfile() {
     <Fragment>
       <Box className={classes.root}>
         <Grid container>
-          <Grid item xs={3} style={{ height: "100vh" }}>
+          <Grid item xs={12} lg={3} md={3}>
             <Box
               style={{
                 justifyContent: "center",
@@ -90,12 +94,7 @@ export default function SellerProfile() {
             <Box style={{ justifyContent: "center", display: "flex" }}>
               <Divider style={{ width: "30vh", marginTop: "10px" }} />
             </Box>
-            <Box
-              style={{
-                textAlign: "center",
-                marginTop: "50px",
-              }}
-            >
+            <Box className={classes.menuBtn}>
               <Button
                 className={classes.button}
                 variant="contained"
@@ -107,12 +106,7 @@ export default function SellerProfile() {
                 MY ACCOUNT
               </Button>
             </Box>
-            <Box
-              style={{
-                textAlign: "center",
-                marginTop: "20px",
-              }}
-            >
+            <Box className={classes.menuBtn}>
               <Button
                 className={classes.button}
                 variant="contained"
@@ -124,12 +118,7 @@ export default function SellerProfile() {
                 SHOP PROFILE
               </Button>
             </Box>
-            <Box
-              style={{
-                textAlign: "center",
-                marginTop: "20px",
-              }}
-            >
+            <Box className={classes.menuBtn}>
               <Button
                 className={classes.button}
                 variant="contained"
@@ -140,12 +129,7 @@ export default function SellerProfile() {
                 Manage Products
               </Button>
             </Box>
-            <Box
-              style={{
-                textAlign: "center",
-                marginTop: "20px",
-              }}
-            >
+            <Box className={classes.menuBtn}>
               <Button
                 className={classes.button}
                 variant="contained"
@@ -158,7 +142,7 @@ export default function SellerProfile() {
             </Box>
           </Grid>
 
-          <Grid item xs={9} style={{ height: "100vh" }}>
+          <Grid item xs={12} lg={9} md={9} style={{ height: "100vh" }}>
             {content}
           </Grid>
         </Grid>
