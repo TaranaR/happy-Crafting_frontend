@@ -1,8 +1,9 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch, createDispatchHook } from "react-redux";
 import { Container, Grid, Button } from "@material-ui/core";
 import Checkbox from "@mui/material/Checkbox";
 import { TextField } from "@mui/material";
+import { Editor } from "@tinymce/tinymce-react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -17,9 +18,12 @@ import {
   getSubCategory,
   createSellerProduct,
 } from "../../../redux/actions/sellerAction";
+import { getProductDetails } from "../../../redux/actions/userAction";
+import { GET_PRODUCT_DETAILS_RESET } from "../../../constants/userConstants";
 
 export default function UploadProductsForm(props) {
   const dispatch = useDispatch();
+  const editorRef = useRef(null);
 
   const [selectedFile, setSelectedFile] = useState("");
   const sellerGetMainCategory = useSelector(
@@ -53,6 +57,11 @@ export default function UploadProductsForm(props) {
   const [prodSubCat, setProdSubCat] = useState("");
   //const [prodType, setProdType] = useState("");
 
+  const usergetProductDetails = useSelector(
+    (state) => state.userGetProductDetails
+  );
+  const { prodInfo: prodDetail } = usergetProductDetails;
+
   const [prodDescription, setProdDescription] = useState("");
   const [prodImage, setProdImage] = useState("");
   const [prodSize, setProdSize] = useState("");
@@ -60,19 +69,8 @@ export default function UploadProductsForm(props) {
   const [isCustomizable, setIsCustomizable] = useState(false);
   let main = [];
   let sub = [];
-  //let type = [];
+
   let fileExtension = "";
-
-  // const checkBoxStyles = (theme) => ({
-  //   root: {
-  //     "&$checked": {
-  //       color: "#745D3E",
-  //     },
-  //   },
-  //   checked: {},
-  // });
-
-  // const CustomCheckbox = withStyles(checkBoxStyles)(Checkbox);
 
   if (error) {
     console.log(error);
@@ -84,9 +82,32 @@ export default function UploadProductsForm(props) {
     // dispatch(getTypeOfProduct());
   }, []);
 
-  // if (prodTypeInfo) {
-  //   type = Object.values(prodTypeInfo);
-  // }
+  useEffect(() => {
+    dispatch({ type: GET_PRODUCT_DETAILS_RESET });
+    if (props.prodId) {
+      dispatch(getProductDetails(props.prodId));
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   dispatch({ type: GET_PRODUCT_DETAILS_RESET });
+  // }, [props.prodId]);
+
+  useEffect(() => {
+    if (prodDetail) {
+      console.log(prodDetail);
+      setProdName(prodDetail["name"]);
+      setProdPrice(prodDetail["price"]);
+      setProdSubCat(prodDetail["sub_cat_id"]);
+      setProdDescription(prodDetail["description"]);
+      setProdImage(prodDetail["image"]);
+      setProdSize(prodDetail["size"]);
+      setProdColor(prodDetail["color"]);
+      setIsCustomizable(prodDetail["is_customizable"]);
+    }
+  }, [prodDetail]);
+
+  //console.log(prodDetail);
 
   if (mainCatInfo) {
     main = Object.values(mainCatInfo);
@@ -133,6 +154,8 @@ export default function UploadProductsForm(props) {
     }
   };
 
+  //console.log(props.prodId);
+
   if (selectedFile) {
     let t = selectedFile.name.split(".");
     fileExtension = t[t.length - 1];
@@ -165,6 +188,7 @@ export default function UploadProductsForm(props) {
     };
 
     dispatch(createSellerProduct(product));
+    props.onClose();
 
     if (!loading) {
       setProdName("");
@@ -291,7 +315,7 @@ export default function UploadProductsForm(props) {
             Description
           </Grid>
           <Grid item xs={9}>
-            <TextField
+            {/* <TextField
               fullWidth
               size="small"
               multiline
@@ -299,6 +323,44 @@ export default function UploadProductsForm(props) {
               value={prodDescription}
               onChange={(e) => {
                 setProdDescription(e.target.value);
+              }}
+            /> */}
+            <Editor
+              onInit={(evt, editor) => (editorRef.current = editor)}
+              value={prodDescription}
+              onChange={() => {
+                //console.log(editorRef.current.getContent());
+                setProdDescription(editorRef.current.getContent());
+              }}
+              init={{
+                height: 200,
+                menubar: false,
+                placeholder: "Your Description goes here.",
+                plugins: [
+                  "advlist",
+                  "autolink",
+                  "lists",
+                  "link",
+                  "image",
+                  "charmap",
+                  "anchor",
+                  "searchreplace",
+                  "visualblocks",
+                  "code",
+                  "fullscreen",
+                  "insertdatetime",
+                  "media",
+                  "table",
+                  "preview",
+                  "help",
+                  "wordcount",
+                ],
+                toolbar:
+                  "undo redo | blocks | " +
+                  "bold italic forecolor | alignleft aligncenter " +
+                  "alignright alignjustify | bullist numlist outdent indent | link image " +
+                  "removeformat",
+                content_style: "body { font-family:roboto; font-size:14px }",
               }}
             />
           </Grid>

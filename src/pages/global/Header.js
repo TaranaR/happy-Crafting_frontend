@@ -276,17 +276,16 @@ function Header(props) {
                       <Divider style={{ backgroundColor: "white" }} />
                     </Grid>
                     <Grid item xs={12} style={{ marginTop: 30 }}>
-                      {sections.map((section) => (
-                        <>
+                      {sections.map((section, index) => (
+                        <div key={index}>
                           <NavLink
-                            key={section.title}
                             to={section.url}
                             className={classes.drawerLink}
                           >
                             {section.title}
                           </NavLink>
                           <br />
-                        </>
+                        </div>
                       ))}
                       <Divider style={{ backgroundColor: "white" }} />
                     </Grid>
@@ -414,10 +413,10 @@ function Header(props) {
               )}
             </Toolbar>
             <Toolbar className={classes.linkWrapper}>
-              {sections.map((section) => (
+              {sections.map((section, index) => (
                 <NavLink
                   className={classes.navlink}
-                  key={section.title}
+                  key={index}
                   to={section.url}
                   sx={{ p: 1, flexShrink: 0 }}
                 >

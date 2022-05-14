@@ -130,20 +130,16 @@ export default function SignUp(props) {
               <LoadingButton
                 loading
                 variant="outlined"
+                loadingPosition="start"
                 type="submit"
                 fullWidth
-                loadingIndicator="Loading...."
-                // sx={{
-                //   mt: 3,
-                //   mb: 2,
-                //   background: "#000000",
-                //   color: "#ffffff",
-                //   fontWeight: "bold",
-                //   "&:hover": {
-                //     backgroundColor: "#fff",
-                //     color: "#000000",
-                //   },
-                // }}
+                style={{
+                  mt: 3,
+                  mb: 2,
+                  backgroundColor: "#000000",
+                  color: "#ffffff",
+                  fontWeight: "bold",
+                }}
               >
                 Sign Up
               </LoadingButton>

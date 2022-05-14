@@ -1,9 +1,11 @@
 import { Fragment, useEffect, useState, useCallback } from "react";
-import { Button, Grid, Box } from "@mui/material";
+import { Button, Grid, Box, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { styled } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   updateSellerProduct,
   getProductsBySeller,
@@ -84,14 +86,20 @@ const AddDeleteBtn = styled(ButtonBase)(({ theme }) => ({
     width: "170px",
     height: "30px",
   },
+  editBtn: {
+    "&:hover ": {
+      color: "primary",
+    },
+  },
 }));
 
 export default function ManageProducts() {
   const classes = useStyles();
+
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [pageSize, setPageSize] = useState(5);
-  const [data, setData] = useState("");
+
   const [prodId, setProdId] = useState("");
 
   const productBySeller = useSelector((state) => state.sellerProductBySeller);
@@ -100,22 +108,30 @@ export default function ManageProducts() {
   const { success } = updatedProduct;
 
   const handleOpen = () => {
-    dispatch({ type: CREATE_PRODUCT_RESET });
+    setProdId(null);
+    console.log("----", prodId);
     setOpen(true);
+    dispatch({ type: CREATE_PRODUCT_RESET });
   };
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setProdId(null);
+    console.log(prodId);
+  };
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getProductsBySeller());
-    //setData(prodInfo);
+  }, [open]);
+
+  useEffect(() => {
     if (!prodInfo || success) {
       dispatch({ type: SELLER_PRODUCT_UPDATE_RESET });
       dispatch(getProductsBySeller());
-    } else {
-      setData(prodInfo);
     }
-  }, [dispatch, prodInfo, success]);
+  }, [dispatch, success, prodInfo]);
+
+  prodId && console.log("prodid", prodId);
 
   const updateProductHandler = (row) => {
     const dataField = `${row.field}`;
@@ -133,12 +149,12 @@ export default function ManageProducts() {
     // console.log(row.field, row.props.value);
   };
 
-  const deleteProductHandler = () => {
-    console.log(prodId);
-
-    dispatch(deleteSellerProduct(prodId));
+  const deleteProductHandler = (id) => {
+    console.log("in", id);
+    dispatch(deleteSellerProduct(id));
     dispatch({ type: SELLER_PRODUCT_UPDATE_RESET });
     dispatch(getProductsBySeller());
+    setProdId(null);
   };
 
   return (
@@ -146,12 +162,26 @@ export default function ManageProducts() {
       {open && (
         <Modal open={open} onClose={handleClose}>
           <Box className={classes.modelWrapper}>
-            <UploadProductsForm classes={classes} />
+            {prodId && (
+              <UploadProductsForm
+                classes={classes}
+                onClose={handleClose}
+                prodId={prodId}
+              />
+            )}
+            {!prodId && (
+              <UploadProductsForm classes={classes} onClose={handleClose} />
+            )}
           </Box>
         </Modal>
       )}
 
       <Box className={classes.root}>
+        {/* {prodInfo && (
+          <div
+            dangerouslySetInnerHTML={{ __html: prodInfo[0]["description"] }}
+          ></div>
+        )} */}
         <Grid container>
           <Grid item xs={12} style={{ fontSize: 20 }}>
             Manage Products
@@ -177,15 +207,17 @@ export default function ManageProducts() {
                 <AddIcon style={{ marginRight: "5px" }} />
                 Add Product
               </AddDeleteBtn>
-              <AddDeleteBtn
-                style={{
-                  border: "2px solid #BA2C3C",
-                  color: "#BA2C3C",
-                }}
-                onClick={deleteProductHandler}
-              >
-                Delete
-              </AddDeleteBtn>
+              {/* {prodId && (
+                <AddDeleteBtn
+                  style={{
+                    border: "2px solid #BA2C3C",
+                    color: "#BA2C3C",
+                  }}
+                  onClick={deleteProductHandler}
+                >
+                  Update or Delete
+                </AddDeleteBtn>
+              )} */}
             </Grid>
 
             <Grid item xs={12} style={{ marginTop: "20px" }}>
@@ -195,15 +227,15 @@ export default function ManageProducts() {
                   onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                   rowsPerPageOptions={[5, 10, 20]}
                   pagination
-                  checkboxSelection
+                  //checkboxSelection
                   disableColumnSelector
                   disableColumnFilter
                   disableColumnMenu
                   rowHeight={80}
-                  onCellClick={(row) => {
-                    setProdId(row.id);
-                  }}
-                  onEditCellPropsChange={updateProductHandler}
+                  // onCellClick={(row) => {
+                  //   setProdId(row.id);
+                  // }}
+                  //  onEditCellPropsChange={updateProductHandler}
                   columns={[
                     {
                       field: "image",
@@ -231,13 +263,25 @@ export default function ManageProducts() {
                       width: 80,
                       editable: true,
                     },
-                    {
-                      field: "description",
-                      sortable: false,
-                      headerName: "DESCRIPTION",
-                      width: 500,
-                      editable: true,
-                    },
+                    // {
+                    //   field: "description",
+                    //   sortable: false,
+                    //   headerName: "DESCRIPTION",
+                    //   width: 1000,
+                    //   align: "left",
+                    //   editable: true,
+                    //   // renderCell: (params) => (
+                    //   //   <div dangerouslySetInnerHTML={{ __html: params }}></div>
+                    //   // ),
+                    //   renderCell: (params) => {
+                    //     console.log(params.value);
+                    //     return (
+                    //       <span
+                    //         dangerouslySetInnerHTML={{ __html: params.value }}
+                    //       ></span>
+                    //     );
+                    //   },
+                    // },
                     {
                       field: "size",
                       sortable: false,
@@ -250,7 +294,7 @@ export default function ManageProducts() {
                       field: "color",
                       sortable: false,
                       headerName: "COLOR",
-                      width: 150,
+                      width: 100,
                       editable: true,
                       renderCell: (params) =>
                         params.value ? params.value : "---",
@@ -263,8 +307,62 @@ export default function ManageProducts() {
                       editable: true,
                       renderCell: (params) => (params.value ? "Yes" : "No"),
                     },
+                    {
+                      field: "action",
+                      headerName: "Action",
+                      width: 250,
+
+                      // Important: passing id from customers state so I can delete or edit each user
+                      renderCell: (id) => (
+                        <>
+                          {/* <Button
+                            style={{
+                              backgroundColor: "#ffcc00",
+                              marginRight: 40,
+                              padding: "3px 35px",
+                            }}
+                            onClick={() => {
+                              setProdId(id.id);
+                              setOpen(true);
+                            }}
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                          >
+                            Edit
+                          </Button> */}
+                          <IconButton
+                            sx={{ "&:hover": { color: "green" } }}
+                            onClick={() => {
+                              setProdId(id.id);
+                              setOpen(true);
+                            }}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => {
+                              deleteProductHandler(id.id);
+                            }}
+                          >
+                            <DeleteIcon sx={{ "&:hover": { color: "red" } }} />
+                          </IconButton>
+                          {/* <Button
+                            style={{
+                              backgroundColor: "#e8605d",
+                              padding: "3px 35px",
+                            }}
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                          >
+                            Delete
+                          </Button> */}
+                        </>
+                      ),
+                    },
                   ]}
-                  rows={data ? data : []}
+                  rows={prodInfo ? prodInfo : []}
                   // getRowId={(row) => row.internalId}
                 />
               </Box>

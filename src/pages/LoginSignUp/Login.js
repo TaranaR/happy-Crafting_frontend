@@ -139,12 +139,13 @@ export default function Login(props) {
               <LoadingButton
                 loading
                 variant="outlined"
+                loadingPosition="start"
                 type="submit"
                 fullWidth
-                sx={{
+                style={{
                   mt: 3,
                   mb: 2,
-                  background: "#00000",
+                  backgroundColor: "#000000",
                   color: "#ffffff",
                   fontWeight: "bold",
                 }}

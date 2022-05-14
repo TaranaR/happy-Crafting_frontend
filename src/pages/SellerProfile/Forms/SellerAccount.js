@@ -297,6 +297,7 @@ export default function SellerAccount() {
           </Grid>
           <Grid container style={{ margin: "20px", textAlign: "center" }}>
             <Grid
+              item
               xs={12}
               sx={{
                 textAlign: "left",
@@ -322,6 +323,7 @@ export default function SellerAccount() {
           </Grid>
           <Grid container style={{ margin: "20px", textAlign: "center" }}>
             <Grid
+              item
               xs={12}
               sx={{
                 textAlign: "left",

@@ -60,6 +60,7 @@ import {
   REMOVE_PRODUCT_FROM_CART_REQUEST,
   REMOVE_PRODUCT_FROM_CART_SUCCESS,
   REMOVE_PRODUCT_FROM_CART_FAIL,
+  GET_PRODUCT_DETAILS_RESET,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -204,6 +205,10 @@ export const userGetProductDetailsReducer = (state = {}, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    case GET_PRODUCT_DETAILS_RESET:
+      return {
+        prodInfo: {},
       };
     default:
       return state;

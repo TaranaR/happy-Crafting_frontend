@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
 import {
   getSubCategoryByMainCategoryName,
   getRandomProductByCategory,
@@ -13,7 +14,7 @@ import {
   BsFillArrowRightCircleFill,
 } from "react-icons/bs";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
   },
@@ -45,12 +46,22 @@ const useStyles = makeStyles(() => ({
   mainContainer: {
     marginTop: "5%",
     height: "60%",
+    [theme.breakpoints.down("sm")]: {
+      height: "70%",
+    },
+    [theme.breakpoints.down("md")]: {
+      height: "60%",
+    },
+    [theme.breakpoints.down("lg")]: {
+      height: "70%",
+    },
     backgroundImage: `url(${indexBg})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
   },
   slider: {
     position: "relative",
+    width: "100%",
     height: "100%",
     display: "flex",
     justifyContent: "center",
@@ -66,8 +77,12 @@ const useStyles = makeStyles(() => ({
     transform: "scale(1.08)",
   },
   image: {
-    width: "100%",
-    height: "100%",
+    width: "500px",
+    height: "300px",
+    [theme.breakpoints.down("sm")]: {
+      width: "300px",
+      height: "200px",
+    },
   },
   rightArrow: {
     position: "absolute",
@@ -91,10 +106,26 @@ const useStyles = makeStyles(() => ({
     cursor: "pointer",
     userSelect: "none",
   },
+  linkWarpper: {
+    textAlign: "center",
+    fontSize: 25,
+    padding: "10px",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: 18,
+      margin: 0,
+      padding: 5,
+    },
+    [theme.breakpoints.down("md")]: {
+      fontSize: 18,
+      margin: 0,
+      padding: 5,
+    },
+  },
 }));
 
 export default function ProductCategoryPage(props) {
   const classes = useStyles();
+  const theme = useTheme();
   const dispatch = useDispatch();
   const [currentImg, setCurrentImg] = useState(0);
   const userGetSubCatgoryByMainCategoryName = useSelector(
@@ -266,56 +297,57 @@ export default function ProductCategoryPage(props) {
     <Fragment>
       <Box className={classes.root}>
         <Box className={classes.mainContainer}>
-          <Container
-            style={{
-              marginTop: "5%",
-              height: "50vh",
-            }}
-          >
-            <Grid container>
-              <Grid
-                item
-                xs={12}
-                style={{ fontSize: 35, textAlign: "center", marginTop: "4%" }}
-              >
-                {props.cat}
-              </Grid>
-              <Grid item xs={12} style={{ fontSize: 35, textAlign: "center" }}>
-                ~~~~~~~~~~
-              </Grid>
-              <Grid container style={{ margin: "4%" }}>
-                {subCatInfo &&
-                  subCatInfo.map((item) => {
-                    return (
-                      <Grid
-                        item
-                        key={item.id}
-                        xs={3}
-                        style={{
-                          textAlign: "center",
-                          fontSize: 25,
-                          padding: "10px",
-                        }}
-                      >
-                        <NavLink
-                          to={`/${item.sub_cat_name}`}
-                          //state={{ cat: `${props.cat}` }}
-                          className={classes.typeLink}
-                        >
-                          {item.sub_cat_name}
-                        </NavLink>
-                      </Grid>
-                    );
-                  })}
-              </Grid>
+          {/* <Container> */}
+          <Grid container>
+            <Grid
+              item
+              xs={12}
+              style={{ fontSize: 35, textAlign: "center", marginTop: "4%" }}
+            >
+              {props.cat}
             </Grid>
-          </Container>
+            <Grid item xs={12} style={{ fontSize: 35, textAlign: "center" }}>
+              ~~~~~~~~~~
+            </Grid>
+            <Grid container style={{ margin: "4%" }}>
+              {subCatInfo &&
+                subCatInfo.map((item) => {
+                  return (
+                    <Grid
+                      item
+                      key={item.id}
+                      xs={6}
+                      lg={3}
+                      md={3}
+                      // style={{
+                      //   textAlign: "center",
+                      //   fontSize: 25,
+                      //   padding: "10px",
+                      //   border: "1px solid black",
+                      // }}
+                      className={classes.linkWarpper}
+                    >
+                      <NavLink
+                        to={`/${item.sub_cat_name}`}
+                        //state={{ cat: `${props.cat}` }}
+                        className={classes.typeLink}
+                      >
+                        {item.sub_cat_name}
+                      </NavLink>
+                    </Grid>
+                  );
+                })}
+            </Grid>
+          </Grid>
+          {/* </Container> */}
         </Box>
         <Container style={{ marginTop: "10%" }}>
           <Grid container spacing={3}>
             <Grid
               item
-              xs={6}
+              xs={12}
+              lg={6}
+              md={6}
               style={{
                 textAlign: "center",
                 // marginTop: "5%",
@@ -332,7 +364,7 @@ export default function ProductCategoryPage(props) {
                 ~~~~~~~~~~~~~~~~~~~~~~~~
               </Grid>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} lg={6} md={6}>
               <Box className={classes.slider}>
                 <BsFillArrowLeftCircleFill
                   className={classes.leftArrow}

@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
     // backgroundSize: "cover",
     backgroundColor: "#F8F9FB",
     fontFamily: ["El Messiri", "sans-serif"].join(","),
+    //fontFamily: "roboto",
   },
 }));
 
@@ -139,11 +140,11 @@ function App() {
           }
         />
 
-        {sections.map((item) => {
+        {sections.map((item, index) => {
           return (
             <Route
               path={`/${item.url}`}
-              key={item.title}
+              key={index}
               element={
                 <>
                   <Header title="Happy Crafting" sections={sections} />
@@ -155,21 +156,20 @@ function App() {
           );
         })}
 
-        {sections.map((item) => {
-          return (
-            <Route
-              path={`/:subname`}
-              key={item.title}
-              element={
-                <>
-                  <Header title="Happy Crafting" sections={sections} />
-                  <AllProductsBySubCategory />
-                  <Footer />
-                </>
-              }
-            />
-          );
-        })}
+        {/* {sections.map((item, index) => {
+          return ( */}
+        <Route
+          path={`/:subname`}
+          element={
+            <>
+              <Header title="Happy Crafting" sections={sections} />
+              <AllProductsBySubCategory />
+              <Footer />
+            </>
+          }
+        />
+        {/* );
+        })} */}
 
         <Route
           path="/manageseller"

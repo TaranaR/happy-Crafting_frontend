@@ -203,11 +203,22 @@ export default function ProductDetails() {
             >
               ₹{prodInfo && prodInfo["price"]}
             </Grid>
-            <Grid item xs={12} style={{ marginTop: "10%", fontSize: 20 }}>
+
+            <Grid item xs={12} style={{ marginTop: "7%", fontSize: 20 }}>
+              Size
+            </Grid>
+            <Grid item xs={12} style={{ marginTop: "2%", fontSize: 15 }}>
+              {prodInfo && prodInfo["size"]}
+            </Grid>
+            <Grid item xs={12} style={{ marginTop: "7%", fontSize: 20 }}>
               About Product
             </Grid>
             <Grid item xs={12} style={{ marginTop: "2%", fontSize: 15 }}>
-              {prodInfo && prodInfo["description"]}
+              {prodInfo && (
+                <div
+                  dangerouslySetInnerHTML={{ __html: prodInfo["description"] }}
+                ></div>
+              )}
             </Grid>
             <Grid item xs={12} style={{ marginTop: "10%", fontSize: 20 }}>
               Quantity
