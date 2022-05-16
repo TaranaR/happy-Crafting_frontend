@@ -17,9 +17,13 @@ import {
   getMainCategory,
   getSubCategory,
   createSellerProduct,
+  updateSellerProduct,
 } from "../../../redux/actions/sellerAction";
 import { getProductDetails } from "../../../redux/actions/userAction";
 import { GET_PRODUCT_DETAILS_RESET } from "../../../constants/userConstants";
+import { CREATE_PRODUCT_RESET } from "../../../constants/sellerConstants";
+import { ContactMail } from "@mui/icons-material";
+import { HexColorPicker, RgbaColorPicker } from "react-colorful";
 
 export default function UploadProductsForm(props) {
   const dispatch = useDispatch();
@@ -48,11 +52,10 @@ export default function UploadProductsForm(props) {
   const { loading, prodInfo, error } = sellerCreateProdInfo;
 
   const username = user.username;
-
+  // const [color, setColor] = useState("");
   //Create Product
   const [prodName, setProdName] = useState("");
-  const [prodPrice, setProdPrice] = useState(0);
-
+  const [prodPrice, setProdPrice] = useState("");
   const [prodMainCat, setProdMainCat] = useState("");
   const [prodSubCat, setProdSubCat] = useState("");
   //const [prodType, setProdType] = useState("");
@@ -95,7 +98,6 @@ export default function UploadProductsForm(props) {
 
   useEffect(() => {
     if (prodDetail) {
-      console.log(prodDetail);
       setProdName(prodDetail["name"]);
       setProdPrice(prodDetail["price"]);
       setProdSubCat(prodDetail["sub_cat_id"]);
@@ -123,9 +125,10 @@ export default function UploadProductsForm(props) {
     }
   };
 
+  console.log(selectedFile.length);
+
   const uploadShopLogohandler = () => {
     //Image Upload
-    console.log(selectedFile);
 
     if (
       prodName === "" ||
@@ -133,10 +136,12 @@ export default function UploadProductsForm(props) {
       prodDescription === "" ||
       selectedFile === ""
     ) {
-      //console.log("hello");
+      console.log("hiiiiii");
       return;
     }
-    if (prodInfo) return;
+    //if (prodInfo) return;
+
+    console.log(selectedFile);
 
     const imageRef = ref(
       storage,
@@ -164,43 +169,47 @@ export default function UploadProductsForm(props) {
   const submitHandler = () => {
     //create shop
 
-    if (
-      prodName === "" ||
-      prodPrice === "" ||
-      prodDescription === "" ||
-      prodSize === ""
-    ) {
-      // console.log("hello");
-      return;
+    if (props.prodId) {
+      console.log("Update");
+      const product = {
+        id: prodDetail["id"],
+        sub_cat_id: prodSubCat,
+        name: prodName,
+        price: prodPrice,
+        description: prodDescription,
+        image: prodImage,
+        size: prodSize,
+        color: prodColor,
+        is_customizable: isCustomizable,
+      };
+      dispatch(updateSellerProduct(product));
+    } else {
+      console.log("create");
+      if (
+        prodName === undefined ||
+        prodPrice === undefined ||
+        prodDescription === undefined ||
+        prodSize === undefined
+      ) {
+        console.log("hello");
+        return;
+      } else {
+        console.log(prodPrice);
+        const product = {
+          sub_cat_id: prodSubCat,
+          name: prodName,
+          price: prodPrice,
+          description: prodDescription,
+          image: prodImage,
+          size: prodSize,
+          color: prodColor,
+          is_customizable: isCustomizable,
+        };
+        dispatch(createSellerProduct(product));
+      }
     }
 
-    // console.log(prodImage);
-
-    const product = {
-      sub_cat_id: prodSubCat,
-      name: prodName,
-      price: prodPrice,
-      description: prodDescription,
-      image: prodImage,
-      size: prodSize,
-      color: prodColor,
-      is_customizable: isCustomizable,
-    };
-
-    dispatch(createSellerProduct(product));
     props.onClose();
-
-    if (!loading) {
-      setProdName("");
-      setProdPrice("");
-      setProdMainCat("");
-      setProdSubCat("");
-      setProdDescription("");
-      setProdImage("");
-      setProdSize("");
-      setProdColor("");
-      setIsCustomizable(false);
-    }
   };
 
   return (
@@ -286,51 +295,18 @@ export default function UploadProductsForm(props) {
                   ))}
               </Select>
             )}
-            {/* {prodTypeInfo && (
-              <Select
-                labelId="demo-select-small"
-                id="demo-select-small"
-                value={prodType}
-                onChange={(e) => {
-                  setProdType(e.target.value);
-                }}
-                fullWidth
-                size="small"
-                displayEmpty
-                style={{ marginTop: "10px" }}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {type &&
-                  type.map((item) => (
-                    <MenuItem key={item.id} value={item.id}>
-                      {item.title}
-                    </MenuItem>
-                  ))}
-              </Select>
-            )} */}
           </Grid>
           <Grid item xs={3} style={{ padding: "15px" }}>
             Description
           </Grid>
           <Grid item xs={9}>
-            {/* <TextField
-              fullWidth
-              size="small"
-              multiline
-              maxRows={5}
-              value={prodDescription}
-              onChange={(e) => {
-                setProdDescription(e.target.value);
-              }}
-            /> */}
             <Editor
               onInit={(evt, editor) => (editorRef.current = editor)}
-              value={prodDescription}
+              value={props.prodId && prodDescription}
               onChange={() => {
                 //console.log(editorRef.current.getContent());
                 setProdDescription(editorRef.current.getContent());
+                //setProdDescription(e.target.getContent());
               }}
               init={{
                 height: 200,
@@ -380,6 +356,7 @@ export default function UploadProductsForm(props) {
               Select Image
               <label id="filename" style={{ marginLeft: "10px" }}>
                 {selectedFile["name"]}
+                {/* {selectedFile && selectedFile.length} */}
               </label>
             </label>
             <Button
@@ -415,16 +392,26 @@ export default function UploadProductsForm(props) {
             Color
           </Grid>
           <Grid item xs={9}>
-            <TextField
-              fullWidth
-              size="small"
-              multiline
-              value={prodColor}
-              maxRows={5}
-              onChange={(e) => {
-                setProdColor(e.target.value);
-              }}
+            <HexColorPicker
+              color={prodColor}
+              onChange={setProdColor}
+              style={{ height: 100, width: "100%" }}
             />
+            {/* <RgbaColorPicker
+              color={prodColor}
+              onChange={setProdColor}
+              style={{ height: 100, width: 100 }}
+            /> */}
+            {/* <TextField
+                  fullWidth
+                  size="small"
+                  multiline
+                  value={prodColor}
+                  maxRows={5}
+                  onChange={(e) => {
+                    setProdColor(e.target.value);
+                  }}
+                /> */}
           </Grid>
           <Grid item xs={3} style={{ padding: "15px" }}>
             Is Customizable
@@ -445,7 +432,7 @@ export default function UploadProductsForm(props) {
               }}
             />
           </Grid>
-          <Grid item xs={12} style={{ padding: "15px", marginTop: "1vh" }}>
+          <Grid item xs={12} style={{ padding: "15px" }}>
             {!loading && (
               <Button
                 type="submit"
@@ -479,8 +466,8 @@ export default function UploadProductsForm(props) {
           </Grid>
           <Grid item xs={12}>
             {/* {loading && <CircularProgress style={{ color: "#745D3E" }} />} */}
-            {prodInfo && prodInfo.message}
-            {error && error}
+            {/* {prodInfo && prodInfo.message} */}
+            {/* {error && error} */}
           </Grid>
         </Grid>
       </Container>

@@ -101,6 +101,10 @@ export default function SellerAccount() {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
+    dispatch(getUserProfile());
+  }, []);
+
+  useEffect(() => {
     if (!token.access) {
       navigate("/login");
     } else {

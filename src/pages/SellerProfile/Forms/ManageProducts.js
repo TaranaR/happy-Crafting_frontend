@@ -20,6 +20,7 @@ import {
   CREATE_PRODUCT_RESET,
   SELLER_PRODUCT_UPDATE_RESET,
 } from "../../../constants/sellerConstants";
+import { GET_PRODUCT_DETAILS_RESET } from "../../../constants/userConstants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     transform: "translate(-50%, -50%)",
     borderRadius: 5,
     width: "45%",
-    maxHeight: "95%",
+    maxHeight: "99%",
     //bgcolor: "background.paper",
     backgroundColor: "white",
     boxShadow: 24,
@@ -104,6 +105,8 @@ export default function ManageProducts() {
 
   const productBySeller = useSelector((state) => state.sellerProductBySeller);
   const updatedProduct = useSelector((state) => state.sellerUpdateProduct);
+  const sellerDeleteProduct = useSelector((state) => state.sellerDeleteProduct);
+  const { success: deleteSuccess } = sellerDeleteProduct;
   const { prodInfo } = productBySeller;
   const { success } = updatedProduct;
 
@@ -111,12 +114,12 @@ export default function ManageProducts() {
     setProdId(null);
     console.log("----", prodId);
     setOpen(true);
-    dispatch({ type: CREATE_PRODUCT_RESET });
+    dispatch({ type: GET_PRODUCT_DETAILS_RESET });
   };
   const handleClose = () => {
     setOpen(false);
     setProdId(null);
-    console.log(prodId);
+    dispatch({ type: GET_PRODUCT_DETAILS_RESET });
   };
   const dispatch = useDispatch();
 
@@ -124,12 +127,17 @@ export default function ManageProducts() {
     dispatch(getProductsBySeller());
   }, [open]);
 
+  // useEffect(() => {
+  //   if (!prodInfo || success || deleteSuccess) {
+  //     dispatch({ type: SELLER_PRODUCT_UPDATE_RESET });
+  //     dispatch(getProductsBySeller());
+  //   }
+  // }, [dispatch, success, prodInfo]);
   useEffect(() => {
-    if (!prodInfo || success) {
-      dispatch({ type: SELLER_PRODUCT_UPDATE_RESET });
+    if (!prodInfo || deleteSuccess) {
       dispatch(getProductsBySeller());
     }
-  }, [dispatch, success, prodInfo]);
+  }, [dispatch, deleteSuccess]);
 
   prodId && console.log("prodid", prodId);
 
@@ -170,7 +178,11 @@ export default function ManageProducts() {
               />
             )}
             {!prodId && (
-              <UploadProductsForm classes={classes} onClose={handleClose} />
+              <UploadProductsForm
+                classes={classes}
+                onClose={handleClose}
+                prodId={undefined}
+              />
             )}
           </Box>
         </Modal>
@@ -183,7 +195,7 @@ export default function ManageProducts() {
           ></div>
         )} */}
         <Grid container>
-          <Grid item xs={12} style={{ fontSize: 20 }}>
+          <Grid item xs={12} style={{ fontSize: 20, fontWeight: "bold" }}>
             Manage Products
           </Grid>
           <Grid item xs={12}>
@@ -227,7 +239,6 @@ export default function ManageProducts() {
                   onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                   rowsPerPageOptions={[5, 10, 20]}
                   pagination
-                  //checkboxSelection
                   disableColumnSelector
                   disableColumnFilter
                   disableColumnMenu
@@ -254,14 +265,12 @@ export default function ManageProducts() {
                       sortable: false,
                       headerName: "NAME",
                       width: 250,
-                      editable: true,
                     },
                     {
                       field: "price",
                       sortable: false,
                       headerName: "PRICE",
                       width: 80,
-                      editable: true,
                     },
                     // {
                     //   field: "description",
@@ -287,7 +296,6 @@ export default function ManageProducts() {
                       sortable: false,
                       headerName: "SIZE",
                       width: 80,
-                      editable: true,
                     },
 
                     {
@@ -295,16 +303,27 @@ export default function ManageProducts() {
                       sortable: false,
                       headerName: "COLOR",
                       width: 100,
-                      editable: true,
                       renderCell: (params) =>
-                        params.value ? params.value : "---",
+                        // params.value ? params.value : "---",
+                        params.value ? (
+                          <div
+                            style={{
+                              height: 25,
+                              width: 25,
+                              borderRadius: 25,
+                              border: "1px solid black",
+                              background: `${params.value}`,
+                            }}
+                          ></div>
+                        ) : (
+                          "---"
+                        ),
                     },
                     {
                       field: "is_customizable",
                       sortable: false,
                       headerName: "IS_CUSTOMIZABLE",
                       width: 150,
-                      editable: true,
                       renderCell: (params) => (params.value ? "Yes" : "No"),
                     },
                     {
@@ -315,22 +334,6 @@ export default function ManageProducts() {
                       // Important: passing id from customers state so I can delete or edit each user
                       renderCell: (id) => (
                         <>
-                          {/* <Button
-                            style={{
-                              backgroundColor: "#ffcc00",
-                              marginRight: 40,
-                              padding: "3px 35px",
-                            }}
-                            onClick={() => {
-                              setProdId(id.id);
-                              setOpen(true);
-                            }}
-                            variant="contained"
-                            color="primary"
-                            type="submit"
-                          >
-                            Edit
-                          </Button> */}
                           <IconButton
                             sx={{ "&:hover": { color: "green" } }}
                             onClick={() => {
@@ -347,17 +350,6 @@ export default function ManageProducts() {
                           >
                             <DeleteIcon sx={{ "&:hover": { color: "red" } }} />
                           </IconButton>
-                          {/* <Button
-                            style={{
-                              backgroundColor: "#e8605d",
-                              padding: "3px 35px",
-                            }}
-                            variant="contained"
-                            color="primary"
-                            type="submit"
-                          >
-                            Delete
-                          </Button> */}
                         </>
                       ),
                     },
