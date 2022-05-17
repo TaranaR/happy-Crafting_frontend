@@ -56,6 +56,9 @@ import {
   REMOVE_PRODUCT_FROM_CART_REQUEST,
   REMOVE_PRODUCT_FROM_CART_SUCCESS,
   REMOVE_PRODUCT_FROM_CART_FAIL,
+  UPDATE_CART_BY_PRODUCT_REQUEST,
+  UPDATE_CART_BY_PRODUCT_SUCCESS,
+  UPDATE_CART_BY_PRODUCT_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import { ADMIN_DETAILS_RESET } from "../../constants/adminConstants";
@@ -473,6 +476,31 @@ export const addToCart = (cart) => async (dispatch) => {
     dispatch({ type: ADD_TO_CART_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: ADD_TO_CART_FAIL, payload: error });
+  }
+};
+
+export const updateCartByProduct = (prod) => async (dispatch) => {
+  console.log(prod);
+  try {
+    dispatch({ type: UPDATE_CART_BY_PRODUCT_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.post(
+      `${LOCAL_URL}/api/userapi/updateCartByProduct/`,
+      prod,
+      config
+    );
+    dispatch({ type: UPDATE_CART_BY_PRODUCT_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: UPDATE_CART_BY_PRODUCT_FAIL, payload: error });
   }
 };
 

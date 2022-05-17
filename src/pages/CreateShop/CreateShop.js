@@ -10,7 +10,7 @@ import StepLabel from "@mui/material/StepLabel";
 import CreateShopForm from "./Forms/CreateShopForm";
 import UploadProductsForm from "./Forms/UploadProductsForm";
 import StartSellingForm from "./Forms/StartSellingForm";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getCartDataByUser } from "../../redux/actions/userAction";
 
 const steps = [
@@ -50,11 +50,16 @@ export default function CreateShop() {
   const dispatch = useDispatch();
   const [activeStep, setActiveStep] = useState(0);
 
+  const sellerCreateShop = useSelector((state) => state.sellerCreateShop);
+  const sellerCreateProduct = useSelector((state) => state.sellerCreateProduct);
+  const { shopInfo } = sellerCreateShop;
+  const { prodInfo } = sellerCreateProduct;
+
   const navigate = useNavigate();
 
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
-      console.log("Completed");
+      // console.log("Completed");
       navigate("/profile");
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -70,10 +75,18 @@ export default function CreateShop() {
     content = <CreateShopForm classes={classes} />;
   }
   if (activeStep === 1) {
-    content = <UploadProductsForm classes={classes} />;
+    if (shopInfo) {
+      content = <UploadProductsForm classes={classes} />;
+    } else {
+      setActiveStep(0);
+    }
   }
   if (activeStep === 2) {
-    content = <StartSellingForm classes={classes} />;
+    if (prodInfo) {
+      content = <StartSellingForm classes={classes} />;
+    } else {
+      setActiveStep(1);
+    }
   }
 
   return (

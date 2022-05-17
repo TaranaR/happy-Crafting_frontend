@@ -19,6 +19,7 @@ import {
   userGetCartDataByUserReducer,
   userGetProductByIdReducer,
   userRemoveProductFromCartReducer,
+  userUpdateCartByProductReducer,
 } from "../reducers/userReducer";
 
 import {
@@ -68,6 +69,7 @@ const rootReducer = combineReducers({
   userGetSubCategoryBySubCategoryName:
     userGetSubCategoryBySubCategoryNameReducer,
   userAddToCart: userAddToCartReducer,
+  userUpdateCartByProduct: userUpdateCartByProductReducer,
   userGetCartDataByUser: userGetCartDataByUserReducer,
   userGetProductById: userGetProductByIdReducer,
   userRemoveProductFromCart: userRemoveProductFromCartReducer,

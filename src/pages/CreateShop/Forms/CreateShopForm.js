@@ -1,8 +1,8 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useRef } from "react";
 import { Grid, Container, Button } from "@material-ui/core";
 import { TextField } from "@mui/material";
 import { createSellerShop } from "../../../redux/actions/sellerAction";
-
+import { Editor } from "@tinymce/tinymce-react";
 import { useSelector, useDispatch } from "react-redux";
 import { storage } from "../../../constants/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -11,13 +11,16 @@ import { v4 } from "uuid";
 export default function CreateShopForm(props) {
   const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState("");
-  const userProfileInfo = useSelector((state) => state.userProfile);
+  const editorRef = useRef(null);
+  // const userProfileInfo = useSelector((state) => state.userProfile);
   const sellerCreateShopInfo = useSelector((state) => state.sellerCreateShop);
 
-  const { user } = userProfileInfo;
+  // const { user } = userProfileInfo;
   const { loading, shopInfo, error } = sellerCreateShopInfo;
 
-  const username = user.username;
+  //const username = user.username;
+
+  const username = localStorage.getItem("username");
 
   //Create Shop
   const [shopName, setShopName] = useState("");
@@ -36,7 +39,7 @@ export default function CreateShopForm(props) {
     //Image Upload
     console.log(selectedFile);
 
-    if (selectedFile === "") return;
+    if (selectedFile === "" || shopName === "") return;
     if (shopInfo) return;
 
     const imageRef = ref(
@@ -44,12 +47,14 @@ export default function CreateShopForm(props) {
       `images/${username}/${v4()}.${fileExtension}`
     );
 
-    uploadBytes(imageRef, selectedFile).then(() => {
-      alert("Image uploaded");
-      getDownloadURL(imageRef).then((url) => {
-        setShopLogo(url);
+    if (!shopLogo) {
+      uploadBytes(imageRef, selectedFile).then(() => {
+        alert("Image uploaded");
+        getDownloadURL(imageRef).then((url) => {
+          setShopLogo(url);
+        });
       });
-    });
+    }
   };
 
   if (selectedFile) {
@@ -124,13 +129,49 @@ export default function CreateShopForm(props) {
             Describe your shop
           </Grid>
           <Grid item xs={9}>
-            <TextField
+            {/* <TextField
               fullWidth
               size="small"
               multiline
               maxRows={5}
               onChange={(e) => {
                 setShopDescription(e.target.value);
+              }}
+            /> */}
+            <Editor
+              onInit={(evt, editor) => (editorRef.current = editor)}
+              onChange={() => {
+                setShopDescription(editorRef.current.getContent());
+              }}
+              init={{
+                height: 300,
+                menubar: false,
+                placeholder: "Your Description goes here.",
+                plugins: [
+                  "advlist",
+                  "autolink",
+                  "lists",
+                  "link",
+                  "image",
+                  "charmap",
+                  "anchor",
+                  "searchreplace",
+                  "visualblocks",
+                  "code",
+                  "fullscreen",
+                  "insertdatetime",
+                  "media",
+                  "table",
+                  "preview",
+                  "help",
+                  "wordcount",
+                ],
+                toolbar:
+                  "undo redo | blocks | " +
+                  "bold italic forecolor | alignleft aligncenter " +
+                  "alignright alignjustify | bullist numlist outdent indent | link image " +
+                  "removeformat",
+                content_style: "body { font-family:roboto; font-size:14px }",
               }}
             />
           </Grid>

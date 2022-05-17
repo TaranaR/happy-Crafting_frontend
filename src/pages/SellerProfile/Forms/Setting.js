@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@mui/material/Avatar";
 import { Button, Container, Divider, Grid, TextField } from "@mui/material";
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Snackbar from "@mui/material/Snackbar";
 import AlertTitle from "@mui/material/AlertTitle";
 import Alert from "@mui/material/Alert";
+import { Editor } from "@tinymce/tinymce-react";
 import {
   getSellerProfile,
   updateSellerProfile,
@@ -45,6 +46,7 @@ export default function Setting(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const theme = useTheme();
+  const editorRef = useRef(null);
 
   const [selectedFile, setSelectedFile] = useState("");
   const [snackOpen, setSnackOpen] = useState(false);
@@ -148,7 +150,7 @@ export default function Setting(props) {
   return (
     <Fragment>
       <Container className={classes.root}>
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
           <Grid item xs={12} style={{ fontSize: 20 }}>
             Setting
           </Grid>
@@ -159,10 +161,26 @@ export default function Setting(props) {
             <Grid item xs={12} lg={3} md={3} style={{ padding: "15px" }}>
               Shop Name
             </Grid>
-            <Grid item xs={12} lg={9} md={9} style={{ textAlign: "left" }}>
+            <Grid
+              item
+              xs={12}
+              lg={9}
+              md={9}
+              sx={{
+                textAlign: "left",
+                [theme.breakpoints.down("md")]: {
+                  textAlign: "center",
+                },
+              }}
+            >
               <TextField
                 size="small"
-                style={{ width: "50vh" }}
+                sx={{
+                  width: "50vh",
+                  [theme.breakpoints.down("md")]: {
+                    width: "80%",
+                  },
+                }}
                 value={shopName}
                 onChange={(e) => {
                   setShopName(e.target.value);
@@ -172,6 +190,7 @@ export default function Setting(props) {
             <Grid item xs={12} lg={3} md={3} style={{ padding: "15px" }}>
               Shop Logo
             </Grid>
+
             <Grid item xs={1} lg={1} md={1}>
               <Avatar
                 src={props.seller.shop_logo}
@@ -181,6 +200,7 @@ export default function Setting(props) {
                   transform: "scale(1.5)",
                   marginLeft: "1vh",
                   marginTop: "1vh",
+                  position: "absolute",
                 }}
                 variant="square"
               />
@@ -192,6 +212,10 @@ export default function Setting(props) {
               md={8}
               style={{
                 textAlign: "left",
+                // border: "1px solid black",
+                [theme.breakpoints.down("md")]: {
+                  textAlign: "center",
+                },
               }}
             >
               <label htmlFor="upload-photo">
@@ -216,12 +240,14 @@ export default function Setting(props) {
                   backgroundColor: "#745D3E",
                   color: "#ffffff",
                   marginLeft: "10px",
+                  marginTop: "10px",
                 }}
                 onClick={uploadShopLogohandler}
               >
                 Upload
               </Button>
             </Grid>
+
             <Grid
               item
               xs={12}
@@ -236,9 +262,15 @@ export default function Setting(props) {
               xs={12}
               lg={9}
               md={9}
-              style={{ textAlign: "left", marginTop: "12px" }}
+              sx={{
+                textAlign: "left",
+                marginTop: "12px",
+                [theme.breakpoints.down("md")]: {
+                  textAlign: "center",
+                },
+              }}
             >
-              <TextField
+              {/* <TextField
                 size="small"
                 multiline
                 maxRows={5}
@@ -246,6 +278,46 @@ export default function Setting(props) {
                 value={shopDescription}
                 onChange={(e) => {
                   setShopDescription(e.target.value);
+                }}
+              /> */}
+              <Editor
+                onInit={(evt, editor) => (editorRef.current = editor)}
+                value={props.seller && shopDescription}
+                onChange={() => {
+                  //console.log(editorRef.current.getContent());
+                  setShopDescription(editorRef.current.getContent());
+                  //setProdDescription(e.target.getContent());
+                }}
+                init={{
+                  height: 300,
+                  width: "90%",
+                  menubar: false,
+                  placeholder: "Your Description goes here.",
+                  plugins: [
+                    "advlist",
+                    "autolink",
+                    "lists",
+                    "link",
+                    "image",
+                    "charmap",
+                    "anchor",
+                    "searchreplace",
+                    "visualblocks",
+                    "code",
+                    "fullscreen",
+                    "insertdatetime",
+                    "media",
+                    "table",
+                    "preview",
+                    "help",
+                    "wordcount",
+                  ],
+                  toolbar:
+                    "undo redo | blocks | " +
+                    "bold italic forecolor | alignleft aligncenter " +
+                    "alignright alignjustify | bullist numlist outdent indent | link image " +
+                    "removeformat",
+                  content_style: "body { font-family:roboto; font-size:14px }",
                 }}
               />
             </Grid>

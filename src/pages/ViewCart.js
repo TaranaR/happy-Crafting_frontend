@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { getCartDataByUser } from "../redux/actions/userAction";
-import { Container, Divider, Grid } from "@material-ui/core";
+import { Container, Divider, Grid } from "@mui/material";
 import ProductInCart from "../components/ProductInCart";
 import {
   GET_CART_DATA_BY_USER_RESET,
@@ -12,7 +12,9 @@ import {
   getProductById,
   addToCart,
   removeProductFromCart,
+  updateCartByProduct,
 } from "../redux/actions/userAction";
+import { useTheme } from "@mui/material/styles";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -23,76 +25,133 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function ViewCart() {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const classes = useStyles();
   const [prodQty, setProdQty] = useState(0);
+  const [cartUpdated, setCartUpdated] = useState(false);
+
+  //Cart calculation
+  const [cartAmount, setCartAmount] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [shipping, setShipping] = useState(0);
+
+  //selectors
   const userGetCartDataByUser = useSelector(
     (state) => state.userGetCartDataByUser
   );
-  const { cartData } = userGetCartDataByUser;
-
   const userGetProductById = useSelector((state) => state.userGetProductById);
   const userRemoveProductFromCart = useSelector(
     (state) => state.userRemoveProductFromCart
   );
 
-  const { loading, success } = userRemoveProductFromCart;
-
+  const { cartData, success: cartDataUpdate } = userGetCartDataByUser;
+  const { success } = userRemoveProductFromCart;
   const { prodInfo } = userGetProductById;
-
-  console.log(cartData);
+  // const { success: updateCart } = userUpdateCartByProduct;
 
   useEffect(() => {
-    dispatch(getCartDataByUser());
-    if (cartData) {
+    // if (prodInfo?.length) {
+    //   dispatch({ type: GET_PRODUCT_BY_ID_RESET });
+    // }
+    if (cartData?.length && cartUpdated) {
+      dispatch({ type: GET_CART_DATA_BY_USER_RESET });
+      dispatch(getCartDataByUser());
+    }
+  }, [prodQty]);
+
+  useEffect(() => {
+    if (prodInfo?.length) {
       dispatch({ type: GET_PRODUCT_BY_ID_RESET });
-      dispatch({ type: GET_CART_DATA_BY_USER_RESET });
-      dispatch(getCartDataByUser());
     }
-  }, [dispatch]);
-
-  useEffect(() => {
     dispatch({ type: GET_CART_DATA_BY_USER_RESET });
-    dispatch({ type: GET_PRODUCT_BY_ID_RESET });
     dispatch(getCartDataByUser());
-  }, [dispatch, prodQty]);
+  }, []);
+
+  // useEffect(() => {
+  //   if (updateCart) {
+  //     dispatch({ type: GET_CART_DATA_BY_USER_RESET });
+  //     dispatch(getCartDataByUser());
+  //   }
+  // }, [updateCart]);
 
   useEffect(() => {
-    if (!cartData || success) {
+    if (success) {
       dispatch({ type: GET_CART_DATA_BY_USER_RESET });
       dispatch(getCartDataByUser());
     }
-  }, [dispatch, success]);
+  }, [success]);
 
   useEffect(() => {
-    if (cartData) {
-      cartData.map((item) => {
-        dispatch({ type: GET_PRODUCT_BY_ID_RESET });
+    if (cartData?.length && !prodInfo?.length) {
+      cartData.map((item, index) => {
+        //console.log("----", prodInfo?.length, item["product"]);
         dispatch(getProductById(item["product"]));
       });
     }
-  }, [dispatch, cartData]);
+  }, [cartData]);
+
+  useEffect(() => {
+    setCartAmount(0);
+    if (cartData && prodInfo?.length) {
+      setCartAmount(0);
+      setShipping(0);
+      // prodInfo
+      //   .sort((a, b) => a - b)
+      //   .map((item, index) => {
+      //     // console.log("prod", item.price * cartData[index].quantity);
+      //     console.log(item);
+      //   });
+      console.log(cartData, prodInfo);
+      cartData.map((item, index) => {
+        // if (item.product === prodInfo[index]?.id) {
+        console.log(prodInfo[index]?.price * item.quantity);
+        setCartAmount(
+          (prevState) =>
+            (prevState = prevState + prodInfo[index]?.price * item.quantity)
+        );
+        console.log("quantity", item.quantity);
+        setShipping((prevState) => (prevState += item.quantity * 15));
+        // }
+      });
+      //console.log(prodInfo.sort((a, b) => (a < b ? 1 : -1)));
+      // console.log(cartData, prodInfo);
+    }
+  }, [prodInfo, cartData]);
+
+  console.log("----", cartAmount);
 
   const incrementQtyHandler = (prodId) => {
     setProdQty((prevState) => prevState + 1);
-    const cart = {
+    const prod = {
       quantity: 1,
       product: prodId,
     };
 
-    dispatch(addToCart(cart));
+    dispatch(addToCart(prod));
+
+    if (cartDataUpdate) {
+      setCartUpdated(true);
+    } else {
+      setCartUpdated(false);
+    }
     // dispatch({ type: GET_CART_DATA_BY_USER_RESET });
     // dispatch(getCartDataByUser());
   };
 
   const decrementQtyHandler = (prodId) => {
     setProdQty((prevState) => prevState - 1);
-    const cart = {
+    const prod = {
       quantity: -1,
       product: prodId,
     };
 
-    dispatch(addToCart(cart));
+    dispatch(addToCart(prod));
+    if (cartDataUpdate) {
+      setCartUpdated(true);
+    } else {
+      setCartUpdated(false);
+    }
     // dispatch({ type: GET_CART_DATA_BY_USER_RESET });
     // dispatch(getCartDataByUser());
   };
@@ -101,6 +160,7 @@ export default function ViewCart() {
     dispatch(removeProductFromCart(prodId));
   };
 
+  // console.log(prodInfo);
   return (
     <Fragment>
       <Container className={classes.root}>
@@ -111,13 +171,14 @@ export default function ViewCart() {
           <Grid item xs={12}>
             <Divider />
           </Grid>
-          <Grid container style={{ marginTop: "2%" }}>
-            <Grid item xs={7}>
-              {cartData &&
-                cartData.map((item) => {
+          <Grid container style={{ marginTop: "2%" }} spacing={2}>
+            <Grid item xs={12} lg={8} md={8}>
+              {cartData?.length &&
+                // prodInfo?.length &&
+                cartData.map((item, index) => {
                   return (
                     <ProductInCart
-                      key={item.id}
+                      key={index}
                       prodId={item["product"]}
                       qty={item["quantity"]}
                       prodInfo={prodInfo}
@@ -128,7 +189,58 @@ export default function ViewCart() {
                   );
                 })}
             </Grid>
-            <Grid item xs={5}></Grid>
+            <Grid
+              item
+              xs={12}
+              lg={4}
+              md={4}
+              sx={{
+                padding: 3,
+                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                [theme.breakpoints.down("md")]: { marginTop: 10 },
+              }}
+            >
+              <Grid
+                container
+                style={{
+                  // border: "1px solid black",
+                  padding: 20,
+                }}
+              >
+                <Grid item xs={12} style={{ fontSize: 25 }}>
+                  Summary
+                </Grid>
+                <Grid item xs={12} style={{ fontSize: 25 }}>
+                  <Divider />
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  style={{
+                    marginTop: 30,
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div>Your Cart Items</div>
+                  <div style={{ fontWeight: "bold" }}>
+                    ₹{cartAmount && cartAmount}
+                  </div>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  style={{
+                    marginTop: 30,
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div>Estimated Shipping</div>
+                  <div style={{ fontWeight: "bold" }}>₹{shipping}</div>
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Container>

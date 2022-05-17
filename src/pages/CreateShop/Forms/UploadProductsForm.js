@@ -111,6 +111,8 @@ export default function UploadProductsForm(props) {
 
   //console.log(prodDetail);
 
+  console.log(prodColor);
+
   if (mainCatInfo) {
     main = Object.values(mainCatInfo);
   }
@@ -125,8 +127,6 @@ export default function UploadProductsForm(props) {
     }
   };
 
-  console.log(selectedFile.length);
-
   const uploadShopLogohandler = () => {
     //Image Upload
 
@@ -136,7 +136,6 @@ export default function UploadProductsForm(props) {
       prodDescription === "" ||
       selectedFile === ""
     ) {
-      console.log("hiiiiii");
       return;
     }
     //if (prodInfo) return;
@@ -170,7 +169,7 @@ export default function UploadProductsForm(props) {
     //create shop
 
     if (props.prodId) {
-      console.log("Update");
+      // console.log("Update");
       const product = {
         id: prodDetail["id"],
         sub_cat_id: prodSubCat,
@@ -184,7 +183,7 @@ export default function UploadProductsForm(props) {
       };
       dispatch(updateSellerProduct(product));
     } else {
-      console.log("create");
+      // console.log("create");
       if (
         prodName === undefined ||
         prodPrice === undefined ||
@@ -194,7 +193,7 @@ export default function UploadProductsForm(props) {
         console.log("hello");
         return;
       } else {
-        console.log(prodPrice);
+        // console.log(prodPrice);
         const product = {
           sub_cat_id: prodSubCat,
           name: prodName,
@@ -393,7 +392,7 @@ export default function UploadProductsForm(props) {
           </Grid>
           <Grid item xs={9}>
             <HexColorPicker
-              color={prodColor}
+              color={prodColor ? prodColor : "#000000"}
               onChange={setProdColor}
               style={{ height: 100, width: "100%" }}
             />
@@ -403,15 +402,15 @@ export default function UploadProductsForm(props) {
               style={{ height: 100, width: 100 }}
             /> */}
             {/* <TextField
-                  fullWidth
-                  size="small"
-                  multiline
-                  value={prodColor}
-                  maxRows={5}
-                  onChange={(e) => {
-                    setProdColor(e.target.value);
-                  }}
-                /> */}
+              fullWidth
+              size="small"
+              multiline
+              value={prodColor}
+              maxRows={5}
+              onChange={(e) => {
+                setProdColor(e.target.value);
+              }}
+            /> */}
           </Grid>
           <Grid item xs={3} style={{ padding: "15px" }}>
             Is Customizable
@@ -466,7 +465,7 @@ export default function UploadProductsForm(props) {
           </Grid>
           <Grid item xs={12}>
             {/* {loading && <CircularProgress style={{ color: "#745D3E" }} />} */}
-            {/* {prodInfo && prodInfo.message} */}
+            {prodInfo && prodInfo.message}
             {/* {error && error} */}
           </Grid>
         </Grid>

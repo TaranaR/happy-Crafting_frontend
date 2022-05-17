@@ -1,5 +1,12 @@
 import { Fragment, useState } from "react";
-import { Divider, Grid, Button, TextField, IconButton } from "@mui/material";
+import {
+  Divider,
+  Grid,
+  Button,
+  TextField,
+  IconButton,
+  Box,
+} from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,8 +17,10 @@ import {
 } from "../redux/actions/userAction";
 import { NavLink } from "react-router-dom";
 import ClearIcon from "@mui/icons-material/Clear";
+import { useTheme } from "@mui/material/styles";
 
 export default function ProductInCart(props) {
+  const theme = useTheme();
   const prodId = props.prodId;
   const prodInfo = props.prodInfo;
   const [prodQty, setProdQty] = useState(props.qty);
@@ -38,19 +47,20 @@ export default function ProductInCart(props) {
         {prodInfo &&
           Object.values(prodInfo).map((item) => {
             if (item.id === prodId) {
+              // console.log("---", item.id);
               return (
-                <>
+                <Box key={item.id}>
                   <Grid
                     item
                     xs={12}
                     style={{
                       padding: "10px",
-                      //border: "1px solid black", 
+                      //border: "1px solid black",
                       borderRadius: 10,
                     }}
                   >
                     <Grid container>
-                      <Grid item xs={3} textAlign="center">
+                      <Grid item xs={12} lg={3} md={3} textAlign="center">
                         <img
                           src={item.image}
                           style={{
@@ -61,7 +71,7 @@ export default function ProductInCart(props) {
                           }}
                         />
                       </Grid>
-                      <Grid item xs={9}>
+                      <Grid item xs={12} lg={9} md={12}>
                         <Grid
                           item
                           xs={12}
@@ -77,21 +87,39 @@ export default function ProductInCart(props) {
                             </IconButton>
                           </div>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid
+                          item
+                          xs={12}
+                          lg={12}
+                          md={12}
+                          sx={{
+                            [theme.breakpoints.down("sm")]: {
+                              textAlign: "center",
+                            },
+                            [theme.breakpoints.down("md")]: {
+                              textAlign: "center",
+                            },
+                          }}
+                        >
                           {item.name}
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} lg={12} md={12}>
                           <Grid
                             item
-                            xs={5}
-                            style={{
-                              border: "2px solid grey",
-                              borderRadius: 5,
+                            xs={12}
+                            lg={5}
+                            md={5}
+                            sx={{
+                              border: "2px solid #D5D6D1",
+                              borderRadius: 2,
                               height: "100%",
                               padding: "5px",
-                              margin: "5px",
+                              //margin: "5px",
                               display: "flex",
                               justifyContent: "space-between",
+                              [theme.breakpoints.down("sm")]: {
+                                width: "100%",
+                              },
                             }}
                           >
                             <Button
@@ -107,12 +135,12 @@ export default function ProductInCart(props) {
                               size="small"
                               inputProps={{ style: { fontSize: 12 } }}
                               style={{
-                                width: "43px",
-                                height: "20px",
+                                width: "7vh",
+                                // height: "20%",
                                 border: "none",
                                 marginTop: "2px",
                               }}
-                              value={prodQty}
+                              value={prodQty && prodQty}
                             />
 
                             <Button
@@ -129,10 +157,11 @@ export default function ProductInCart(props) {
                     </Grid>
                   </Grid>
                   <Divider style={{ width: "93%", marginLeft: "5%" }} />
-                </>
+                </Box>
               );
             }
           })}
+        <Divider style={{ width: "93%", marginLeft: "5%" }} />
       </Grid>
     </Fragment>
   );

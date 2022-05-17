@@ -233,7 +233,7 @@ export default function ManageProducts() {
             </Grid>
 
             <Grid item xs={12} style={{ marginTop: "20px" }}>
-              <Box style={{ height: 530, width: "100%" }}>
+              <Box style={{ height: 530, width: "95%" }}>
                 <DataGrid
                   pageSize={pageSize}
                   onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -329,7 +329,7 @@ export default function ManageProducts() {
                     {
                       field: "action",
                       headerName: "Action",
-                      width: 250,
+                      width: 150,
 
                       // Important: passing id from customers state so I can delete or edit each user
                       renderCell: (id) => (

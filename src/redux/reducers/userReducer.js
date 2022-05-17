@@ -61,6 +61,9 @@ import {
   REMOVE_PRODUCT_FROM_CART_SUCCESS,
   REMOVE_PRODUCT_FROM_CART_FAIL,
   GET_PRODUCT_DETAILS_RESET,
+  UPDATE_CART_BY_PRODUCT_REQUEST,
+  UPDATE_CART_BY_PRODUCT_SUCCESS,
+  UPDATE_CART_BY_PRODUCT_FAIL,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -435,15 +438,43 @@ export const userAddToCartReducer = (state = {}, action) => {
   }
 };
 
+export const userUpdateCartByProductReducer = (state = {}, action) => {
+  switch (action.type) {
+    case UPDATE_CART_BY_PRODUCT_REQUEST:
+      return {
+        loading: true,
+        success: false,
+      };
+    case UPDATE_CART_BY_PRODUCT_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        message: action.payload,
+      };
+    case UPDATE_CART_BY_PRODUCT_FAIL:
+      return {
+        loading: false,
+        success: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
 export const userGetCartDataByUserReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_CART_DATA_BY_USER_REQUEST:
       return {
         loading: true,
+        success: false,
       };
     case GET_CART_DATA_BY_USER_SUCCESS:
       return {
         loading: false,
+        success: true,
         cartData: action.payload,
       };
     case GET_CART_DATA_BY_USER_FAIL:
@@ -453,7 +484,8 @@ export const userGetCartDataByUserReducer = (state = {}, action) => {
       };
     case GET_CART_DATA_BY_USER_RESET:
       return {
-        cartData: {},
+        // success: false,
+        // cartData: {},
       };
     case USER_LOGOUT:
       return {};

@@ -18,7 +18,7 @@ import { GET_CART_DATA_BY_USER_RESET } from "../constants/userConstants";
 
 const useStyles = makeStyles(() => ({
   root: {
-    marginTop: "10vh",
+    marginTop: "5vh",
   },
   modelWrapper: {
     position: "absolute",
@@ -69,7 +69,7 @@ export default function ProductDetails() {
 
   useEffect(() => {
     dispatch(getProductDetails(prodId));
-    dispatch(getCartDataByUser());
+    //dispatch(getCartDataByUser());
     window.scrollTo({
       top: 0,
       behavior: "auto",
@@ -154,8 +154,8 @@ export default function ProductDetails() {
               <img
                 src={prodInfo["image"]}
                 style={{
-                  width: "100%",
-                  height: "100%",
+                  width: "90%",
+                  height: "80%",
                 }}
               />
             )}
@@ -209,6 +209,22 @@ export default function ProductDetails() {
             </Grid>
             <Grid item xs={12} style={{ marginTop: "2%", fontSize: 15 }}>
               {prodInfo && prodInfo["size"]}
+            </Grid>
+            <Grid item xs={12} style={{ marginTop: "7%", fontSize: 20 }}>
+              Color
+            </Grid>
+            <Grid item xs={12} style={{ marginTop: "2%", fontSize: 15 }}>
+              {prodInfo && (
+                <div
+                  style={{
+                    height: 25,
+                    width: 25,
+                    borderRadius: 25,
+                    border: "1px solid black",
+                    background: `${prodInfo["color"]}`,
+                  }}
+                ></div>
+              )}
             </Grid>
             <Grid item xs={12} style={{ marginTop: "7%", fontSize: 20 }}>
               About Product

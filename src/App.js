@@ -38,8 +38,8 @@ const useStyles = makeStyles((theme) => ({
     // backgroundRepeat: "no-repeat",
     // backgroundSize: "cover",
     backgroundColor: "#F8F9FB",
-    fontFamily: ["El Messiri", "sans-serif"].join(","),
-    //fontFamily: "roboto",
+    //fontFamily: ["El Messiri", "sans-serif"].join(","),
+    fontFamily: ["Roboto Flex", "sans-serif"].join(","),
   },
 }));
 
