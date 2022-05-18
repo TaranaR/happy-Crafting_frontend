@@ -53,6 +53,12 @@ const useStyles = makeStyles((theme) => ({
       color: "#A97155",
     },
   },
+  zoomImg: {
+    "&:hover": {
+      transform: "scale(1.5)",
+      transition: "all 0.5s ease-in-out",
+    },
+  },
 
   startImg: {
     backgroundImage: `url(${startImage})`,
@@ -323,6 +329,7 @@ const Home = (props) => {
                     <NavLink to={`/products/${item.id}`}>
                       <img
                         src={item.image}
+                        className={classes.zoomImg}
                         style={{
                           height: "20vh",
                           width: "20vh",

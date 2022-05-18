@@ -168,7 +168,7 @@ export default function ManageCategory() {
               onClick={handleOpen}
             >
               <AddIcon style={{ marginRight: "5px" }} />
-              Add Product
+              Add Category
             </Button>
             <Button
               style={{

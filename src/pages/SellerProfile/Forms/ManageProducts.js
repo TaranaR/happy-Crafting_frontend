@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddDeleteBtn = styled(ButtonBase)(({ theme }) => ({
+const AddBtn = styled(ButtonBase)(({ theme }) => ({
   border: "2px solid #745D3E",
   borderRadius: 25,
   color: "#745D3E",
@@ -215,10 +215,10 @@ export default function ManageProducts() {
             }}
           >
             <Grid item xs={12} lg={12} md={12}>
-              <AddDeleteBtn onClick={handleOpen} style={{ marginRight: "1%" }}>
+              <AddBtn onClick={handleOpen} style={{ marginRight: "1%" }}>
                 <AddIcon style={{ marginRight: "5px" }} />
                 Add Product
-              </AddDeleteBtn>
+              </AddBtn>
               {/* {prodId && (
                 <AddDeleteBtn
                   style={{

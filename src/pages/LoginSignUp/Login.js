@@ -192,7 +192,7 @@ export default function Login(props) {
       {error && (
         <Snackbar
           open={snackOpen}
-          autoHideDuration={6000}
+          autoHideDuration={3000}
           onClose={handleSnackClose}
         >
           <Alert
@@ -204,7 +204,8 @@ export default function Login(props) {
             {/* {errorArr.map((item) => {
               return <p>{item}</p>;
             })} */}
-            {errorArr.join("\n")}
+            {/* {errorArr.join("\n")} */}
+            Invalid username or password
           </Alert>
         </Snackbar>
       )}

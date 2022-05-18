@@ -19,6 +19,7 @@ import {
   getCartDataByUser,
 } from "../../redux/actions/userAction";
 import userLogo from "../../Images/userProfile.gif";
+import { GET_CART_DATA_BY_USER_RESET } from "../../constants/userConstants";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -57,6 +58,7 @@ export default function Profile() {
   const { user } = userProfile;
 
   useEffect(() => {
+    dispatch({ type: GET_CART_DATA_BY_USER_RESET });
     dispatch(getCartDataByUser());
     dispatch(getUserProfile());
   }, [dispatch]);

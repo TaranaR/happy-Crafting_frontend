@@ -27,7 +27,7 @@ import AllProductsBySubCategory from "./pages/AllProductsBySubCategory";
 import ProductCategoryPage from "./pages/ProductCategoryPage";
 import { getCartDataByUser } from "./redux/actions/userAction";
 import ViewCart from "./pages/ViewCart";
-import UserWindow from "./pages/ex";
+import Checkout from "./pages/Checkout";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -303,6 +303,19 @@ function App() {
               <>
                 <Header title="Happy Crafting" sections={sections} />
                 <ViewCart />
+                <Footer />
+              </>
+            )) ||
+            (!token && <Navigate to="/" />)
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            (token && (
+              <>
+                <Header title="Happy Crafting" sections={sections} />
+                <Checkout />
                 <Footer />
               </>
             )) ||

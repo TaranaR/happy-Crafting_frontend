@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { getCartDataByUser } from "../redux/actions/userAction";
-import { Container, Divider, Grid } from "@mui/material";
+import { Container, Divider, Grid, Button } from "@mui/material";
 import ProductInCart from "../components/ProductInCart";
 import {
   GET_CART_DATA_BY_USER_RESET,
@@ -15,6 +15,9 @@ import {
   updateCartByProduct,
 } from "../redux/actions/userAction";
 import { useTheme } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
+import { Preview } from "@mui/icons-material";
+import CartSummary from "../components/CartSummary";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -27,14 +30,16 @@ const useStyles = makeStyles(() => ({
 export default function ViewCart() {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const classes = useStyles();
   const [prodQty, setProdQty] = useState(0);
   const [cartUpdated, setCartUpdated] = useState(false);
 
   //Cart calculation
   const [cartAmount, setCartAmount] = useState(0);
-  const [totalAmount, setTotalAmount] = useState(0);
-  const [shipping, setShipping] = useState(0);
+  const [totalCartAmount, setTotalCartAmount] = useState(0);
+  const [shippingAmount, setShippingAmount] = useState(0);
+  const [totalBillAmount, setTotalBillAmount] = useState(0);
 
   //selectors
   const userGetCartDataByUser = useSelector(
@@ -66,14 +71,7 @@ export default function ViewCart() {
     }
     dispatch({ type: GET_CART_DATA_BY_USER_RESET });
     dispatch(getCartDataByUser());
-  }, []);
-
-  // useEffect(() => {
-  //   if (updateCart) {
-  //     dispatch({ type: GET_CART_DATA_BY_USER_RESET });
-  //     dispatch(getCartDataByUser());
-  //   }
-  // }, [updateCart]);
+  }, []); 
 
   useEffect(() => {
     if (success) {
@@ -91,41 +89,14 @@ export default function ViewCart() {
     }
   }, [cartData]);
 
-  useEffect(() => {
-    setCartAmount(0);
-    if (cartData && prodInfo?.length) {
-      setCartAmount(0);
-      setShipping(0);
-      // prodInfo
-      //   .sort((a, b) => a - b)
-      //   .map((item, index) => {
-      //     // console.log("prod", item.price * cartData[index].quantity);
-      //     console.log(item);
-      //   });
-      console.log(cartData, prodInfo);
-      cartData.map((item, index) => {
-        // if (item.product === prodInfo[index]?.id) {
-        console.log(prodInfo[index]?.price * item.quantity);
-        setCartAmount(
-          (prevState) =>
-            (prevState = prevState + prodInfo[index]?.price * item.quantity)
-        );
-        console.log("quantity", item.quantity);
-        setShipping((prevState) => (prevState += item.quantity * 15));
-        // }
-      });
-      //console.log(prodInfo.sort((a, b) => (a < b ? 1 : -1)));
-      // console.log(cartData, prodInfo);
-    }
-  }, [prodInfo, cartData]);
-
   console.log("----", cartAmount);
 
-  const incrementQtyHandler = (prodId) => {
+  const incrementQtyHandler = (prodId, price) => {
     setProdQty((prevState) => prevState + 1);
     const prod = {
       quantity: 1,
       product: prodId,
+      totalAmount: price * 1,
     };
 
     dispatch(addToCart(prod));
@@ -135,15 +106,17 @@ export default function ViewCart() {
     } else {
       setCartUpdated(false);
     }
+
     // dispatch({ type: GET_CART_DATA_BY_USER_RESET });
     // dispatch(getCartDataByUser());
   };
 
-  const decrementQtyHandler = (prodId) => {
+  const decrementQtyHandler = (prodId, price) => {
     setProdQty((prevState) => prevState - 1);
     const prod = {
       quantity: -1,
       product: prodId,
+      totalAmount: price * -1,
     };
 
     dispatch(addToCart(prod));
@@ -152,6 +125,7 @@ export default function ViewCart() {
     } else {
       setCartUpdated(false);
     }
+
     // dispatch({ type: GET_CART_DATA_BY_USER_RESET });
     // dispatch(getCartDataByUser());
   };
@@ -164,23 +138,24 @@ export default function ViewCart() {
   return (
     <Fragment>
       <Container className={classes.root}>
-        <Grid container spacing={2}>
+        <Grid container>
           <Grid item xs={12} style={{ fontSize: 30 }}>
             My Cart
           </Grid>
           <Grid item xs={12}>
             <Divider />
           </Grid>
-          <Grid container style={{ marginTop: "2%" }} spacing={2}>
-            <Grid item xs={12} lg={8} md={8}>
-              {cartData?.length &&
-                // prodInfo?.length &&
-                cartData.map((item, index) => {
+          <Grid container style={{ marginTop: "2%" }}>
+            {cartData && (
+              <Grid item xs={12} lg={8} md={8}>
+                {/* prodInfo?.length && */}
+                {cartData.map((item, index) => {
                   return (
                     <ProductInCart
                       key={index}
                       prodId={item["product"]}
                       qty={item["quantity"]}
+                      price={item["price"]}
                       prodInfo={prodInfo}
                       onIncrementQty={incrementQtyHandler}
                       onDecrementQty={decrementQtyHandler}
@@ -188,7 +163,20 @@ export default function ViewCart() {
                     />
                   );
                 })}
-            </Grid>
+              </Grid>
+            )}
+            {!cartData?.length && (
+              <Grid item xs={12} lg={8} md={8}>
+                Your cart is empty. Want to change that?
+                <Button
+                  onClick={() => {
+                    navigate("/WallArt");
+                  }}
+                >
+                  Continue Shopping
+                </Button>
+              </Grid>
+            )}
             <Grid
               item
               xs={12}
@@ -196,7 +184,7 @@ export default function ViewCart() {
               md={4}
               sx={{
                 padding: 3,
-                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                // boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                 [theme.breakpoints.down("md")]: { marginTop: 10 },
               }}
             >
@@ -204,10 +192,12 @@ export default function ViewCart() {
                 container
                 style={{
                   // border: "1px solid black",
+                  boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                   padding: 20,
                 }}
               >
-                <Grid item xs={12} style={{ fontSize: 25 }}>
+                <CartSummary cartData={cartData} />
+                {/* <Grid item xs={12} style={{ fontSize: 25 }}>
                   Summary
                 </Grid>
                 <Grid item xs={12} style={{ fontSize: 25 }}>
@@ -223,9 +213,7 @@ export default function ViewCart() {
                   }}
                 >
                   <div>Your Cart Items</div>
-                  <div style={{ fontWeight: "bold" }}>
-                    ₹{cartAmount && cartAmount}
-                  </div>
+                  <div style={{ fontWeight: "bold" }}>₹{totalCartAmount}</div>
                 </Grid>
                 <Grid
                   item
@@ -237,8 +225,22 @@ export default function ViewCart() {
                   }}
                 >
                   <div>Estimated Shipping</div>
-                  <div style={{ fontWeight: "bold" }}>₹{shipping}</div>
+                  <div style={{ fontWeight: "bold" }}>₹{shippingAmount}</div>
                 </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  style={{
+                    marginTop: 30,
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div>Estimated Total</div>
+                  <div style={{ fontWeight: "bold" }}>
+                    ₹{totalCartAmount + shippingAmount}
+                  </div>
+                </Grid> */}
               </Grid>
             </Grid>
           </Grid>

@@ -59,6 +59,12 @@ import {
   UPDATE_CART_BY_PRODUCT_REQUEST,
   UPDATE_CART_BY_PRODUCT_SUCCESS,
   UPDATE_CART_BY_PRODUCT_FAIL,
+  GET_SHIPPING_ADDRESS_BY_USER_REQUEST,
+  GET_SHIPPING_ADDRESS_BY_USER_SUCCESS,
+  GET_SHIPPING_ADDRESS_BY_USER_RESET,
+  ADD_SHIPPING_ADDRESS_REQUEST,
+  ADD_SHIPPING_ADDRESS_SUCCESS,
+  ADD_SHIPPING_ADDRESS_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import { ADMIN_DETAILS_RESET } from "../../constants/adminConstants";
@@ -582,5 +588,57 @@ export const removeProductFromCart = (id) => async (dispatch) => {
       type: REMOVE_PRODUCT_FROM_CART_FAIL,
       palyload: error,
     });
+  }
+};
+
+export const getShippingAddressByUser = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_SHIPPING_ADDRESS_BY_USER_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/sellerapi/getShippingAddressByUser/`,
+      config
+    );
+    dispatch({
+      type: GET_SHIPPING_ADDRESS_BY_USER_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_SHIPPING_ADDRESS_BY_USER_RESET,
+      payload: error,
+    });
+  }
+};
+
+export const addShippingAddress = (shippingAdd) => async (dispatch) => {
+  try {
+    dispatch({ type: ADD_SHIPPING_ADDRESS_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+    const { data } = await axios.post(
+      `${LOCAL_URL}/api/sellerapi/addShippingAddress/`,
+      shippingAdd,
+      config
+    );
+    dispatch({ type: ADD_SHIPPING_ADDRESS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: ADD_SHIPPING_ADDRESS_FAIL, payload: error });
   }
 };

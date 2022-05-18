@@ -20,6 +20,8 @@ import {
   userGetProductByIdReducer,
   userRemoveProductFromCartReducer,
   userUpdateCartByProductReducer,
+  userGetShippingAddressByUserReducer,
+  userAddShippingAddressReducer,
 } from "../reducers/userReducer";
 
 import {
@@ -73,6 +75,9 @@ const rootReducer = combineReducers({
   userGetCartDataByUser: userGetCartDataByUserReducer,
   userGetProductById: userGetProductByIdReducer,
   userRemoveProductFromCart: userRemoveProductFromCartReducer,
+  userGetShippingAddressByUser: userGetShippingAddressByUserReducer,
+  userAddShippingAddress: userAddShippingAddressReducer,
+
   //seller
   sellerCreateShop: sellerCreateShopReducer,
   sellerCreateProduct: sellerCreateProductReducer,
@@ -84,6 +89,7 @@ const rootReducer = combineReducers({
   sellerGetTypeOfProduct: sellerGetTypeOfProductReducer,
   sellerGetMainCategory: sellerGetMainCategoryReducer,
   sellerGetSubCategory: sellerGetSubCategoryReducer,
+
   //admin
   adminDetail: adminDetailReducer,
   getAllSellerDetails: getAllSellerDetailsReducer,

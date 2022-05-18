@@ -64,6 +64,13 @@ import {
   UPDATE_CART_BY_PRODUCT_REQUEST,
   UPDATE_CART_BY_PRODUCT_SUCCESS,
   UPDATE_CART_BY_PRODUCT_FAIL,
+  GET_SHIPPING_ADDRESS_BY_USER_REQUEST,
+  GET_SHIPPING_ADDRESS_BY_USER_SUCCESS,
+  GET_SHIPPING_ADDRESS_BY_USER_FAIL,
+  GET_SHIPPING_ADDRESS_BY_USER_RESET,
+  ADD_SHIPPING_ADDRESS_REQUEST,
+  ADD_SHIPPING_ADDRESS_SUCCESS,
+  ADD_SHIPPING_ADDRESS_FAIL,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -543,6 +550,54 @@ export const userRemoveProductFromCartReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+export const userGetShippingAddressByUserReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_SHIPPING_ADDRESS_BY_USER_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_SHIPPING_ADDRESS_BY_USER_SUCCESS:
+      return {
+        loading: false,
+        address: action.payload,
+      };
+    case GET_SHIPPING_ADDRESS_BY_USER_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case GET_SHIPPING_ADDRESS_BY_USER_RESET:
+      return {};
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userAddShippingAddressReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADD_SHIPPING_ADDRESS_REQUEST:
+      return {
+        loading: true,
+      };
+    case ADD_SHIPPING_ADDRESS_SUCCESS:
+      return {
+        loading: false,
+        addressData: action.payload,
+      };
+    case ADD_SHIPPING_ADDRESS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
     default:
       return state;
   }

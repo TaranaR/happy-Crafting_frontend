@@ -115,6 +115,8 @@ export default function ProductDetails() {
       const cart = {
         quantity: prodQty,
         product: prodInfo["id"],
+        price: prodInfo["price"],
+        totalAmount: prodInfo["price"] * prodQty,
       };
       // if (!cartData) {
       dispatch(addToCart(cart));
@@ -167,7 +169,12 @@ export default function ProductDetails() {
                 fontSize: 25,
               }}
             >
-              <Grid item xs={6} justifyContent="center">
+              <Grid
+                item
+                xs={6}
+                justifyContent="center"
+                style={{ fontWeight: "bold" }}
+              >
                 {prodInfo && prodInfo["name"]}
               </Grid>
               <Grid item xs={6} style={{ textAlign: "right", fontSize: 20 }}>
@@ -190,8 +197,19 @@ export default function ProductDetails() {
                 </Button>
               </Grid>
             </Grid>
-            <Grid item xs={12}>
-              BY {sellerInfo && sellerInfo["shop_name"]}
+            <Grid
+              item
+              xs={12}
+              style={{ display: "flex", justifyContent: "space-between" }}
+            >
+              <div>BY {sellerInfo && sellerInfo["shop_name"]}</div>
+              <div>
+                <Button
+                  style={{ color: "inherit", textDecoration: "underline" }}
+                >
+                  Add to Collection
+                </Button>
+              </div>
             </Grid>
             <Grid
               item
@@ -226,17 +244,8 @@ export default function ProductDetails() {
                 ></div>
               )}
             </Grid>
+
             <Grid item xs={12} style={{ marginTop: "7%", fontSize: 20 }}>
-              About Product
-            </Grid>
-            <Grid item xs={12} style={{ marginTop: "2%", fontSize: 15 }}>
-              {prodInfo && (
-                <div
-                  dangerouslySetInnerHTML={{ __html: prodInfo["description"] }}
-                ></div>
-              )}
-            </Grid>
-            <Grid item xs={12} style={{ marginTop: "10%", fontSize: 20 }}>
               Quantity
             </Grid>
             <Grid item xs={12} style={{ marginTop: "2%" }}>
@@ -270,7 +279,7 @@ export default function ProductDetails() {
                 </Button>
               </Box>
             </Grid>
-            <Grid item xs={12} style={{ marginTop: "10%" }}>
+            <Grid item xs={12} style={{ marginTop: "7%" }}>
               <Button
                 variant="contained"
                 style={{ backgroundColor: "#745D3E", width: "100%" }}
@@ -279,6 +288,16 @@ export default function ProductDetails() {
                 {cartLoading && "Loading...."}
                 {!cartLoading && "Add to Cart"}
               </Button>
+            </Grid>
+            <Grid item xs={12} style={{ marginTop: "7%", fontSize: 20 }}>
+              About Product
+            </Grid>
+            <Grid item xs={12} style={{ marginTop: "2%", fontSize: 15 }}>
+              {prodInfo && (
+                <div
+                  dangerouslySetInnerHTML={{ __html: prodInfo["description"] }}
+                ></div>
+              )}
             </Grid>
           </Grid>
         </Grid>

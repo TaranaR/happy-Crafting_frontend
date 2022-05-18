@@ -23,6 +23,7 @@ export default function ProductInCart(props) {
   const theme = useTheme();
   const prodId = props.prodId;
   const prodInfo = props.prodInfo;
+  const price = props.price;
   const [prodQty, setProdQty] = useState(props.qty);
 
   const incrementQtyHandler = () => {
@@ -33,12 +34,12 @@ export default function ProductInCart(props) {
   const decrementQtyHandler = () => {
     if (prodQty > 1) {
       setProdQty((prevState) => prevState - 1);
-      props.onDecrementQty(prodId);
+      props.onDecrementQty(prodId, price);
     }
   };
 
   const removeProductFromCartHandler = () => {
-    props.onRemoveProductFromCart(prodId);
+    props.onRemoveProductFromCart(prodId, price);
   };
 
   return (
@@ -61,15 +62,17 @@ export default function ProductInCart(props) {
                   >
                     <Grid container>
                       <Grid item xs={12} lg={3} md={3} textAlign="center">
-                        <img
-                          src={item.image}
-                          style={{
-                            height: "15vh",
-                            width: "15vh",
-                            // border: "5px solid #534340",
-                            borderRadius: 10,
-                          }}
-                        />
+                        <NavLink to={`/products/${prodId}`}>
+                          <img
+                            src={item.image}
+                            style={{
+                              height: "15vh",
+                              width: "15vh",
+                              // border: "5px solid #534340",
+                              borderRadius: 10,
+                            }}
+                          />
+                        </NavLink>
                       </Grid>
                       <Grid item xs={12} lg={9} md={12}>
                         <Grid

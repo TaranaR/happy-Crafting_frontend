@@ -1,11 +1,12 @@
 import { Container, Grid, Button, TextField } from "@material-ui/core";
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { addToCart } from "../redux/actions/userAction";
 
 export default function AddedProductToCart(props) {
   const [prodQty, setProdQty] = useState(1);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   //console.log(props.cartData["quantity"]);
@@ -81,6 +82,9 @@ export default function AddedProductToCart(props) {
           <Grid item xs={12}>
             <Button
               variant="contained"
+              onClick={() => {
+                navigate("/checkout");
+              }}
               style={{
                 backgroundColor: "#745D3E",
                 width: "70%",
