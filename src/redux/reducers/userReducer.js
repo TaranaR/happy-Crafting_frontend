@@ -71,6 +71,15 @@ import {
   ADD_SHIPPING_ADDRESS_REQUEST,
   ADD_SHIPPING_ADDRESS_SUCCESS,
   ADD_SHIPPING_ADDRESS_FAIL,
+  DELETE_SHIPPING_ADDRESS_REQUEST,
+  DELETE_SHIPPING_ADDRESS_SUCCESS,
+  DELETE_SHIPPING_ADDRESS_FAIL,
+  GET_SHIPPING_ADDRESS_BY_ID_REQUEST,
+  GET_SHIPPING_ADDRESS_BY_ID_SUCCESS,
+  GET_SHIPPING_ADDRESS_BY_ID_FAIL,
+  ADD_ORDER_MASTER_REQUEST,
+  ADD_ORDER_MASTER_SUCCESS,
+  ADD_ORDER_MASTER_FAIL,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -445,31 +454,31 @@ export const userAddToCartReducer = (state = {}, action) => {
   }
 };
 
-export const userUpdateCartByProductReducer = (state = {}, action) => {
-  switch (action.type) {
-    case UPDATE_CART_BY_PRODUCT_REQUEST:
-      return {
-        loading: true,
-        success: false,
-      };
-    case UPDATE_CART_BY_PRODUCT_SUCCESS:
-      return {
-        loading: false,
-        success: true,
-        message: action.payload,
-      };
-    case UPDATE_CART_BY_PRODUCT_FAIL:
-      return {
-        loading: false,
-        success: false,
-        error: action.payload,
-      };
-    case USER_LOGOUT:
-      return {};
-    default:
-      return state;
-  }
-};
+// export const userUpdateCartByProductReducer = (state = {}, action) => {
+//   switch (action.type) {
+//     case UPDATE_CART_BY_PRODUCT_REQUEST:
+//       return {
+//         loading: true,
+//         success: false,
+//       };
+//     case UPDATE_CART_BY_PRODUCT_SUCCESS:
+//       return {
+//         loading: false,
+//         success: true,
+//         message: action.payload,
+//       };
+//     case UPDATE_CART_BY_PRODUCT_FAIL:
+//       return {
+//         loading: false,
+//         success: false,
+//         error: action.payload,
+//       };
+//     case USER_LOGOUT:
+//       return {};
+//     default:
+//       return state;
+//   }
+// };
 
 export const userGetCartDataByUserReducer = (state = {}, action) => {
   switch (action.type) {
@@ -592,6 +601,73 @@ export const userAddShippingAddressReducer = (state = {}, action) => {
         addressData: action.payload,
       };
     case ADD_SHIPPING_ADDRESS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userRemoveShippingAddressReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_SHIPPING_ADDRESS_REQUEST:
+      return {
+        loading: true,
+      };
+    case DELETE_SHIPPING_ADDRESS_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case DELETE_SHIPPING_ADDRESS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userGetShippingAddressByIdReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_SHIPPING_ADDRESS_BY_ID_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_SHIPPING_ADDRESS_BY_ID_SUCCESS:
+      return {
+        loading: false,
+        address: action.payload,
+      };
+    case GET_SHIPPING_ADDRESS_BY_ID_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userAddOrderMasterReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADD_ORDER_MASTER_REQUEST:
+      return {
+        loading: true,
+      };
+    case ADD_ORDER_MASTER_SUCCESS:
+      return {
+        loading: false,
+        orderData: action.payload,
+      };
+    case ADD_ORDER_MASTER_FAIL:
       return {
         loading: false,
         error: action.payload,

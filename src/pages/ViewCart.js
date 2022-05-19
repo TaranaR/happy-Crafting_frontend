@@ -12,7 +12,6 @@ import {
   getProductById,
   addToCart,
   removeProductFromCart,
-  updateCartByProduct,
 } from "../redux/actions/userAction";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +20,7 @@ import CartSummary from "../components/CartSummary";
 
 const useStyles = makeStyles(() => ({
   root: {
-    height: "100vh",
+    height: "100%",
     marginTop: "3%",
     //border: "1px solid black",
   },
@@ -36,10 +35,10 @@ export default function ViewCart() {
   const [cartUpdated, setCartUpdated] = useState(false);
 
   //Cart calculation
-  const [cartAmount, setCartAmount] = useState(0);
-  const [totalCartAmount, setTotalCartAmount] = useState(0);
-  const [shippingAmount, setShippingAmount] = useState(0);
-  const [totalBillAmount, setTotalBillAmount] = useState(0);
+  //const [cartAmount, setCartAmount] = useState(0);
+  // const [totalCartAmount, setTotalCartAmount] = useState(0);
+  // const [shippingAmount, setShippingAmount] = useState(0);
+  // const [totalBillAmount, setTotalBillAmount] = useState(0);
 
   //selectors
   const userGetCartDataByUser = useSelector(
@@ -56,14 +55,14 @@ export default function ViewCart() {
   // const { success: updateCart } = userUpdateCartByProduct;
 
   useEffect(() => {
-    // if (prodInfo?.length) {
-    //   dispatch({ type: GET_PRODUCT_BY_ID_RESET });
-    // }
+    if (prodInfo?.length) {
+      dispatch({ type: GET_PRODUCT_BY_ID_RESET });
+    }
     if (cartData?.length && cartUpdated) {
       dispatch({ type: GET_CART_DATA_BY_USER_RESET });
       dispatch(getCartDataByUser());
     }
-  }, [prodQty]);
+  }, [prodQty, cartUpdated]);
 
   useEffect(() => {
     if (prodInfo?.length) {
@@ -71,7 +70,7 @@ export default function ViewCart() {
     }
     dispatch({ type: GET_CART_DATA_BY_USER_RESET });
     dispatch(getCartDataByUser());
-  }, []); 
+  }, []);
 
   useEffect(() => {
     if (success) {
@@ -88,8 +87,6 @@ export default function ViewCart() {
       });
     }
   }, [cartData]);
-
-  console.log("----", cartAmount);
 
   const incrementQtyHandler = (prodId, price) => {
     setProdQty((prevState) => prevState + 1);
@@ -197,50 +194,6 @@ export default function ViewCart() {
                 }}
               >
                 <CartSummary cartData={cartData} />
-                {/* <Grid item xs={12} style={{ fontSize: 25 }}>
-                  Summary
-                </Grid>
-                <Grid item xs={12} style={{ fontSize: 25 }}>
-                  <Divider />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  style={{
-                    marginTop: 30,
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div>Your Cart Items</div>
-                  <div style={{ fontWeight: "bold" }}>₹{totalCartAmount}</div>
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  style={{
-                    marginTop: 30,
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div>Estimated Shipping</div>
-                  <div style={{ fontWeight: "bold" }}>₹{shippingAmount}</div>
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  style={{
-                    marginTop: 30,
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div>Estimated Total</div>
-                  <div style={{ fontWeight: "bold" }}>
-                    ₹{totalCartAmount + shippingAmount}
-                  </div>
-                </Grid> */}
               </Grid>
             </Grid>
           </Grid>

@@ -28,6 +28,7 @@ import ProductCategoryPage from "./pages/ProductCategoryPage";
 import { getCartDataByUser } from "./redux/actions/userAction";
 import ViewCart from "./pages/ViewCart";
 import Checkout from "./pages/Checkout";
+import ConfirmOrder from "./pages/ConfirmOrder";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,8 +51,14 @@ function App() {
   const sellerGetMainCategory = useSelector(
     (state) => state.sellerGetMainCategory
   );
+  const userGetCartDataByUser = useSelector(
+    (state) => state.userGetCartDataByUser
+  );
+  const { cartData } = userGetCartDataByUser;
   const { mainCatInfo } = sellerGetMainCategory;
   const classes = useStyles();
+
+  console.log(cartData?.length);
 
   const userProfileInfo = useSelector((state) => state.userProfile);
   const adminDetail = useSelector((state) => state.adminDetail);
@@ -322,20 +329,20 @@ function App() {
             (!token && <Navigate to="/" />)
           }
         />
-
-        {/* <Route
-          path="/sellerprofile"
+        <Route
+          path="/placeorder"
           element={
             (token && (
               <>
                 <Header title="Happy Crafting" sections={sections} />
-                <SellerProfile />
+                <ConfirmOrder />
                 <Footer />
               </>
             )) ||
+            (cartData?.length > 0 && <Navigate to="/viewcart" />) ||
             (!token && <Navigate to="/" />)
           }
-        /> */}
+        />
 
         <Route
           path="/myaccount"

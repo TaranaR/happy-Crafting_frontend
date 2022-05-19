@@ -65,6 +65,15 @@ import {
   ADD_SHIPPING_ADDRESS_REQUEST,
   ADD_SHIPPING_ADDRESS_SUCCESS,
   ADD_SHIPPING_ADDRESS_FAIL,
+  DELETE_SHIPPING_ADDRESS_REQUEST,
+  DELETE_SHIPPING_ADDRESS_SUCCESS,
+  DELETE_SHIPPING_ADDRESS_FAIL,
+  GET_SHIPPING_ADDRESS_BY_ID_REQUEST,
+  GET_SHIPPING_ADDRESS_BY_ID_SUCCESS,
+  GET_SHIPPING_ADDRESS_BY_ID_FAIL,
+  ADD_ORDER_MASTER_REQUEST,
+  ADD_ORDER_MASTER_SUCCESS,
+  ADD_ORDER_MASTER_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import { ADMIN_DETAILS_RESET } from "../../constants/adminConstants";
@@ -485,30 +494,30 @@ export const addToCart = (cart) => async (dispatch) => {
   }
 };
 
-export const updateCartByProduct = (prod) => async (dispatch) => {
-  console.log(prod);
-  try {
-    dispatch({ type: UPDATE_CART_BY_PRODUCT_REQUEST });
+// export const updateCartByProduct = (prod) => async (dispatch) => {
+//   console.log(prod);
+//   try {
+//     dispatch({ type: UPDATE_CART_BY_PRODUCT_REQUEST });
 
-    const token = JSON.parse(localStorage.getItem("userInfo"));
+//     const token = JSON.parse(localStorage.getItem("userInfo"));
 
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: token && `Bearer ${token.access}`,
-      },
-    };
+//     const config = {
+//       headers: {
+//         "Content-type": "application/json",
+//         Authorization: token && `Bearer ${token.access}`,
+//       },
+//     };
 
-    const { data } = await axios.post(
-      `${LOCAL_URL}/api/userapi/updateCartByProduct/`,
-      prod,
-      config
-    );
-    dispatch({ type: UPDATE_CART_BY_PRODUCT_SUCCESS, payload: data });
-  } catch (error) {
-    dispatch({ type: UPDATE_CART_BY_PRODUCT_FAIL, payload: error });
-  }
-};
+//     const { data } = await axios.post(
+//       `${LOCAL_URL}/api/userapi/updateCartByProduct/`,
+//       prod,
+//       config
+//     );
+//     dispatch({ type: UPDATE_CART_BY_PRODUCT_SUCCESS, payload: data });
+//   } catch (error) {
+//     dispatch({ type: UPDATE_CART_BY_PRODUCT_FAIL, payload: error });
+//   }
+// };
 
 export const getCartDataByUser = () => async (dispatch) => {
   try {
@@ -640,5 +649,88 @@ export const addShippingAddress = (shippingAdd) => async (dispatch) => {
     dispatch({ type: ADD_SHIPPING_ADDRESS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: ADD_SHIPPING_ADDRESS_FAIL, payload: error });
+  }
+};
+
+export const removeShippingAddress = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: DELETE_SHIPPING_ADDRESS_REQUEST,
+    });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.delete(
+      `${LOCAL_URL}/api/sellerapi/deleteShippingAddress/${id}`,
+      config
+    );
+
+    dispatch({
+      type: DELETE_SHIPPING_ADDRESS_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_SHIPPING_ADDRESS_FAIL,
+      palyload: error,
+    });
+  }
+};
+
+export const getShippingAddressById = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_SHIPPING_ADDRESS_BY_ID_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/sellerapi/getShippingAddressById/${id}`,
+      config
+    );
+    dispatch({
+      type: GET_SHIPPING_ADDRESS_BY_ID_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_SHIPPING_ADDRESS_BY_ID_FAIL,
+      payload: error,
+    });
+  }
+};
+
+export const addOrderMaster = (order) => async (dispatch) => {
+  try {
+    dispatch({ type: ADD_ORDER_MASTER_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+    const { data } = await axios.post(
+      `${LOCAL_URL}/api/sellerapi/addOrderMaster/`,
+      order,
+      config
+    );
+    dispatch({ type: ADD_ORDER_MASTER_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: ADD_ORDER_MASTER_FAIL, payload: error });
   }
 };

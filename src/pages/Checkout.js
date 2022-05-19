@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
@@ -18,6 +19,7 @@ import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import RadioGroup from "@mui/material/RadioGroup";
+import Modal from "@mui/material/Modal";
 import ErrorIcon from "@mui/icons-material/Error";
 import {
   GET_CART_DATA_BY_USER_RESET,
@@ -26,6 +28,7 @@ import {
 import {
   getShippingAddressByUser,
   addShippingAddress,
+  removeShippingAddress,
 } from "../redux/actions/userAction";
 import ViewCart from "./ViewCart";
 import CartSummary from "../components/CartSummary";
@@ -35,10 +38,12 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { NavLink } from "react-router-dom";
+import RemoveAddress from "../components/RemoveAddress";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
+    height: "100%",
     marginTop: "3%",
     // border: "1px solid black",
   },
@@ -52,6 +57,24 @@ const useStyles = makeStyles(() => ({
       },
     },
   },
+  modelWrapper: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    borderRadius: 5,
+    width: "45%",
+    maxHeight: "99%",
+    [theme.breakpoints.down("sm")]: {
+      height: "70%",
+    },
+    [theme.breakpoints.down("md")]: {
+      height: "100%",
+    },
+    backgroundColor: "white",
+    boxShadow: 24,
+    p: 4,
+  },
 }));
 
 export default function Checkout() {
@@ -59,6 +82,7 @@ export default function Checkout() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
   const [shippingAddId, setShippingAddId] = useState(0);
   const [title, setTitle] = useState("");
@@ -84,9 +108,21 @@ export default function Checkout() {
     (state) => state.userAddShippingAddress
   );
 
+  const userRemoveShippingAddress = useSelector(
+    (state) => state.userRemoveShippingAddress
+  );
+
   const { address } = userGetShippingAddressByUser;
   const { cartData } = userGetCartDataByUser;
   const { addressData } = userAddShippingAddress;
+  const { success } = userRemoveShippingAddress;
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "auto",
+    });
+  }, []);
 
   useEffect(() => {
     dispatch({ type: GET_CART_DATA_BY_USER_RESET });
@@ -102,17 +138,36 @@ export default function Checkout() {
     }
   }, [addressData]);
 
+  useEffect(() => {
+    if (success) {
+      dispatch({ type: GET_SHIPPING_ADDRESS_BY_USER_RESET });
+      dispatch(getShippingAddressByUser());
+    }
+  }, [success]);
+
   const addAddress = () => {
-    if (title === "") {
-      setError("Select Title");
+    setError("");
+    if (
+      title === "" ||
+      firstName === "" ||
+      lastName === "" ||
+      shipAdd === "" ||
+      city === "" ||
+      country === "" ||
+      pincode === "" ||
+      phone === ""
+    ) {
+      setError("Enter all information.");
       return;
     }
+
     const add = {
       title: title,
       first_name: firstName,
       last_name: lastName,
       address: shipAdd,
       city: city,
+      state: state,
       country: country,
       pincode: pincode,
       phone_number: phone,
@@ -130,9 +185,29 @@ export default function Checkout() {
     setPhone("");
   };
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const removeShippingAddressHandler = (id) => {
+    dispatch(removeShippingAddress(id));
+    console.log(id);
+    setOpen(false);
+  };
+
   return (
     <Fragment>
       <Container className={classes.root}>
+        <Modal open={open} onClose={handleClose}>
+          <Box className={classes.modelWrapper}>
+            <RemoveAddress
+              onRemoveShippingAddress={removeShippingAddressHandler}
+            />
+          </Box>
+        </Modal>
         <Grid container>
           <Grid item xs={12} style={{ fontSize: 30 }}>
             Checkout
@@ -140,11 +215,28 @@ export default function Checkout() {
           <Grid item xs={12}>
             <Divider />
           </Grid>
-          <Grid container style={{ marginTop: "2%", margin: "10px" }}>
+          <Grid container style={{ marginTop: "3%", margin: "10px" }}>
             <Grid item xs={12} lg={8} md={8}>
-              <Grid item xs={12}>
-                Select from existing address
-              </Grid>
+              {address?.length ? (
+                <Grid
+                  item
+                  xs={12}
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div>Select from existing address</div>
+                  <div>
+                    <Button
+                      style={{ textDecoration: "underline", color: "inherit" }}
+                      onClick={handleOpen}
+                    >
+                      Remove Address
+                    </Button>
+                  </div>
+                </Grid>
+              ) : (
+                ""
+              )}
+
               <Grid item xs={12} style={{ marginTop: "10px" }}>
                 <RadioGroup
                   name="radio-buttons-group"
@@ -175,9 +267,14 @@ export default function Checkout() {
                     })}
                 </RadioGroup>
               </Grid>
-              <Grid item xs={12} style={{ marginTop: 30 }}>
-                <Divider />
-              </Grid>
+              {address?.length ? (
+                <Grid item xs={12} style={{ marginTop: 30 }}>
+                  <Divider />
+                </Grid>
+              ) : (
+                ""
+              )}
+
               <Grid item xs={12} style={{ marginTop: 10 }}>
                 <Grid container>
                   <Grid item xs={12} style={{ fontSize: 20 }}>
@@ -241,11 +338,6 @@ export default function Checkout() {
                           setTitle("Other");
                         }}
                       />
-                      {/* {error && (
-                        <>
-                          <ErrorIcon /> {error}
-                        </>
-                      )} */}
                     </Stack>
                   </Grid>
                   <Grid
@@ -342,7 +434,9 @@ export default function Checkout() {
                         }}
                       />
                     </Grid>
-
+                    <Grid item xs={12}>
+                      {error && <Alert severity="error">{error}</Alert>}
+                    </Grid>
                     <Grid item xs={12}>
                       <Button
                         onClick={addAddress}
@@ -377,7 +471,7 @@ export default function Checkout() {
                   padding: 20,
                 }}
               >
-                <CartSummary cartData={cartData} />
+                <CartSummary cartData={cartData} addressId={shippingAddId} />
               </Grid>
             </Grid>
           </Grid>

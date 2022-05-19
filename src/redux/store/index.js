@@ -19,9 +19,11 @@ import {
   userGetCartDataByUserReducer,
   userGetProductByIdReducer,
   userRemoveProductFromCartReducer,
-  userUpdateCartByProductReducer,
   userGetShippingAddressByUserReducer,
   userAddShippingAddressReducer,
+  userRemoveShippingAddressReducer,
+  userGetShippingAddressByIdReducer,
+  userAddOrderMasterReducer,
 } from "../reducers/userReducer";
 
 import {
@@ -71,12 +73,14 @@ const rootReducer = combineReducers({
   userGetSubCategoryBySubCategoryName:
     userGetSubCategoryBySubCategoryNameReducer,
   userAddToCart: userAddToCartReducer,
-  userUpdateCartByProduct: userUpdateCartByProductReducer,
   userGetCartDataByUser: userGetCartDataByUserReducer,
   userGetProductById: userGetProductByIdReducer,
   userRemoveProductFromCart: userRemoveProductFromCartReducer,
   userGetShippingAddressByUser: userGetShippingAddressByUserReducer,
   userAddShippingAddress: userAddShippingAddressReducer,
+  userRemoveShippingAddress: userRemoveShippingAddressReducer,
+  userGetShippingAddressById: userGetShippingAddressByIdReducer,
+  userAddOrderMaster: userAddOrderMasterReducer,
 
   //seller
   sellerCreateShop: sellerCreateShopReducer,

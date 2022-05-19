@@ -195,7 +195,7 @@ export default function ManageProducts() {
           ></div>
         )} */}
         <Grid container>
-          <Grid item xs={12} style={{ fontSize: 20, fontWeight: "bold" }}>
+          <Grid item xs={12} style={{ fontSize: 20 }}>
             Manage Products
           </Grid>
           <Grid item xs={12}>
