@@ -231,6 +231,7 @@ export default function ProductDetails() {
             <Grid item xs={12} style={{ marginTop: "7%", fontSize: 20 }}>
               Color
             </Grid>
+
             <Grid item xs={12} style={{ marginTop: "2%", fontSize: 15 }}>
               {prodInfo && (
                 <div

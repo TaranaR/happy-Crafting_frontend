@@ -74,6 +74,18 @@ import {
   ADD_ORDER_MASTER_REQUEST,
   ADD_ORDER_MASTER_SUCCESS,
   ADD_ORDER_MASTER_FAIL,
+  REMOVE_CART_DATA_BY_USER_REQUEST,
+  REMOVE_CART_DATA_BY_USER_SUCCESS,
+  REMOVE_CART_DATA_BY_USER_FAIL,
+  ADD_ORDER_DETAILS_REQUEST,
+  ADD_ORDER_DETAILS_SUCCESS,
+  ADD_ORDER_DETAILS_FAIL,
+  GET_ORDER_MASTER_REQUEST,
+  GET_ORDER_MASTER_SUCCESS,
+  GET_ORDER_MASTER_FAIL,
+  GET_ORDER_DETAILS_REQUEST,
+  GET_ORDER_DETAILS_SUCCESS,
+  GET_ORDER_DETAILS_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import { ADMIN_DETAILS_RESET } from "../../constants/adminConstants";
@@ -732,5 +744,117 @@ export const addOrderMaster = (order) => async (dispatch) => {
     dispatch({ type: ADD_ORDER_MASTER_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: ADD_ORDER_MASTER_FAIL, payload: error });
+  }
+};
+
+export const removeCartDataByUser = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: REMOVE_CART_DATA_BY_USER_REQUEST,
+    });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.delete(
+      `${LOCAL_URL}/api/userapi/deleteCartDataByUser/`,
+      config
+    );
+
+    dispatch({
+      type: REMOVE_CART_DATA_BY_USER_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: REMOVE_CART_DATA_BY_USER_FAIL,
+      palyload: error,
+    });
+  }
+};
+
+export const addOrderDetails = (orderDetails) => async (dispatch) => {
+  try {
+    dispatch({ type: ADD_ORDER_DETAILS_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+    const { data } = await axios.post(
+      `${LOCAL_URL}/api/sellerapi/addOrderDetails/`,
+      orderDetails,
+      config
+    );
+    dispatch({ type: ADD_ORDER_DETAILS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: ADD_ORDER_DETAILS_FAIL, payload: error });
+  }
+};
+
+export const getOrderMasterByUser = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_ORDER_MASTER_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/sellerapi/getOrderMasterByUser/`,
+      config
+    );
+    dispatch({
+      type: GET_ORDER_MASTER_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ORDER_MASTER_FAIL,
+      payload: error,
+    });
+  }
+};
+
+export const getOrderDetailsByOrderMaster = (orderId) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_ORDER_DETAILS_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/sellerapi/getOrderDetailsByOrderMasterId/${orderId}`,
+      config
+    );
+    dispatch({
+      type: GET_ORDER_DETAILS_SUCCESS,
+      payload: { [orderId]: data },
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ORDER_DETAILS_FAIL,
+      payload: error,
+    });
   }
 };

@@ -22,6 +22,31 @@ export default function CartSummary(props) {
     }
   }, [cartData]);
 
+  const handleSubmit = () => {
+    if (location.pathname === "/checkout" && !props.addressId) {
+      setError("Select Address");
+    }
+    if (location.pathname === "/placeorder" && !props.paymentMethod) {
+      console.log("in placeorder");
+      setError("Select Payment Method");
+    }
+
+    if (location.pathname === "/viewcart" && cartData?.length > 0) {
+      navigate("/checkout");
+    }
+    if (location.pathname === "/checkout" && props.addressId) {
+      navigate("/placeorder", {
+        state: {
+          addId: props.addressId,
+          totalBillAmount: totalCartAmount + shippingAmount,
+        },
+      });
+    }
+    if (location.pathname === "/placeorder" && props.paymentMethod) {
+      props.onConfirmOrder();
+    }
+  };
+
   return (
     <Fragment>
       <Grid item xs={12} style={{ fontSize: 25 }}>
@@ -88,25 +113,7 @@ export default function CartSummary(props) {
             }}
           >
             <Button
-              onClick={() => {
-                if (!props.addressId) {
-                  setError("Select Address");
-                }
-                if (location.pathname === "/viewcart" && cartData?.length > 0) {
-                  navigate("/checkout");
-                }
-                if (location.pathname === "/checkout" && props.addressId) {
-                  navigate("/placeorder", {
-                    state: {
-                      addId: props.addressId,
-                      totalBillAmount: totalCartAmount + shippingAmount,
-                    },
-                  });
-                }
-                if (location.pathname === "/placeorder") {
-                  props.onConfirmOrder();
-                }
-              }}
+              onClick={handleSubmit}
               style={{
                 backgroundColor: "#745D3E",
                 width: "100%",
@@ -118,6 +125,11 @@ export default function CartSummary(props) {
                 : "Continue Checkout"}
             </Button>
             {location.pathname === "/checkout" && error && (
+              <Grid item xs={12} sx={{ marginTop: 2, color: "red" }}>
+                <Alert severity="error">{error}</Alert>
+              </Grid>
+            )}
+            {location.pathname === "/placeorder" && error && (
               <Grid item xs={12} sx={{ marginTop: 2, color: "red" }}>
                 <Alert severity="error">{error}</Alert>
               </Grid>

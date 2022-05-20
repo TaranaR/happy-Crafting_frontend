@@ -19,6 +19,7 @@
     "@tinymce/tinymce-react": "^4.1.0",
     "axios": "^0.26.1",
     "firebase": "^9.6.11",
+    "moment": "^2.29.3",
     "react": "^18.0.0",
     "react-colorful": "^5.5.1",
     "react-dom": "^18.0.0",

@@ -188,6 +188,8 @@ function Header(props) {
       navigate("/profile");
     } else if (e.target.innerText === "My Account") {
       navigate("/myaccount");
+    } else if (e.target.innerText === "Orders") {
+      navigate("/myorder");
     }
     setAnchorEl(null);
   };
@@ -257,11 +259,14 @@ function Header(props) {
                             Profile
                           </NavLink>
                           <br />
-                          <NavLink to="/profile" className={classes.drawerLink}>
+                          <NavLink to="/myorder" className={classes.drawerLink}>
                             Orders
                           </NavLink>
                           <br />
-                          <NavLink to="/profile" className={classes.drawerLink}>
+                          <NavLink
+                            to="/mycollection"
+                            className={classes.drawerLink}
+                          >
                             My Collection
                           </NavLink>
                           <br />

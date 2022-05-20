@@ -44,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   mainContainer: {
-    marginTop: "5%",
-    height: "60%",
+    marginTop: "2%",
+
     [theme.breakpoints.down("sm")]: {
       height: "70%",
     },

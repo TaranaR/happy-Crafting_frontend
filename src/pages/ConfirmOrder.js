@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, Grid, Radio, Box } from "@mui/material";
+import { Container, Grid, Radio, Box, Button } from "@mui/material";
 import { Divider } from "@material-ui/core";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -9,6 +9,8 @@ import {
   getShippingAddressById,
   getCartDataByUser,
   addOrderMaster,
+  addOrderDetails,
+  removeCartDataByUser,
 } from "../redux/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "@mui/material/styles";
@@ -16,6 +18,7 @@ import { GET_CART_DATA_BY_USER_RESET } from "../constants/userConstants";
 import ViewCart from "./ViewCart";
 import CartSummary from "../components/CartSummary";
 import Modal from "@mui/material/Modal";
+import logo from "../Images/orderConfirm.gif";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
     left: "50%",
     transform: "translate(-50%, -50%)",
     borderRadius: 5,
-    width: "45%",
-    maxHeight: "99%",
+    width: "20%",
+    maxHeight: "50%",
     [theme.breakpoints.down("sm")]: {
       height: "70%",
     },
@@ -45,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ConfirmOrder() {
   const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const classes = useStyles();
   const theme = useTheme();
@@ -53,6 +57,7 @@ export default function ConfirmOrder() {
 
   const [paymentMethod, setPaymentMethod] = useState("");
   const [open, setOpen] = useState(false);
+  const [orderId, setOrderId] = useState("");
 
   const userGetShippingAddressById = useSelector(
     (state) => state.userGetShippingAddressById
@@ -61,10 +66,14 @@ export default function ConfirmOrder() {
     (state) => state.userGetCartDataByUser
   );
   const userAddOrderMaster = useSelector((state) => state.userAddOrderMaster);
+  const userRemoveCartDataByUser = useSelector(
+    (state) => state.userRemoveCartDataByUser
+  );
 
   const { address } = userGetShippingAddressById;
   const { cartData } = userGetCartDataByUser;
   const { orderData } = userAddOrderMaster;
+  const { success } = userRemoveCartDataByUser;
 
   useEffect(() => {
     window.scrollTo({
@@ -81,15 +90,39 @@ export default function ConfirmOrder() {
 
   useEffect(() => {
     if (orderData) {
-      handleOpen();
+      setOrderId(orderData.id);
     }
   }, [orderData]);
+
+  useEffect(() => {
+    if (orderId && cartData) {
+      cartData.map((item) => {
+        const orderDetail = {
+          order_master_id: orderId,
+          quantity: item["quantity"],
+          product_id: item["product"],
+        };
+        dispatch(addOrderDetails(orderDetail));
+      });
+      // dispatch(removeCartDataByUser());
+      handleOpen();
+    }
+  }, [orderId]);
+
+  useEffect(() => {
+    if (success) {
+      dispatch({ type: GET_CART_DATA_BY_USER_RESET });
+      dispatch(getCartDataByUser());
+    }
+  }, [success]);
 
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+    dispatch(removeCartDataByUser());
+    navigate("/myorder");
   };
 
   const confirmOrder = () => {
@@ -104,7 +137,48 @@ export default function ConfirmOrder() {
     <Fragment>
       <Container className={classes.root}>
         <Modal open={open} onClose={handleClose}>
-          <Box className={classes.modelWrapper}>Order Confirm</Box>
+          <Box className={classes.modelWrapper}>
+            <Grid container style={{ padding: 20 }}>
+              <Grid item xs={12} style={{ textAlign: "center" }}>
+                <img
+                  src={logo}
+                  alt="Loading...."
+                  style={{ height: 100, width: 100 }}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                }}
+              >
+                Your Order is comfirm
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                style={{
+                  textAlign: "center",
+                  marginTop: 20,
+                }}
+              >
+                <Button
+                  style={{
+                    backgroundColor: "#745D3E",
+                    width: "30%",
+                    color: "#ffffff",
+                  }}
+                  onClick={() => {
+                    handleClose();
+                  }}
+                >
+                  Ok
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
         </Modal>
         <Grid container>
           <Grid item xs={12} style={{ fontSize: 30 }}>
@@ -175,6 +249,7 @@ export default function ConfirmOrder() {
                 <CartSummary
                   cartData={cartData}
                   onConfirmOrder={confirmOrder}
+                  paymentMethod={paymentMethod}
                 />
               </Grid>
             </Grid>

@@ -80,6 +80,20 @@ import {
   ADD_ORDER_MASTER_REQUEST,
   ADD_ORDER_MASTER_SUCCESS,
   ADD_ORDER_MASTER_FAIL,
+  REMOVE_CART_DATA_BY_USER_REQUEST,
+  REMOVE_CART_DATA_BY_USER_SUCCESS,
+  REMOVE_CART_DATA_BY_USER_FAIL,
+  ADD_ORDER_DETAILS_REQUEST,
+  ADD_ORDER_DETAILS_SUCCESS,
+  ADD_ORDER_DETAILS_FAIL,
+  ADD_ORDER_DETAILS_RESET,
+  ADD_ORDER_MASTER_RESET,
+  GET_ORDER_MASTER_REQUEST,
+  GET_ORDER_MASTER_SUCCESS,
+  GET_ORDER_MASTER_FAIL,
+  GET_ORDER_MASTER_RESET,
+  GET_ORDER_DETAILS_REQUEST,
+  GET_ORDER_DETAILS_SUCCESS,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -671,6 +685,114 @@ export const userAddOrderMasterReducer = (state = {}, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    case ADD_ORDER_MASTER_RESET:
+      return {};
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userRemoveCartDataByUserReducer = (state = {}, action) => {
+  switch (action.type) {
+    case REMOVE_CART_DATA_BY_USER_REQUEST:
+      return {
+        loading: true,
+      };
+    case REMOVE_CART_DATA_BY_USER_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case REMOVE_CART_DATA_BY_USER_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userAddOrderDetailsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADD_ORDER_DETAILS_REQUEST:
+      return {
+        loading: true,
+      };
+    case ADD_ORDER_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        orderDetailData: action.payload,
+      };
+    case ADD_ORDER_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case ADD_ORDER_DETAILS_RESET:
+      return {};
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userOrderMasterReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_ORDER_MASTER_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_ORDER_MASTER_SUCCESS:
+      return {
+        loading: false,
+        orderMasterData: action.payload,
+      };
+    case GET_ORDER_MASTER_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case GET_ORDER_MASTER_RESET:
+      return {};
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userOrderDetailsByOrderMasterReducer = (
+  state = {
+    orderDetailsData: [],
+    loading: false,
+    error: false,
+  },
+  action
+) => {
+  switch (action.type) {
+    case GET_ORDER_DETAILS_REQUEST:
+      return {
+        loading: true,
+        orderDetailsData: [],
+      };
+    case GET_ORDER_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        orderDetailsData: [...state.orderDetailsData, action.payload],
+      };
+    case GET_ORDER_MASTER_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case GET_ORDER_MASTER_RESET:
+      return {
+        orderDetailsData: [],
       };
     case USER_LOGOUT:
       return {};

@@ -282,7 +282,14 @@ export default function MyAccount() {
                   >
                     Orders
                   </NavLink> */}
-                  <Button className={classes.linksBtn}>Orders</Button>
+                  <Button
+                    className={classes.linksBtn}
+                    onClick={() => {
+                      navigate("/myorder");
+                    }}
+                  >
+                    Orders
+                  </Button>
                 </Grid>
                 <Grid margin={1}>
                   {/* <NavLink to="/" className={classes.links}>

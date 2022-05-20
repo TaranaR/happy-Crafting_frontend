@@ -29,6 +29,7 @@ import { getCartDataByUser } from "./redux/actions/userAction";
 import ViewCart from "./pages/ViewCart";
 import Checkout from "./pages/Checkout";
 import ConfirmOrder from "./pages/ConfirmOrder";
+import MyOrder from "./pages/MyOrder";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,29 +59,13 @@ function App() {
   const { mainCatInfo } = sellerGetMainCategory;
   const classes = useStyles();
 
-  console.log(cartData?.length);
-
   const userProfileInfo = useSelector((state) => state.userProfile);
   const adminDetail = useSelector((state) => state.adminDetail);
-  // const userGetCartDataByUser = useSelector(
-  //   (state) => state.userGetCartDataByUser
-  // );
-  // const { cartData } = userGetCartDataByUser;
+
   const { admin, error } = adminDetail;
   const { user } = userProfileInfo;
-  //const { token } = userLogin;
+
   const token = JSON.parse(localStorage.getItem("userInfo"));
-
-  // useEffect(() => {
-  //   dispatch(getCartDataByUser());
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   cartData &&
-  //     cartData.map((item) => {
-  //       setCartCount((prevState) => prevState + item.quantity);
-  //     });
-  // }, [cartData]);
 
   const adminSections = [
     { title: "Home", url: "/" },
@@ -336,6 +321,20 @@ function App() {
               <>
                 <Header title="Happy Crafting" sections={sections} />
                 <ConfirmOrder />
+                <Footer />
+              </>
+            )) ||
+            (cartData?.length > 0 && <Navigate to="/viewcart" />) ||
+            (!token && <Navigate to="/" />)
+          }
+        />
+        <Route
+          path="/myorder"
+          element={
+            (token && (
+              <>
+                <Header title="Happy Crafting" sections={sections} />
+                <MyOrder />
                 <Footer />
               </>
             )) ||

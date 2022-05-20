@@ -24,6 +24,10 @@ import {
   userRemoveShippingAddressReducer,
   userGetShippingAddressByIdReducer,
   userAddOrderMasterReducer,
+  userRemoveCartDataByUserReducer,
+  userAddOrderDetailsReducer,
+  userOrderMasterReducer,
+  userOrderDetailsByOrderMasterReducer,
 } from "../reducers/userReducer";
 
 import {
@@ -81,6 +85,10 @@ const rootReducer = combineReducers({
   userRemoveShippingAddress: userRemoveShippingAddressReducer,
   userGetShippingAddressById: userGetShippingAddressByIdReducer,
   userAddOrderMaster: userAddOrderMasterReducer,
+  userRemoveCartDataByUser: userRemoveCartDataByUserReducer,
+  userAddOrderDetails: userAddOrderDetailsReducer,
+  userOrderMaster: userOrderMasterReducer,
+  userOrderDetailsByOrderMaster: userOrderDetailsByOrderMasterReducer,
 
   //seller
   sellerCreateShop: sellerCreateShopReducer,

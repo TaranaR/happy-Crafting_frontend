@@ -103,9 +103,6 @@ export default function ViewCart() {
     } else {
       setCartUpdated(false);
     }
-
-    // dispatch({ type: GET_CART_DATA_BY_USER_RESET });
-    // dispatch(getCartDataByUser());
   };
 
   const decrementQtyHandler = (prodId, price) => {
@@ -122,9 +119,6 @@ export default function ViewCart() {
     } else {
       setCartUpdated(false);
     }
-
-    // dispatch({ type: GET_CART_DATA_BY_USER_RESET });
-    // dispatch(getCartDataByUser());
   };
 
   const removeProductFromCartHandler = (prodId) => {
