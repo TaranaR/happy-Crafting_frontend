@@ -41,6 +41,8 @@ import {
   sellerGetSubCategoryReducer,
   sellerUpdateProductReducer,
   sellerDeleteProductReducer,
+  sellerGetOrderedProductBySellerReducer,
+  sellerOrderDispatchedBySellerReducer,
 } from "../reducers/sellerReducer";
 
 import {
@@ -101,6 +103,8 @@ const rootReducer = combineReducers({
   sellerGetTypeOfProduct: sellerGetTypeOfProductReducer,
   sellerGetMainCategory: sellerGetMainCategoryReducer,
   sellerGetSubCategory: sellerGetSubCategoryReducer,
+  sellerGetOrderedProductBySeller: sellerGetOrderedProductBySellerReducer,
+  sellerOrderDispatchedBySeller: sellerOrderDispatchedBySellerReducer,
 
   //admin
   adminDetail: adminDetailReducer,

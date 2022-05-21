@@ -415,9 +415,11 @@ export default function Checkout() {
                     <Grid item xs={4}>
                       <TextField
                         value={pincode}
+                        type="number"
                         required
                         fullWidth
                         placeholder="Pincode"
+                        inputProps={{ maxLength: 6 }}
                         onChange={(e) => {
                           setPinCode(e.target.value);
                         }}
@@ -426,6 +428,7 @@ export default function Checkout() {
                     <Grid item xs={4}>
                       <TextField
                         value={phone}
+                        type="number"
                         required
                         fullWidth
                         placeholder="Phone Number"

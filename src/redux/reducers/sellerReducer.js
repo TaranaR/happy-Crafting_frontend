@@ -33,6 +33,13 @@ import {
   SELLER_PRODUCT_DELETE_REQUEST,
   SELLER_PRODUCT_DELETE_SUCCESS,
   SELLER_PRODUCT_DELETE_FAIL,
+  GET_ORDERED_PRODUCT_SELLER_REQUEST,
+  GET_ORDERED_PRODUCT_SELLER_SUCCESS,
+  GET_ORDERED_PRODUCT_SELLER_FAIL,
+  GET_ORDERED_PRODUCT_SELLER_RESET,
+  ORDER_DISPATCHED_BY_SELLER_REQUEST,
+  ORDER_DISPATCHED_BY_SELLER_SUCCESS,
+  ORDER_DISPATCHED_BY_SELLER_FAIL,
 } from "../../constants/sellerConstants";
 import { USER_LOGOUT } from "../../constants/userConstants";
 
@@ -279,6 +286,66 @@ export const sellerDeleteProductReducer = (state = {}, action) => {
         error: action.payload,
       };
 
+    default:
+      return state;
+  }
+};
+
+export const sellerGetOrderedProductBySellerReducer = (
+  state = {
+    orderedProduct: {},
+    loading: false,
+    error: {},
+  },
+  action
+) => {
+  switch (action.type) {
+    case GET_ORDERED_PRODUCT_SELLER_REQUEST:
+      return {
+        loading: true,
+        orderedProduct: [],
+      };
+    case GET_ORDERED_PRODUCT_SELLER_SUCCESS:
+      return {
+        loading: false,
+        orderedProduct: action.payload,
+      };
+    case GET_ORDERED_PRODUCT_SELLER_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case GET_ORDERED_PRODUCT_SELLER_RESET:
+      return {
+        orderedProduct: {},
+      };
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const sellerOrderDispatchedBySellerReducer = (
+  state = { loading: false, success: false, dispatchedInfo: {} },
+  action
+) => {
+  switch (action.type) {
+    case ORDER_DISPATCHED_BY_SELLER_REQUEST:
+      return {
+        loading: true,
+      };
+    case ORDER_DISPATCHED_BY_SELLER_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        dispatchedInfo: action.payload,
+      };
+    case ORDER_DISPATCHED_BY_SELLER_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

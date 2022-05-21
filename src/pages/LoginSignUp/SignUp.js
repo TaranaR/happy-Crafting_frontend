@@ -74,7 +74,7 @@ export default function SignUp(props) {
               <TextField
                 required
                 id="email"
-                label="Email Address"
+                placeholder="Email Address"
                 name="email"
                 inputRef={emailInputRef}
                 sx={{ width: "155%" }}
@@ -84,7 +84,7 @@ export default function SignUp(props) {
               <TextField
                 required
                 id="UserName"
-                label="User Name"
+                placeholder="User Name"
                 name="UserName"
                 inputRef={usernameInputRef}
                 sx={{ width: "155%" }}
@@ -95,7 +95,7 @@ export default function SignUp(props) {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                placeholder="Password"
                 type="password"
                 id="password"
                 inputRef={passwordInputRef}

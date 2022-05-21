@@ -1,7 +1,7 @@
 import { Box, Button, Grid } from "@mui/material";
 import { Fragment, useEffect } from "react";
 import { Divider, makeStyles } from "@material-ui/core";
-import ProductById from "./ProductById";
+import { useTheme } from "@mui/material/styles";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -13,14 +13,11 @@ const useStyles = makeStyles(() => ({
 
 export default function ProductByOrderId(props) {
   const classes = useStyles();
+  const theme = useTheme();
   const orderId = props.orderId;
   const orderDetailsData = props.orderDetailsData;
-  const prodInfo = props.prodInfo;
   const billAmount = props.billAmount;
-
-  //   console.log(prodInfo);
-
-  //   console.log("--", orderId, orderDetailsData, billAmount);
+  console.log(orderDetailsData);
   return (
     <Fragment>
       <Box className={classes.root}>
@@ -75,20 +72,67 @@ export default function ProductByOrderId(props) {
               <Grid item xs={12} style={{ marginTop: 20 }}>
                 {orderDetailsData &&
                   orderDetailsData.map((item) => {
-                    return (
-                      item[orderId] &&
-                      item[orderId].map((i, index) => {
+                    if (item[orderId]) {
+                      const { orderDetails, productDetails } = item[orderId];
+                      return orderDetails.map((i, index) => {
                         return (
-                          <Grid item xs={12} key={index}>
-                            <ProductById
-                              prodInfo={prodInfo}
-                              prodId={i.product_id}
-                              qty={i.quantity}
-                            />
+                          <Grid container key={index}>
+                            <Grid item xs={6} lg={3} md={3}>
+                              <img
+                                src={productDetails[index].image}
+                                style={{ height: 100, width: 100 }}
+                              />
+                            </Grid>
+                            <Grid
+                              item
+                              xs={6}
+                              lg={3}
+                              md={3}
+                              display={{ xs: "none", lg: "block", md: "block" }}
+                            >
+                              {productDetails[index].name}
+                            </Grid>
+                            <Grid
+                              item
+                              xs={6}
+                              lg={3}
+                              md={3}
+                              display={{ xs: "block", lg: "none", md: "none" }}
+                            >
+                              {productDetails[index].name}
+                              <br />₹{productDetails[index].price}
+                              <br />
+                              Qty :: {i.quantity}
+                            </Grid>
+                            <Grid
+                              item
+                              xs={6}
+                              lg={3}
+                              md={3}
+                              sx={{
+                                textAlign: "center",
+                                [theme.breakpoints.down("sm")]: {
+                                  textAlign: "left",
+                                },
+                              }}
+                              display={{ xs: "none", lg: "block", md: "block" }}
+                            >
+                              {i.quantity}
+                            </Grid>
+                            <Grid
+                              item
+                              xs={6}
+                              lg={3}
+                              md={3}
+                              style={{ textAlign: "left" }}
+                              display={{ xs: "none", lg: "block", md: "block" }}
+                            >
+                              ₹{productDetails[index].price}
+                            </Grid>
                           </Grid>
                         );
-                      })
-                    );
+                      });
+                    }
                   })}
               </Grid>
               <Grid item xs={12}>

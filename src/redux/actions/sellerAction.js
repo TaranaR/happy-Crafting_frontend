@@ -32,6 +32,12 @@ import {
   SELLER_PRODUCT_UPDATE_SUCCESS,
   SELLER_PRODUCT_UPDATE_FAIL,
   SELLER_PRODUCT_UPDATE_REQUEST,
+  GET_ORDERED_PRODUCT_SELLER_REQUEST,
+  GET_ORDERED_PRODUCT_SELLER_SUCCESS,
+  GET_ORDERED_PRODUCT_SELLER_FAIL,
+  ORDER_DISPATCHED_BY_SELLER_REQUEST,
+  ORDER_DISPATCHED_BY_SELLER_SUCCESS,
+  ORDER_DISPATCHED_BY_SELLER_FAIL,
 } from "../../constants/sellerConstants";
 import axios from "axios";
 import { LOCAL_URL } from "../../constants/global";
@@ -370,6 +376,72 @@ export const deleteSellerProduct = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_PRODUCT_DELETE_FAIL,
+      palyload: error,
+    });
+  }
+};
+
+export const getOrderedProductBySeller = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_ORDERED_PRODUCT_SELLER_REQUEST });
+
+    // const { token } = store.getState().userLogin;
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/sellerapi/getOrderedProductBySeller/`,
+      config
+    );
+
+    dispatch({ type: GET_ORDERED_PRODUCT_SELLER_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_ORDERED_PRODUCT_SELLER_FAIL,
+      payload: error,
+    });
+  }
+};
+
+export const orderDispatchedBySeller = (orderId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: ORDER_DISPATCHED_BY_SELLER_REQUEST,
+    });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+    };
+
+    const order = {
+      isDispatched: true,
+    };
+
+    const { data } = await axios.put(
+      `${LOCAL_URL}/api/sellerapi/updateOrdermaster/${orderId}`,
+      order,
+      config
+    );
+
+    dispatch({
+      type: ORDER_DISPATCHED_BY_SELLER_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ORDER_DISPATCHED_BY_SELLER_FAIL,
       palyload: error,
     });
   }

@@ -97,6 +97,7 @@ export default function ConfirmOrder() {
   useEffect(() => {
     if (orderId && cartData) {
       cartData.map((item) => {
+        console.log("---", item["seller_id"]);
         const orderDetail = {
           order_master_id: orderId,
           quantity: item["quantity"],
@@ -129,9 +130,12 @@ export default function ConfirmOrder() {
     const order = {
       address: addId,
       bill_amount: totalBillAmount,
+      payment_method: paymentMethod,
     };
     dispatch(addOrderMaster(order));
   };
+
+  console.log(paymentMethod);
 
   return (
     <Fragment>
@@ -221,7 +225,7 @@ export default function ConfirmOrder() {
                   }}
                 >
                   <FormControlLabel
-                    value="cash"
+                    value="cod"
                     control={<Radio />}
                     label="Cash on delivery"
                   />

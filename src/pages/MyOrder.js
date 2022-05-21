@@ -4,7 +4,6 @@ import {
   getCartDataByUser,
   getOrderMasterByUser,
   getOrderDetailsByOrderMaster,
-  getProductById,
 } from "../redux/actions/userAction";
 import {
   GET_CART_DATA_BY_USER_RESET,
@@ -12,14 +11,12 @@ import {
   GET_PRODUCT_BY_ID_RESET,
 } from "../constants/userConstants";
 import { useDispatch, useSelector } from "react-redux";
-import { useTheme } from "@mui/material/styles";
 import { makeStyles } from "@material-ui/core";
 import { Container, Divider, Grid, Button, ButtonBase } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useNavigate } from "react-router-dom";
 import ProductByOrderId from "../components/ProductsByOrderId";
 
@@ -39,19 +36,11 @@ export default function MyOrder() {
   const userOrderDetailsByOrderMaster = useSelector(
     (state) => state.userOrderDetailsByOrderMaster
   );
-  const userGetProductById = useSelector((state) => state.userGetProductById);
 
   const { orderMasterData } = userOrderMaster;
   const { orderDetailsData } = userOrderDetailsByOrderMaster;
-  const { prodInfo } = userGetProductById;
-
-  console.log("---", prodInfo, orderDetailsData);
 
   useEffect(() => {
-    if (prodInfo?.length) {
-      console.log("first time");
-      dispatch({ type: GET_PRODUCT_BY_ID_RESET });
-    }
     dispatch({ type: GET_CART_DATA_BY_USER_RESET });
     dispatch(getCartDataByUser());
     dispatch({ type: GET_ORDER_MASTER_RESET });
@@ -59,26 +48,6 @@ export default function MyOrder() {
   }, []);
 
   useEffect(() => {
-    if (prodInfo?.length) {
-      dispatch({ type: GET_PRODUCT_BY_ID_RESET });
-    }
-    if (orderDetailsData?.length && !prodInfo?.length) {
-      console.log("---", orderDetailsData);
-      orderDetailsData.map((item) => {
-        Object.values(item).map((i) => {
-          i.map((v) => {
-            console.log("hiiiii", v.product_id);
-            dispatch(getProductById(v.product_id));
-          });
-        });
-      });
-    }
-  }, [orderDetailsData]);
-
-  useEffect(() => {
-    // if (prodInfo?.length) {
-    //   dispatch({ type: GET_PRODUCT_BY_ID_RESET });
-    // }
     if (orderMasterData) {
       orderMasterData.map((item) => {
         dispatch(getOrderDetailsByOrderMaster(item.id));
@@ -121,7 +90,6 @@ export default function MyOrder() {
                           <ProductByOrderId
                             orderDetailsData={orderDetailsData}
                             orderId={item["id"]}
-                            prodInfo={prodInfo}
                             billAmount={item["bill_amount"]}
                           />
                         </AccordionDetails>

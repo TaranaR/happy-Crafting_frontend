@@ -188,7 +188,7 @@ function Header(props) {
       navigate("/profile");
     } else if (e.target.innerText === "My Account") {
       navigate("/myaccount");
-    } else if (e.target.innerText === "Orders") {
+    } else if (e.target.innerText === "My Orders") {
       navigate("/myorder");
     }
     setAnchorEl(null);
@@ -260,7 +260,7 @@ function Header(props) {
                           </NavLink>
                           <br />
                           <NavLink to="/myorder" className={classes.drawerLink}>
-                            Orders
+                            My Orders
                           </NavLink>
                           <br />
                           <NavLink
@@ -394,7 +394,7 @@ function Header(props) {
 
                     <MenuItem onClick={handleClose}>
                       {/* <CreateIcon /> */}
-                      <Typography style={{ padding: 5 }}>Orders</Typography>
+                      <Typography style={{ padding: 5 }}>My Orders</Typography>
                     </MenuItem>
 
                     <MenuItem onClick={handleClose}>

@@ -85,7 +85,7 @@ export default function Login(props) {
                 required
                 variant="outlined"
                 id="email"
-                label="Username"
+                placeholder="Username"
                 name="username"
                 inputRef={usernameInputRef}
               />
@@ -95,7 +95,7 @@ export default function Login(props) {
                 required
                 variant="outlined"
                 name="password"
-                label="Password"
+                placeholder="Password"
                 type="password"
                 id="password"
                 inputRef={passwordInputRef}

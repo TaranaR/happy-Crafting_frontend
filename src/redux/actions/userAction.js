@@ -850,6 +850,7 @@ export const getOrderDetailsByOrderMaster = (orderId) => async (dispatch) => {
     dispatch({
       type: GET_ORDER_DETAILS_SUCCESS,
       payload: { [orderId]: data },
+      // payload: data,
     });
   } catch (error) {
     dispatch({

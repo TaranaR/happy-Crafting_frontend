@@ -1,12 +1,17 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Button, Divider, Grid } from "@material-ui/core";
-import { getSellerProfile } from "../../redux/actions/sellerAction";
+import {
+  getSellerProfile,
+  getOrderedProductBySeller,
+} from "../../redux/actions/sellerAction";
 import { useDispatch, useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import Setting from "./Forms/Setting";
 import ManageProducts from "./Forms/ManageProducts";
 import SellerAccount from "./Forms/SellerAccount";
+import SellerOrder from "./Forms/SellerOrder";
+import { GET_ORDERED_PRODUCT_SELLER_RESET } from "../../constants/sellerConstants";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -58,6 +63,8 @@ export default function SellerProfile() {
     content = <ManageProducts />;
   } else if (page === "MY ACCOUNT") {
     content = <SellerAccount />;
+  } else if (page === "VIEW ORDERS") {
+    content = <SellerOrder />;
   }
   // let button = isActive ? classes.activeBtn : classes.inactiveBtn;
 
@@ -67,6 +74,11 @@ export default function SellerProfile() {
     //   btnRef.current.focus();
     // }
   }, [dispatch, btnRef]);
+
+  useEffect(() => {
+    dispatch({ type: GET_ORDERED_PRODUCT_SELLER_RESET });
+    dispatch(getOrderedProductBySeller());
+  }, []);
 
   return (
     <Fragment>
@@ -81,7 +93,7 @@ export default function SellerProfile() {
               }}
             >
               <Avatar
-                src={seller.shop_logo}
+                src={seller && seller.shop_logo}
                 style={{ border: "1px solid #D5C6B1", transform: "scale(3)" }}
               />
             </Box>
@@ -89,7 +101,7 @@ export default function SellerProfile() {
             <Box
               style={{ textAlign: "center", fontSize: 25, marginTop: "50px" }}
             >
-              Welcome {seller.shop_name}
+              Welcome {seller && seller.shop_name}
             </Box>
             <Box style={{ justifyContent: "center", display: "flex" }}>
               <Divider style={{ width: "30vh", marginTop: "10px" }} />

@@ -163,7 +163,7 @@ export const userProfileReducer = (state = { user: {} }, action) => {
       };
     case USER_DETAILS_RESET:
       return {
-        user: {},
+        // user: {},
       };
     // case USER_LOGOUT:
     //   return {};
