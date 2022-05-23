@@ -86,6 +86,9 @@ import {
   GET_ORDER_DETAILS_REQUEST,
   GET_ORDER_DETAILS_SUCCESS,
   GET_ORDER_DETAILS_FAIL,
+  ADD_PRODUCT_TO_MY_COLLECTION_REQUEST,
+  ADD_PRODUCT_TO_MY_COLLECTION_SUCCESS,
+  ADD_PRODUCT_TO_MY_COLLECTION_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import { ADMIN_DETAILS_RESET } from "../../constants/adminConstants";
@@ -857,5 +860,29 @@ export const getOrderDetailsByOrderMaster = (orderId) => async (dispatch) => {
       type: GET_ORDER_DETAILS_FAIL,
       payload: error,
     });
+  }
+};
+
+export const addToMyCollection = (collection) => async (dispatch) => {
+  try {
+    dispatch({ type: ADD_PRODUCT_TO_MY_COLLECTION_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.post(
+      `${LOCAL_URL}/api/userapi/addToMyCollection/`,
+      collection,
+      config
+    );
+    dispatch({ type: ADD_PRODUCT_TO_MY_COLLECTION_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: ADD_PRODUCT_TO_MY_COLLECTION_FAIL, payload: error });
   }
 };

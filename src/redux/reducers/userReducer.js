@@ -94,6 +94,9 @@ import {
   GET_ORDER_MASTER_RESET,
   GET_ORDER_DETAILS_REQUEST,
   GET_ORDER_DETAILS_SUCCESS,
+  ADD_PRODUCT_TO_MY_COLLECTION_REQUEST,
+  ADD_PRODUCT_TO_MY_COLLECTION_SUCCESS,
+  ADD_PRODUCT_TO_MY_COLLECTION_FAIL,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -793,6 +796,29 @@ export const userOrderDetailsByOrderMasterReducer = (
     case GET_ORDER_MASTER_RESET:
       return {
         orderDetailsData: [],
+      };
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userAddToMyCollectionReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADD_PRODUCT_TO_MY_COLLECTION_REQUEST:
+      return {
+        loading: true,
+      };
+    case ADD_PRODUCT_TO_MY_COLLECTION_SUCCESS:
+      return {
+        loading: false,
+        myCollectionData: action.payload,
+      };
+    case ADD_PRODUCT_TO_MY_COLLECTION_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
       };
     case USER_LOGOUT:
       return {};

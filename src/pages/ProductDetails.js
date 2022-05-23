@@ -7,11 +7,14 @@ import {
   getCartDataByUser,
   getSellerById,
   addToCart,
+  addToMyCollection,
 } from "../redux/actions/userAction";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Container, Grid, Button, TextField } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-
+import Snackbar from "@mui/material/Snackbar";
+import AlertTitle from "@mui/material/AlertTitle";
+import Alert from "@mui/material/Alert";
 import Review from "../components/Review";
 import AddedProductToCart from "../components/AddedProductToCart";
 import { GET_CART_DATA_BY_USER_RESET } from "../constants/userConstants";
@@ -42,10 +45,12 @@ export default function ProductDetails() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [snackOpen, setSnackOpen] = useState(false);
   const [prodQty, setProdQty] = useState(1);
   const [qty, setQty] = useState(1);
   const [open, setOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   const usergetProductDetails = useSelector(
     (state) => state.userGetProductDetails
@@ -53,10 +58,15 @@ export default function ProductDetails() {
   const userGetSellerById = useSelector((state) => state.userGetSellerById);
   const userProfile = useSelector((state) => state.userProfile);
   const userAddToCart = useSelector((state) => state.userAddToCart);
+  const userAddToMyCollection = useSelector(
+    (state) => state.userAddToMyCollection
+  );
+
   const { user } = userProfile;
   const { sellerInfo } = userGetSellerById;
   const { prodInfo } = usergetProductDetails;
   const { cartData, loading: cartLoading } = userAddToCart;
+  const { myCollectionData } = userAddToMyCollection;
   const prodId = params.prodId;
   let reviews = [];
   let likeBtn = "";
@@ -132,6 +142,23 @@ export default function ProductDetails() {
     }
   };
 
+  const addToMyCollectionHandler = () => {
+    const collection = {
+      product: prodInfo["id"],
+    };
+
+    dispatch(addToMyCollection(collection));
+    setShowAlert(true);
+  };
+
+  useEffect(() => {
+    setInterval(() => {
+      if (myCollectionData) {
+        setShowAlert(false);
+      }
+    }, 3000);
+  }, [myCollectionData, showAlert]);
+
   if (prodInfo) {
     reviews = prodInfo["reviews"];
   }
@@ -149,6 +176,17 @@ export default function ProductDetails() {
           </Box>
         </Modal>
       )}
+      {showAlert && (
+        <Alert
+          //onClose={handleSnackClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          <AlertTitle>Success</AlertTitle>
+          {myCollectionData}
+        </Alert>
+      )}
+
       <Container className={classes.root}>
         <Grid container spacing={8}>
           <Grid item xs={6}>
@@ -206,6 +244,7 @@ export default function ProductDetails() {
               <div>
                 <Button
                   style={{ color: "inherit", textDecoration: "underline" }}
+                  onClick={addToMyCollectionHandler}
                 >
                   Add to Collection
                 </Button>

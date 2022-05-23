@@ -17,7 +17,7 @@ export default function ProductByOrderId(props) {
   const orderId = props.orderId;
   const orderDetailsData = props.orderDetailsData;
   const billAmount = props.billAmount;
-  console.log(orderDetailsData);
+
   return (
     <Fragment>
       <Box className={classes.root}>
@@ -150,7 +150,7 @@ export default function ProductByOrderId(props) {
                 <Divider orientation="vertical" />
                 &nbsp;&nbsp; {billAmount}
               </Grid>
-              <Grid
+              {/* <Grid
                 item
                 xs={12}
                 style={{
@@ -159,7 +159,7 @@ export default function ProductByOrderId(props) {
                 }}
               >
                 <Button>Track Order</Button>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
         </Grid>

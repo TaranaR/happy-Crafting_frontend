@@ -40,6 +40,12 @@ import {
   ORDER_DISPATCHED_BY_SELLER_REQUEST,
   ORDER_DISPATCHED_BY_SELLER_SUCCESS,
   ORDER_DISPATCHED_BY_SELLER_FAIL,
+  SEND_EMAIL_REQUEST,
+  SEND_EMAIL_SUCCESS,
+  SEND_EMAIL_FAIL,
+  ORDER_DELIVERED_REQUEST,
+  ORDER_DELIVERED_SUCCESS,
+  ORDER_DELIVERED_FAIL,
 } from "../../constants/sellerConstants";
 import { USER_LOGOUT } from "../../constants/userConstants";
 
@@ -342,6 +348,52 @@ export const sellerOrderDispatchedBySellerReducer = (
         dispatchedInfo: action.payload,
       };
     case ORDER_DISPATCHED_BY_SELLER_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const sellerOrderDeliveredReducer = (
+  state = { loading: false, success: false, deliveredInfo: {} },
+  action
+) => {
+  switch (action.type) {
+    case ORDER_DELIVERED_REQUEST:
+      return {
+        loading: true,
+      };
+    case ORDER_DELIVERED_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        deliveredInfo: action.payload,
+      };
+    case ORDER_DELIVERED_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const sellersendEmailReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SEND_EMAIL_REQUEST:
+      return {
+        loading: true,
+      };
+    case SEND_EMAIL_SUCCESS:
+      return {
+        loading: false,
+        emailSendData: action.payload,
+      };
+    case SEND_EMAIL_FAIL:
       return {
         loading: false,
         error: action.payload,

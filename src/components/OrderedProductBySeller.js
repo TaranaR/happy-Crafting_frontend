@@ -14,14 +14,23 @@ const useStyles = makeStyles(() => ({
 export default function OrderedProductBySeller(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const orderId = props.orderId;
-  const orderDetail = props.orderDetail;
-  const products = props.products;
-  const billAmount = props.billAmount;
-  const isDispatched = props.isDispatched;
+  const {
+    orderId,
+    orderDetail,
+    products,
+    billAmount,
+    isDispatched,
+    isDelivered,
+    user,
+  } = props;
 
   const dispatchOrder = () => {
     props.onDispatchOrder(orderId);
+  };
+
+  const generateOtp = () => {
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    props.onGenerateOTP(user, otp, orderId);
   };
 
   return (
@@ -181,6 +190,7 @@ export default function OrderedProductBySeller(props) {
                 style={{
                   display: "flex",
                   justifyContent: "right",
+                  marginTop: "5%",
                 }}
               >
                 <Button
@@ -190,6 +200,24 @@ export default function OrderedProductBySeller(props) {
                 >
                   {isDispatched ? "Order Dispatched" : "Dispatch Order"}
                 </Button>
+                {isDispatched && !isDelivered && (
+                  <Button
+                    style={{ color: isDelivered && "green" }}
+                    onClick={generateOtp}
+                    disabled={isDelivered}
+                  >
+                    {isDelivered ? "Order Delivered" : "Generate OTP"}
+                  </Button>
+                )}
+                {isDelivered && (
+                  <Button
+                    style={{ color: isDelivered && "green" }}
+                    onClick={generateOtp}
+                    disabled={isDelivered}
+                  >
+                    {isDelivered ? "Order Delivered" : "Generate OTP"}
+                  </Button>
+                )}
               </Grid>
             </Grid>
           </Grid>

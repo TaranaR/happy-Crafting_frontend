@@ -28,6 +28,7 @@ import {
   userAddOrderDetailsReducer,
   userOrderMasterReducer,
   userOrderDetailsByOrderMasterReducer,
+  userAddToMyCollectionReducer,
 } from "../reducers/userReducer";
 
 import {
@@ -43,6 +44,8 @@ import {
   sellerDeleteProductReducer,
   sellerGetOrderedProductBySellerReducer,
   sellerOrderDispatchedBySellerReducer,
+  sellersendEmailReducer,
+  sellerOrderDeliveredReducer,
 } from "../reducers/sellerReducer";
 
 import {
@@ -105,6 +108,9 @@ const rootReducer = combineReducers({
   sellerGetSubCategory: sellerGetSubCategoryReducer,
   sellerGetOrderedProductBySeller: sellerGetOrderedProductBySellerReducer,
   sellerOrderDispatchedBySeller: sellerOrderDispatchedBySellerReducer,
+  sellersendEmail: sellersendEmailReducer,
+  sellerOrderDelivered: sellerOrderDeliveredReducer,
+  userAddToMyCollection: userAddToMyCollectionReducer,
 
   //admin
   adminDetail: adminDetailReducer,

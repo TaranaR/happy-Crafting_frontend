@@ -55,16 +55,13 @@ const useStyles = makeStyles((theme) => ({
   },
   appBarWrapper: {
     width: "100%",
-    //margin: "0 auto",
     marginTop: "3%",
   },
   navlink: {
     textDecoration: "none",
-    // color: "#B0B0B0 ",
+
     color: "#ffffff",
     "&:hover": {
-      // textDecoration: "underline",
-      // color: "#AC80B8",
       color: "#b0b0b0",
       border: "1",
     },
@@ -109,14 +106,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#ffffff",
     fontWeight: "bold",
   },
-  // accountCircle: {
-  //   "&:before": {
-  //     transform: "scale3d(1.5, 1.5, 5)",
-  //   },
-  //   "&:hover": {
-  //     transform: "scale3d(1.5, 1.5, 5)",
-  //   },
-  // },
 }));
 
 function Header(props) {
@@ -177,7 +166,6 @@ function Header(props) {
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
-    // console.log(anchorEl);
   };
 
   const handleClose = (e) => {
@@ -242,7 +230,6 @@ function Header(props) {
                     }}
                   >
                     <Grid item xs={12} style={{ marginTop: 30 }}>
-                      {/* <Divider style={{ backgroundColor: "white" }} /> */}
                       {!token && (
                         <Button
                           onClick={() => {
@@ -363,9 +350,7 @@ function Header(props) {
                   </IconButton>
                   <IconButton
                     aria-owns={Boolean(anchorEl) ? "account-menu" : undefined}
-                    // aria-controls={Boolean(anchorEl) ? "account-menu" : undefined}
                     aria-haspopup="true"
-                    // aria-expanded={Boolean(anchorEl) ? "true" : undefined}
                     onClick={handleMenu}
                     color="inherit"
                   >
@@ -382,23 +367,19 @@ function Header(props) {
                     transformOrigin={{ horizontal: "right", vertical: "top" }}
                     anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                   >
+                    <MenuItem disabled>
+                      <Typography style={{ padding: 5, height: 20 }}>
+                        Welcome {window.localStorage.getItem("username")}
+                      </Typography>
+                    </MenuItem>
                     <MenuItem onClick={handleClose} id="Profile">
-                      {/* <PersonAdd /> */}
                       <Typography style={{ padding: 5 }}>Profile</Typography>
                     </MenuItem>
-
-                    {/* <MenuItem onClick={handleClose}> */}
-                    {/* <CreateIcon /> */}
-                    {/* <Typography style={{ padding: 5 }}>My Account</Typography>
-                  </MenuItem> */}
-
                     <MenuItem onClick={handleClose}>
-                      {/* <CreateIcon /> */}
                       <Typography style={{ padding: 5 }}>My Orders</Typography>
                     </MenuItem>
 
                     <MenuItem onClick={handleClose}>
-                      {/* <CreateIcon /> */}
                       <Typography style={{ padding: 5 }}>
                         My Collection
                       </Typography>

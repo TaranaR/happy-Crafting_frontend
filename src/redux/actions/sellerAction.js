@@ -38,9 +38,21 @@ import {
   ORDER_DISPATCHED_BY_SELLER_REQUEST,
   ORDER_DISPATCHED_BY_SELLER_SUCCESS,
   ORDER_DISPATCHED_BY_SELLER_FAIL,
+  SEND_EMAIL_REQUEST,
+  SEND_EMAIL_SUCCESS,
+  SEND_EMAIL_FAIL,
+  ORDER_DELIVERED_REQUEST,
+  ORDER_DELIVERED_SUCCESS,
+  ORDER_DELIVERED_FAIL,
 } from "../../constants/sellerConstants";
 import axios from "axios";
-import { LOCAL_URL } from "../../constants/global";
+import {
+  EMAILJS_PUBLIC_KEY,
+  EMAILJS_SERVICE_ID,
+  EMAILJS_TEMPLATE_ID,
+  LOCAL_URL,
+} from "../../constants/global";
+import emailjs from "@emailjs/browser";
 
 export const createSellerShop = (shop) => async (dispatch) => {
   try {
@@ -442,6 +454,61 @@ export const orderDispatchedBySeller = (orderId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ORDER_DISPATCHED_BY_SELLER_FAIL,
+      palyload: error,
+    });
+  }
+};
+
+export const sendEmail = (templateParams) => async (dispatch) => {
+  try {
+    dispatch({ type: SEND_EMAIL_REQUEST });
+
+    const { text } = await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      templateParams,
+      EMAILJS_PUBLIC_KEY
+    );
+
+    dispatch({ type: SEND_EMAIL_SUCCESS, payload: text });
+  } catch (error) {
+    dispatch({ type: SEND_EMAIL_FAIL, payload: error });
+  }
+};
+
+export const orderDelivered = (orderId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: ORDER_DELIVERED_REQUEST,
+    });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+    };
+
+    const order = {
+      isDelivered: true,
+      isPaid: true,
+    };
+
+    const { data } = await axios.put(
+      `${LOCAL_URL}/api/sellerapi/updateOrdermaster/${orderId}`,
+      order,
+      config
+    );
+
+    dispatch({
+      type: ORDER_DELIVERED_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ORDER_DELIVERED_FAIL,
       palyload: error,
     });
   }

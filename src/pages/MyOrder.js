@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Moment from "moment";
 import {
   getCartDataByUser,
@@ -19,7 +19,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
 import ProductByOrderId from "../components/ProductsByOrderId";
-
+import TrackOrder from "../components/TrackOrder";
 const useStyles = makeStyles(() => ({
   root: {
     height: "100%",
@@ -32,6 +32,7 @@ export default function MyOrder() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const classes = useStyles();
+  const [orderId, setOrderId] = useState();
   const userOrderMaster = useSelector((state) => state.userOrderMaster);
   const userOrderDetailsByOrderMaster = useSelector(
     (state) => state.userOrderDetailsByOrderMaster
@@ -39,6 +40,8 @@ export default function MyOrder() {
 
   const { orderMasterData } = userOrderMaster;
   const { orderDetailsData } = userOrderDetailsByOrderMaster;
+
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     dispatch({ type: GET_CART_DATA_BY_USER_RESET });
@@ -55,6 +58,10 @@ export default function MyOrder() {
     }
   }, [orderMasterData]);
 
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
   return (
     <Fragment>
       <Container className={classes.root}>
@@ -65,13 +72,17 @@ export default function MyOrder() {
           <Grid item xs={12}>
             <Divider />
           </Grid>
-          <Grid container style={{ marginTop: "2%" }}>
+          <Grid container style={{ marginTop: "2%" }} spacing={3}>
             <Grid item xs={12} lg={8} md={8}>
               {orderMasterData &&
                 orderMasterData.map((item, index) => {
                   return (
                     <Grid item xs={12} style={{ padding: 5 }} key={index}>
-                      <Accordion key={item["id"]}>
+                      <Accordion
+                        key={item["id"]}
+                        expanded={expanded === index}
+                        onChange={handleChange(index)}
+                      >
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls="panel1a-content"
@@ -92,6 +103,22 @@ export default function MyOrder() {
                             orderId={item["id"]}
                             billAmount={item["bill_amount"]}
                           />
+                          <Grid
+                            item
+                            xs={12}
+                            style={{
+                              display: "flex",
+                              justifyContent: "right",
+                            }}
+                          >
+                            <Button
+                              onClick={() => {
+                                setOrderId(item["id"]);
+                              }}
+                            >
+                              Track Order
+                            </Button>
+                          </Grid>
                         </AccordionDetails>
                       </Accordion>
                     </Grid>
@@ -99,7 +126,7 @@ export default function MyOrder() {
                 })}
               {!orderMasterData?.length && (
                 <Grid item xs={12} lg={8} md={8}>
-                  Your don't have any orders
+                  You don't have any orders
                   <Button
                     onClick={() => {
                       navigate("/WallArt");
@@ -110,7 +137,25 @@ export default function MyOrder() {
                 </Grid>
               )}
             </Grid>
-            <Grid item xs={12} lg={12} md={12}></Grid>
+            <Grid item xs={12} lg={4} md={4}>
+              {orderId && (
+                <TrackOrder
+                  orderId={orderId}
+                  orderMasterData={orderMasterData}
+                />
+              )}
+              {!orderMasterData?.length
+                ? ""
+                : !orderId && (
+                    <Grid
+                      item
+                      xs={12}
+                      style={{ fontFamily: ["Lora", "serif"].join(",") }}
+                    >
+                      Select "Track Order" and see where your order is at.
+                    </Grid>
+                  )}
+            </Grid>
           </Grid>
         </Grid>
       </Container>

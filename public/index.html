@@ -28,7 +28,6 @@
 
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
 
     <!-- Font links -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -55,6 +54,7 @@
       rel="stylesheet"
     />
 
+    <!-- tinymce -->
     <script
       src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"
       referrerpolicy="origin"
@@ -75,6 +75,17 @@
         tinycomments_mode: "embedded",
         tinycomments_author: "Happy Crafting",
       });
+    </script>
+
+    <!-- emailjs -->
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      (function () {
+        emailjs.init("rNEFwpQdmUD4hLzSo");
+      })();
     </script>
 
     <title>React App</title>
