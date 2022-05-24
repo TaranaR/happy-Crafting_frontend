@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@mui/material/styles";
-import { getUserProfile } from "../../../redux/actions/userAction";
+import {
+  changePassword,
+  getUserData,
+  getUserProfile,
+} from "../../../redux/actions/userAction";
 import Snackbar from "@mui/material/Snackbar";
 import AlertTitle from "@mui/material/AlertTitle";
 import Alert from "@mui/material/Alert";
@@ -49,8 +53,10 @@ const useStyles = makeStyles((theme) => ({
     transform: "translate(-50%, -50%)",
     borderRadius: 5,
     width: "45%",
+    [theme.breakpoints.down("md")]: {
+      width: "80%",
+    },
     maxHeight: "95%",
-    //bgcolor: "background.paper",
     backgroundColor: "white",
     boxShadow: 24,
     p: 4,
@@ -59,12 +65,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "5%",
     marginRight: "5%",
     textAlign: "center",
-
-    // [theme.breakpoints.down("sm")]: {
-    //   "&.MuiOutlinedInput-root": {
-    //     width: "10px",
-    //   },
-    // },
 
     "& .MuiOutlinedInput-root": {
       "&:hover fieldset": {
@@ -92,16 +92,19 @@ export default function SellerAccount() {
 
   const userProfile = useSelector((state) => state.userProfile);
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  const userGetUserData = useSelector((state) => state.userGetUserData);
 
   const token = JSON.parse(localStorage.getItem("userInfo"));
   const { success, userInfo } = userUpdateProfile;
   const { user } = userProfile;
+  const { userData } = userGetUserData;
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
   useEffect(() => {
     dispatch(getUserProfile());
+    dispatch(getUserData());
   }, []);
 
   useEffect(() => {
@@ -140,12 +143,20 @@ export default function SellerAccount() {
     dispatch(getUserProfile());
   };
 
+  const changePasswordHandler = (data) => {
+    console.log(data);
+    dispatch(changePassword(userData.id, data));
+  };
+
   return (
     <Fragment>
       {open && (
         <Modal open={open} onClose={handleClose}>
           <Box className={classes.modelWrapper}>
-            <ChangePassword classes={classes} />
+            <ChangePassword
+              classes={classes}
+              onChangePassword={changePasswordHandler}
+            />
           </Box>
         </Modal>
       )}

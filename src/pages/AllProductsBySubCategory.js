@@ -8,7 +8,6 @@ import {
 } from "../redux/actions/userAction";
 import { NavLink, useLocation, useParams } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { renderIntoDocument } from "react-dom/test-utils";
 
 const useStyles = makeStyles(() => ({
   root: {

@@ -89,6 +89,21 @@ import {
   ADD_PRODUCT_TO_MY_COLLECTION_REQUEST,
   ADD_PRODUCT_TO_MY_COLLECTION_SUCCESS,
   ADD_PRODUCT_TO_MY_COLLECTION_FAIL,
+  GET_PRODUCTS_FROM_MYCOLLECTION_REQUEST,
+  GET_PRODUCTS_FROM_MYCOLLECTION_SUCCESS,
+  GET_PRODUCTS_FROM_MYCOLLECTION_FAIL,
+  REMOVE_PRODUCT_FROM_MYCOLLECTION_REQUEST,
+  REMOVE_PRODUCT_FROM_MYCOLLECTION_SUCCESS,
+  REMOVE_PRODUCT_FROM_MYCOLLECTION_FAIL,
+  ADD_REVIEW_FOR_PRODUCT_REQUEST,
+  ADD_REVIEW_FOR_PRODUCT_SUCCESS,
+  ADD_REVIEW_FOR_PRODUCT_FAIL,
+  CHANGE_PASSWORD_REQUEST,
+  CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PASSWORD_FAIL,
+  GET_USER_DATA_REQUEST,
+  GET_USER_DATA_SUCCESS,
+  GET_USER_DATA_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import { ADMIN_DETAILS_RESET } from "../../constants/adminConstants";
@@ -318,7 +333,7 @@ export const getUserById = (id) => async (dispatch) => {
       config
     );
 
-    dispatch({ type: GET_USER_BY_ID_SUCCESS, payload: data });
+    dispatch({ type: GET_USER_BY_ID_SUCCESS, payload: { [id]: data } });
   } catch (error) {
     dispatch({ type: GET_USER_BY_ID_FAIL, payload: error });
   }
@@ -872,7 +887,7 @@ export const addToMyCollection = (collection) => async (dispatch) => {
     const config = {
       headers: {
         "Content-type": "application/json",
-        Authorization: token && `Bearer ${token.access}`,
+        Authorization: `Bearer ${token.access}`,
       },
     };
 
@@ -884,5 +899,151 @@ export const addToMyCollection = (collection) => async (dispatch) => {
     dispatch({ type: ADD_PRODUCT_TO_MY_COLLECTION_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: ADD_PRODUCT_TO_MY_COLLECTION_FAIL, payload: error });
+  }
+};
+
+export const getProductsFromMyCollection = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_PRODUCTS_FROM_MYCOLLECTION_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/getMyCollectionByUser/`,
+      config
+    );
+    dispatch({
+      type: GET_PRODUCTS_FROM_MYCOLLECTION_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_PRODUCTS_FROM_MYCOLLECTION_FAIL,
+      payload: error,
+    });
+  }
+};
+
+export const removeProductFromCollection = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: REMOVE_PRODUCT_FROM_MYCOLLECTION_REQUEST,
+    });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.delete(
+      `${LOCAL_URL}/api/userapi/removeProductFromMyCollection/${id}`,
+      config
+    );
+
+    dispatch({
+      type: REMOVE_PRODUCT_FROM_MYCOLLECTION_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: REMOVE_PRODUCT_FROM_MYCOLLECTION_FAIL,
+      palyload: error,
+    });
+  }
+};
+
+export const addReviewForProduct = (review) => async (dispatch) => {
+  try {
+    dispatch({ type: ADD_REVIEW_FOR_PRODUCT_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.post(
+      `${LOCAL_URL}/api/userapi/createReview/`,
+      review,
+      config
+    );
+    dispatch({ type: ADD_REVIEW_FOR_PRODUCT_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: ADD_REVIEW_FOR_PRODUCT_FAIL, payload: error });
+  }
+};
+
+export const changePassword = (user, data) => async (dispatch) => {
+  console.log(user, data);
+  try {
+    dispatch({
+      type: CHANGE_PASSWORD_REQUEST,
+    });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `${LOCAL_URL}/api/userapi/changePassword/${user}/`,
+      data,
+      config
+    );
+
+    dispatch({
+      type: CHANGE_PASSWORD_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: CHANGE_PASSWORD_FAIL,
+      palyload: error,
+    });
+  }
+};
+
+export const getUserData = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_USER_DATA_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/getUserData/`,
+      config
+    );
+    dispatch({
+      type: GET_USER_DATA_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_USER_DATA_FAIL,
+      payload: error,
+    });
   }
 };

@@ -23,11 +23,9 @@ import {
   sendEmail,
 } from "../../../redux/actions/sellerAction";
 import { useDispatch, useSelector } from "react-redux";
-import ProductByOrderId from "../../../components/ProductsByOrderId";
+
 import OrderedProductBySeller from "../../../components/OrderedProductBySeller";
 import { GET_ORDERED_PRODUCT_SELLER_RESET } from "../../../constants/sellerConstants";
-import { getUserById } from "../../../redux/actions/userAction";
-import { GET_USER_BY_ID_RESET } from "../../../constants/userConstants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,34 +76,17 @@ export default function SellerOrder() {
   const sellerOrderDispatchedBySeller = useSelector(
     (state) => state.sellerOrderDispatchedBySeller
   );
-  const sellersendEmail = useSelector((state) => state.sellersendEmail);
-  const userGetUserById = useSelector((state) => state.userGetUserById);
+
   const sellerOrderDelivered = useSelector(
     (state) => state.sellerOrderDelivered
   );
 
-  const { userInfo } = userGetUserById;
-  const { emailSendData, error } = sellersendEmail;
   const { success } = sellerOrderDispatchedBySeller;
   const { orderedProduct } = sellerGetOrderedProductBySeller;
   const { orderMaster, orderDetail, products, users } = orderedProduct;
   const { success: deliveredSuccess } = sellerOrderDelivered;
 
   let errorContent = "";
-  // useEffect(() => {
-  //   console.log("----", user);
-  //   if (user) {
-  //     dispatch({ type: GET_USER_BY_ID_RESET });
-  //     dispatch(getUserById(user));
-  //     setUser(null);
-  //   }
-  // }, [user]);
-
-  // useEffect(() => {
-  //   if (emailSendData) {
-  //     handleOpen();
-  //   }
-  // }, [emailSendData]);
 
   useEffect(() => {
     dispatch({ type: GET_ORDERED_PRODUCT_SELLER_RESET });

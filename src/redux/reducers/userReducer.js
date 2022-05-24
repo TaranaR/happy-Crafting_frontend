@@ -97,6 +97,23 @@ import {
   ADD_PRODUCT_TO_MY_COLLECTION_REQUEST,
   ADD_PRODUCT_TO_MY_COLLECTION_SUCCESS,
   ADD_PRODUCT_TO_MY_COLLECTION_FAIL,
+  GET_PRODUCTS_FROM_MYCOLLECTION_REQUEST,
+  GET_PRODUCTS_FROM_MYCOLLECTION_SUCCESS,
+  GET_PRODUCTS_FROM_MYCOLLECTION_FAIL,
+  GET_PRODUCTS_FROM_MYCOLLECTION_RESET,
+  REMOVE_PRODUCT_FROM_MYCOLLECTION_REQUEST,
+  REMOVE_PRODUCT_FROM_MYCOLLECTION_SUCCESS,
+  REMOVE_PRODUCT_FROM_MYCOLLECTION_FAIL,
+  ADD_REVIEW_FOR_PRODUCT_REQUEST,
+  ADD_REVIEW_FOR_PRODUCT_SUCCESS,
+  ADD_REVIEW_FOR_PRODUCT_FAIL,
+  ADD_REVIEW_FOR_PRODUCT_RESET,
+  GET_USER_DATA_REQUEST,
+  GET_USER_DATA_SUCCESS,
+  GET_USER_DATA_FAIL,
+  CHANGE_PASSWORD_REQUEST,
+  CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PASSWORD_FAIL,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -272,16 +289,17 @@ export const userGetSellerByIdReducer = (state = {}, action) => {
   }
 };
 
-export const userGetUserByIdReducer = (state = { userInfo: {} }, action) => {
+export const userGetUserByIdReducer = (state = { userInfo: [] }, action) => {
   switch (action.type) {
     case GET_USER_BY_ID_REQUEST:
       return {
         loading: true,
+        userInfo: [],
       };
     case GET_USER_BY_ID_SUCCESS:
       return {
         loading: false,
-        userInfo: action.payload,
+        userInfo: [...state.userInfo, action.payload],
       };
     case GET_USER_BY_ID_FAIL:
       return {
@@ -290,7 +308,7 @@ export const userGetUserByIdReducer = (state = { userInfo: {} }, action) => {
       };
     case GET_USER_BY_ID_RESET:
       return {
-        userInfo: {},
+        userInfo: [],
       };
     default:
       return state;
@@ -326,7 +344,6 @@ export const userGetRandomProductByCategoryReducer = (
   },
   action
 ) => {
-  // console.log("---------------", state);
   switch (action.type) {
     case GET_RANDOM_PRODUCT_BY_CATEGORY_REQUEST:
       return {
@@ -822,6 +839,124 @@ export const userAddToMyCollectionReducer = (state = {}, action) => {
       };
     case USER_LOGOUT:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const userGetProductFromMyCollectionReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_PRODUCTS_FROM_MYCOLLECTION_REQUEST:
+      return {
+        loading: true,
+        success: false,
+      };
+    case GET_PRODUCTS_FROM_MYCOLLECTION_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        myCollection: action.payload,
+      };
+    case GET_PRODUCTS_FROM_MYCOLLECTION_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case GET_PRODUCTS_FROM_MYCOLLECTION_RESET:
+      return {};
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userRemoveProductFromCollectionReducer = (state = {}, action) => {
+  switch (action.type) {
+    case REMOVE_PRODUCT_FROM_MYCOLLECTION_REQUEST:
+      return {
+        loading: true,
+      };
+    case REMOVE_PRODUCT_FROM_MYCOLLECTION_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case REMOVE_PRODUCT_FROM_MYCOLLECTION_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userAddReviewForProductReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADD_REVIEW_FOR_PRODUCT_REQUEST:
+      return {
+        loading: true,
+      };
+    case ADD_REVIEW_FOR_PRODUCT_SUCCESS:
+      return {
+        loading: false,
+        reviewInfo: action.payload,
+      };
+    case ADD_REVIEW_FOR_PRODUCT_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case ADD_REVIEW_FOR_PRODUCT_RESET:
+      return {};
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userChangePasswordReducer = (
+  state = { loading: false, success: false },
+  action
+) => {
+  switch (action.type) {
+    case CHANGE_PASSWORD_REQUEST:
+      return {
+        loading: true,
+      };
+    case CHANGE_PASSWORD_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case CHANGE_PASSWORD_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userGetUserDataReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_USER_DATA_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_USER_DATA_SUCCESS:
+      return {
+        loading: false,
+        userData: action.payload,
+      };
+    case GET_USER_DATA_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

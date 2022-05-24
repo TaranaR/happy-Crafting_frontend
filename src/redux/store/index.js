@@ -29,6 +29,11 @@ import {
   userOrderMasterReducer,
   userOrderDetailsByOrderMasterReducer,
   userAddToMyCollectionReducer,
+  userGetProductFromMyCollectionReducer,
+  userRemoveProductFromCollectionReducer,
+  userAddReviewForProductReducer,
+  userChangePasswordReducer,
+  userGetUserDataReducer,
 } from "../reducers/userReducer";
 
 import {
@@ -94,6 +99,12 @@ const rootReducer = combineReducers({
   userAddOrderDetails: userAddOrderDetailsReducer,
   userOrderMaster: userOrderMasterReducer,
   userOrderDetailsByOrderMaster: userOrderDetailsByOrderMasterReducer,
+  userAddToMyCollection: userAddToMyCollectionReducer,
+  userGetProductFromMyCollection: userGetProductFromMyCollectionReducer,
+  userRemoveProductFromCollection: userRemoveProductFromCollectionReducer,
+  userAddReviewForProduct: userAddReviewForProductReducer,
+  userChangePassword: userChangePasswordReducer,
+  userGetUserData: userGetUserDataReducer,
 
   //seller
   sellerCreateShop: sellerCreateShopReducer,
@@ -110,7 +121,6 @@ const rootReducer = combineReducers({
   sellerOrderDispatchedBySeller: sellerOrderDispatchedBySellerReducer,
   sellersendEmail: sellersendEmailReducer,
   sellerOrderDelivered: sellerOrderDeliveredReducer,
-  userAddToMyCollection: userAddToMyCollectionReducer,
 
   //admin
   adminDetail: adminDetailReducer,

@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => ({
     textAlign: "center",
     marginTop: "100px",
     width: "70%",
-    fontWeight: "bold",
+    // fontWeight: "bold",
     "& .MuiOutlinedInput-root": {
       "&:hover fieldset": {
         borderColor: "#3F3422",

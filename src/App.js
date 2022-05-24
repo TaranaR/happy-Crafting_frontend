@@ -30,6 +30,7 @@ import ViewCart from "./pages/ViewCart";
 import Checkout from "./pages/Checkout";
 import ConfirmOrder from "./pages/ConfirmOrder";
 import MyOrder from "./pages/MyOrder";
+import MyCollection from "./pages/MyCollection";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -335,6 +336,20 @@ function App() {
               <>
                 <Header title="Happy Crafting" sections={sections} />
                 <MyOrder />
+                <Footer />
+              </>
+            )) ||
+            (cartData?.length > 0 && <Navigate to="/viewcart" />) ||
+            (!token && <Navigate to="/" />)
+          }
+        />
+        <Route
+          path="/mycollection"
+          element={
+            (token && (
+              <>
+                <Header title="Happy Crafting" sections={sections} />
+                <MyCollection />
                 <Footer />
               </>
             )) ||

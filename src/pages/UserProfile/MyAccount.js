@@ -295,7 +295,14 @@ export default function MyAccount() {
                   {/* <NavLink to="/" className={classes.links}>
                     My Collection
                   </NavLink> */}
-                  <Button className={classes.linksBtn}>My Collection</Button>
+                  <Button
+                    className={classes.linksBtn}
+                    onClick={() => {
+                      navigate("/mycollection");
+                    }}
+                  >
+                    My Collection
+                  </Button>
                 </Grid>
               </Container>
             </Grid>

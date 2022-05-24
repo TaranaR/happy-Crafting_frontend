@@ -4,6 +4,7 @@ import {
   getCartDataByUser,
   getOrderMasterByUser,
   getOrderDetailsByOrderMaster,
+  addReviewForProduct,
 } from "../redux/actions/userAction";
 import {
   GET_CART_DATA_BY_USER_RESET,
@@ -60,6 +61,10 @@ export default function MyOrder() {
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
+  };
+
+  const addReviewHandler = (review) => {
+    dispatch(addReviewForProduct(review));
   };
 
   return (
@@ -142,6 +147,8 @@ export default function MyOrder() {
                 <TrackOrder
                   orderId={orderId}
                   orderMasterData={orderMasterData}
+                  orderDetailsData={orderDetailsData}
+                  onAddReview={addReviewHandler}
                 />
               )}
               {!orderMasterData?.length

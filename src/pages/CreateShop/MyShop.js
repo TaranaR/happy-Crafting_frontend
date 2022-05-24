@@ -1,5 +1,5 @@
 import { Box, Fab, Grid } from "@material-ui/core";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -23,6 +23,14 @@ const useStyles = makeStyles(() => ({
 export default function MyShop() {
   const classes = useStyles();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "auto",
+    });
+  }, []);
+
   return (
     <Fragment>
       <Box className={classes.root}>

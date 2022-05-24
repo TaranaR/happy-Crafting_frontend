@@ -135,8 +135,6 @@ export default function ConfirmOrder() {
     dispatch(addOrderMaster(order));
   };
 
-  console.log(paymentMethod);
-
   return (
     <Fragment>
       <Container className={classes.root}>

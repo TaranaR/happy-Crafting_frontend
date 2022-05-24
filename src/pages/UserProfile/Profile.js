@@ -156,9 +156,9 @@ export default function Profile() {
             style={{ padding: "10px" }}
             className={classes.typographyClass}
           >
-            Explore our discovery feed to find artists to follow in My Society.
-            When you find something you like, you can promote it and save it for
-            later.
+            Explore our discovery feed to find artists to follow in
+            HappyCrafting. When you find something you like, you can promote it
+            and save it for later.
           </Typography>
           <Button
             sx={{ mt: 5, borderRadius: 5 }}

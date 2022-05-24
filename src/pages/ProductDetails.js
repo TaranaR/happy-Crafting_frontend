@@ -8,6 +8,7 @@ import {
   getSellerById,
   addToCart,
   addToMyCollection,
+  getUserById,
 } from "../redux/actions/userAction";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Container, Grid, Button, TextField } from "@mui/material";
@@ -18,6 +19,7 @@ import Alert from "@mui/material/Alert";
 import Review from "../components/Review";
 import AddedProductToCart from "../components/AddedProductToCart";
 import { GET_CART_DATA_BY_USER_RESET } from "../constants/userConstants";
+import { useTheme } from "@mui/material/styles";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -44,6 +46,7 @@ export default function ProductDetails() {
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const [snackOpen, setSnackOpen] = useState(false);
   const [prodQty, setProdQty] = useState(1);
@@ -51,6 +54,7 @@ export default function ProductDetails() {
   const [open, setOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [reviewsArray, setReviewsArray] = useState([]);
 
   const usergetProductDetails = useSelector(
     (state) => state.userGetProductDetails
@@ -61,7 +65,9 @@ export default function ProductDetails() {
   const userAddToMyCollection = useSelector(
     (state) => state.userAddToMyCollection
   );
+  const userGetUserById = useSelector((state) => state.userGetUserById);
 
+  const { userInfo } = userGetUserById;
   const { user } = userProfile;
   const { sellerInfo } = userGetSellerById;
   const { prodInfo } = usergetProductDetails;
@@ -99,6 +105,16 @@ export default function ProductDetails() {
       }
     }
   }, [dispatch, prodInfo]);
+
+  useEffect(() => {
+    if (prodInfo) {
+      if (prodInfo["reviews"].length >= 1) {
+        prodInfo["reviews"].map((item) => {
+          dispatch(getUserById(item.owner));
+        });
+      }
+    }
+  }, [prodInfo]);
 
   const handleClose = () => setOpen(false);
 
@@ -189,7 +205,17 @@ export default function ProductDetails() {
 
       <Container className={classes.root}>
         <Grid container spacing={8}>
-          <Grid item xs={6}>
+          <Grid
+            item
+            xs={12}
+            lg={6}
+            md={6}
+            sx={{
+              [theme.breakpoints.down("md")]: {
+                textAlign: "center",
+              },
+            }}
+          >
             {prodInfo && (
               <img
                 src={prodInfo["image"]}
@@ -200,7 +226,7 @@ export default function ProductDetails() {
               />
             )}
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} lg={6} md={6}>
             <Grid
               container
               style={{
@@ -344,16 +370,22 @@ export default function ProductDetails() {
       </Container>
       <Container className={classes.root}>
         <Grid container spacing={8}>
-          <Grid item xs={6}>
+          <Grid item xs={12} lg={6} md={6}>
             {reviews.length > 0 && (
               <Grid item xs={12} style={{ fontSize: 25 }}>
                 Reviews
               </Grid>
             )}
-
             {reviews &&
               reviews.map((item) => {
-                return <Review item={item} key={item.id} />;
+                return (
+                  <Review
+                    reviews={reviews}
+                    key={item.id}
+                    owner={item.owner}
+                    userInfo={userInfo}
+                  />
+                );
               })}
           </Grid>
         </Grid>

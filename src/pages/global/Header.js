@@ -178,6 +178,8 @@ function Header(props) {
       navigate("/myaccount");
     } else if (e.target.innerText === "My Orders") {
       navigate("/myorder");
+    } else if (e.target.innerText === "My Collection") {
+      navigate("/mycollection");
     }
     setAnchorEl(null);
   };
