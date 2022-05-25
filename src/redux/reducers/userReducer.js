@@ -114,6 +114,13 @@ import {
   CHANGE_PASSWORD_REQUEST,
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD_FAIL,
+  CHANGE_PASSWORD_RESET,
+  DEACTIVATE_USER_ACCOUNT_REQUEST,
+  DEACTIVATE_USER_ACCOUNT_SUCCESS,
+  DEACTIVATE_USER_ACCOUNT_FAIL,
+  GET_ALL_RANDOM_PRODUCT_REQUEST,
+  GET_ALL_RANDOM_PRODUCT_SUCCESS,
+  GET_ALL_RANDOM_PRODUCT_FAIL,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -918,7 +925,7 @@ export const userAddReviewForProductReducer = (state = {}, action) => {
 };
 
 export const userChangePasswordReducer = (
-  state = { loading: false, success: false },
+  state = { loading: false, success: false, changePasswordData: {} },
   action
 ) => {
   switch (action.type) {
@@ -930,29 +937,55 @@ export const userChangePasswordReducer = (
       return {
         loading: false,
         success: true,
+        changePasswordData: action.payload,
       };
     case CHANGE_PASSWORD_FAIL:
       return {
         loading: false,
         error: action.payload,
       };
+    case CHANGE_PASSWORD_RESET:
+      return {};
     default:
       return state;
   }
 };
 
-export const userGetUserDataReducer = (state = {}, action) => {
+export const userDeactivateUserAccountReducer = (state = {}, action) => {
   switch (action.type) {
-    case GET_USER_DATA_REQUEST:
+    case DEACTIVATE_USER_ACCOUNT_REQUEST:
       return {
         loading: true,
       };
-    case GET_USER_DATA_SUCCESS:
+    case DEACTIVATE_USER_ACCOUNT_SUCCESS:
       return {
         loading: false,
-        userData: action.payload,
+        success: true,
       };
-    case GET_USER_DATA_FAIL:
+    case DEACTIVATE_USER_ACCOUNT_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userGetAllRandomProductsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_ALL_RANDOM_PRODUCT_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_ALL_RANDOM_PRODUCT_SUCCESS:
+      return {
+        loading: false,
+        allProducts: action.payload,
+      };
+    case GET_ALL_RANDOM_PRODUCT_FAIL:
       return {
         loading: false,
         error: action.payload,

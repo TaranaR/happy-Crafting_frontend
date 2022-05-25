@@ -229,13 +229,8 @@ const Home = (props) => {
     );
   }
 
-  // const getProductByCategory = (cat) => {
-  //   dispatch(getRandomProductByCategory(cat));
-  // };
-
   return (
     <Fragment>
-      {/* <div className={classes.startImg} style={{ color: "#000000" }}> */}
       <Box className={classes.startImg}>
         <Container className={classes.textWrapper}>
           <TextSize>
@@ -348,6 +343,9 @@ const Home = (props) => {
                   width: "50%",
                   marginBottom: "6%",
                 }}
+                onClick={() => {
+                  navigate("/discovermore");
+                }}
               >
                 Explore Now
               </Button>
@@ -447,94 +445,6 @@ const Home = (props) => {
             </Box>
           );
         })}
-
-      {/* <Box className={classes.root} style={{ backgroundColor: "#A8DBD5" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} style={{ fontSize: 30, marginTop: "3%" }}>
-            Wall Art
-          </Grid>
-          <Grid item xs={12}>
-            <ProductByCategory cat="Wall Art" />
-          </Grid>
-        </Grid>
-      </Box>
-
-      <Box className={classes.root} style={{ backgroundColor: "#E4AEC5" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} style={{ fontSize: 30, marginTop: "3%" }}>
-            House Decor
-          </Grid>
-          <Grid item xs={12}>
-            <ProductByCategory cat="House Decor" />
-          </Grid>
-        </Grid>
-      </Box>
-
-      <Box className={classes.root} style={{ backgroundColor: "#F8ECD1" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} style={{ fontSize: 30, marginTop: "3%" }}>
-            Furniture
-          </Grid>
-          <Grid item xs={12}>
-            <ProductByCategory cat="Furniture" />
-          </Grid>
-        </Grid>
-      </Box>
-
-      <Box className={classes.root} style={{ backgroundColor: "#9FB4FF" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} style={{ fontSize: 30, marginTop: "3%" }}>
-            Bed & Bath
-          </Grid>
-          <Grid item xs={12}>
-            <ProductByCategory cat="Bed & Bath" />
-          </Grid>
-        </Grid>
-      </Box>
-
-      <Box className={classes.root} style={{ backgroundColor: "#FDAF75" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} style={{ fontSize: 30, marginTop: "3%" }}>
-            Office
-          </Grid>
-          <Grid item xs={12}>
-            <ProductByCategory cat="Office" />
-          </Grid>
-        </Grid>
-      </Box>
-
-      <Box className={classes.root} style={{ backgroundColor: "#8FBDD3" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} style={{ fontSize: 30, marginTop: "3%" }}>
-            Tech
-          </Grid>
-          <Grid item xs={12}>
-            <ProductByCategory cat="Tech" />
-          </Grid>
-        </Grid>
-      </Box>
-
-      <Box className={classes.root} style={{ backgroundColor: "#FFA8A8" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} style={{ fontSize: 30, marginTop: "3%" }}>
-            Outdoors & lifestyle
-          </Grid>
-          <Grid item xs={12}>
-            <ProductByCategory cat="Outdoors & lifestyle" />
-          </Grid>
-        </Grid>
-      </Box>
-
-      <Box className={classes.root} style={{ backgroundColor: "#EDCDBB" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} style={{ fontSize: 30, marginTop: "3%" }}>
-            Fashion
-          </Grid>
-          <Grid item xs={12}>
-            <ProductByCategory cat="Fashion" />
-          </Grid>
-        </Grid>
-      </Box> */}
     </Fragment>
   );
 };

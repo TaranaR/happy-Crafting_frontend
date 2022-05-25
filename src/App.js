@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useDebugValue, useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Header from "./pages/global/Header";
 import Home from "./pages/Home";
@@ -25,12 +25,13 @@ import ManageSubCategory from "./pages/Admin/ManageSubCategory";
 import ProductDetails from "./pages/ProductDetails";
 import AllProductsBySubCategory from "./pages/AllProductsBySubCategory";
 import ProductCategoryPage from "./pages/ProductCategoryPage";
-import { getCartDataByUser } from "./redux/actions/userAction";
+import { getCartDataByUser, getUserProfile } from "./redux/actions/userAction";
 import ViewCart from "./pages/ViewCart";
 import Checkout from "./pages/Checkout";
 import ConfirmOrder from "./pages/ConfirmOrder";
 import MyOrder from "./pages/MyOrder";
 import MyCollection from "./pages/MyCollection";
+import DiscoverMore from "./pages/DiscoverMore";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,12 +57,19 @@ function App() {
   const userGetCartDataByUser = useSelector(
     (state) => state.userGetCartDataByUser
   );
+
   const { cartData } = userGetCartDataByUser;
   const { mainCatInfo } = sellerGetMainCategory;
   const classes = useStyles();
 
   const userProfileInfo = useSelector((state) => state.userProfile);
   const adminDetail = useSelector((state) => state.adminDetail);
+
+  const sellerDeactivateShop = useSelector(
+    (state) => state.sellerDeactivateShop
+  );
+
+  const { success } = sellerDeactivateShop;
 
   const { admin, error } = adminDetail;
   const { user } = userProfileInfo;
@@ -93,6 +101,12 @@ function App() {
       //console.log(admin);
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (success) {
+      dispatch(getUserProfile());
+    }
+  }, [success]);
 
   return (
     <div className={classes.root}>
@@ -128,6 +142,17 @@ function App() {
             <>
               <Header title="Happy Crafting" sections={sections} />
               <ProductDetails />
+              <Footer />
+            </>
+          }
+        />
+
+        <Route
+          path="/discovermore"
+          element={
+            <>
+              <Header title="Happy Crafting" sections={sections} />
+              <DiscoverMore />
               <Footer />
             </>
           }

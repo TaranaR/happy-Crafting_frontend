@@ -72,8 +72,6 @@ export default function Profile() {
     navigate("/myshop");
   };
 
-  const discoverHandler = () => {};
-
   const editProfileHandler = () => {
     navigate("/myaccount");
   };
@@ -163,7 +161,9 @@ export default function Profile() {
           <Button
             sx={{ mt: 5, borderRadius: 5 }}
             className={classes.btnClass}
-            onClick={discoverHandler}
+            onClick={() => {
+              navigate("/discovermore");
+            }}
           >
             Discover
           </Button>

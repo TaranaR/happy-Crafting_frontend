@@ -12,8 +12,10 @@ import Container from "@mui/material/Container";
 import Snackbar from "@mui/material/Snackbar";
 import AlertTitle from "@mui/material/AlertTitle";
 import Alert from "@mui/material/Alert";
+import { useTheme } from "@material-ui/core";
 
 export default function Login(props) {
+  const theme = useTheme();
   const usernameInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -64,34 +66,79 @@ export default function Login(props) {
       <Box
         sx={{
           marginTop: "15%",
+
+          [theme.breakpoints.down("sm")]: {
+            marginTop: "10%",
+          },
         }}
       >
-        <Typography
-          component="h1"
-          variant="h3"
-          style={{ textAlign: "center", color: "#000000" }}
+        <Grid item xs={12} display={{ xs: "block", lg: "none", md: "none" }}>
+          <Typography
+            variant="h3"
+            sx={{
+              flex: 1,
+              fontFamily: ["Dancing Script", "cursive"].join(","),
+              fontWeight: "bold",
+              // color: "#00000",
+              // backgroundColor: "#f3ec78",
+              // backgroundImage:
+              //   "linear-gradient(to left, #ccccff 0%, #9900cc 100%)",
+              // backgroundImage: "conic-gradient(#af4261, #af4261)",
+              backgroundImage:
+                "repeating-conic-gradient( #af4261 1%, #764C47 5%)",
+              backgroundSize: "100%",
+              WebkitBackgroundClip: "text",
+              MozBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Happy Crafting
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sx={{
+            textAlign: "center",
+            color: "#000000",
+            [theme.breakpoints.down("sm")]: { marginTop: "3%" },
+          }}
         >
-          Login
-        </Typography>
-        <Box
+          <Typography
+            component="h1"
+            variant="h3"
+            sx={{
+              [theme.breakpoints.down("sm")]: {
+                fontSize: 25,
+              },
+            }}
+          >
+            Login
+          </Typography>
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
           component="form"
           onSubmit={handleSubmit}
-          sx={{ mt: "10%", marginBottom: "10%" }}
+          sx={{ mt: "10%" }}
         >
           {/* <Grid container spacing={2} style={{ marginLeft: "4rem" }}> */}
-          <Grid container spacing={1}>
-            <Grid item>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
               <TextField
                 required
+                fullWidth
                 variant="outlined"
-                id="email"
                 placeholder="Username"
                 name="username"
                 inputRef={usernameInputRef}
               />
             </Grid>
-            <Grid item>
+            <Grid item xs={12}>
               <TextField
+                fullWidth
                 required
                 variant="outlined"
                 name="password"
@@ -121,8 +168,8 @@ export default function Login(props) {
                 fullWidth
                 variant="contained"
                 sx={{
-                  mt: 3,
-                  mb: 2,
+                  mt: "3%",
+                  mb: "2%",
                   background: "#000000",
                   color: "#ffffff",
                   fontWeight: "bold",
@@ -143,8 +190,8 @@ export default function Login(props) {
                 type="submit"
                 fullWidth
                 style={{
-                  mt: 3,
-                  mb: 2,
+                  mt: "3%",
+                  mb: "2%",
                   backgroundColor: "#000000",
                   color: "#ffffff",
                   fontWeight: "bold",
@@ -159,18 +206,18 @@ export default function Login(props) {
             justifyContent="flex-end"
             style={{ marginTop: "10px" }}
           >
-            <Grid item xs>
+            <Grid item xs={4}>
               <NavLink to="#" style={{ color: "#000000" }}>
                 Forgot password?
               </NavLink>
             </Grid>
-            <Grid item>
+            <Grid item xs={8}>
               <NavLink to="/signup" style={{ color: "#000000" }}>
                 Don't have an account? Sign Up
               </NavLink>
             </Grid>
           </Grid>
-        </Box>
+        </Grid>
       </Box>
       {token && (
         <Snackbar

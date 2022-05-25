@@ -247,7 +247,7 @@ export default function ProductDetails() {
                     style={{
                       // color: isLiked ? "red" : "#7A7B7F",
                       color:
-                        reviews.length > 0
+                        reviews && reviews.length > 0
                           ? "red"
                           : isLiked
                           ? "red"

@@ -1,7 +1,19 @@
 import { Fragment, useEffect, useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@mui/material/Avatar";
-import { Button, Container, Divider, Grid, TextField } from "@mui/material";
+import {
+  Button,
+  Container,
+  Divider,
+  Grid,
+  TextField,
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import { storage } from "../../../constants/firebase";
 import { useTheme } from "@mui/material/styles";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -11,7 +23,9 @@ import Snackbar from "@mui/material/Snackbar";
 import AlertTitle from "@mui/material/AlertTitle";
 import Alert from "@mui/material/Alert";
 import { Editor } from "@tinymce/tinymce-react";
+import Modal from "@mui/material/Modal";
 import {
+  deactivateShop,
   getSellerProfile,
   updateSellerProfile,
 } from "../../../redux/actions/sellerAction";
@@ -40,6 +54,21 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  modelWrapper: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    borderRadius: 5,
+    width: "45%",
+    [theme.breakpoints.down("md")]: {
+      width: "80%",
+    },
+    maxHeight: "95%",
+    backgroundColor: "white",
+    boxShadow: 24,
+    p: 4,
+  },
 }));
 
 export default function Setting(props) {
@@ -48,6 +77,7 @@ export default function Setting(props) {
   const theme = useTheme();
   const editorRef = useRef(null);
 
+  const [open, setOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState("");
   const [snackOpen, setSnackOpen] = useState(false);
   const [shopName, setShopName] = useState("");
@@ -147,8 +177,41 @@ export default function Setting(props) {
     });
   };
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
+
+  const deactivateShopHandler = () => {
+    dispatch(deactivateShop());
+  };
+
   return (
     <Fragment>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {/* {"Use Google's location service?"} */}
+          Are you sure, you want to deactivate your shop?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            By deactivating shop you won't be able to sell your products
+            anymore.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Disagree</Button>
+          <Button onClick={deactivateShopHandler} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Container className={classes.root}>
         <Grid container spacing={3}>
           <Grid item xs={12} style={{ fontSize: 20 }}>
@@ -270,23 +333,11 @@ export default function Setting(props) {
                 },
               }}
             >
-              {/* <TextField
-                size="small"
-                multiline
-                maxRows={5}
-                style={{ width: "50vh" }}
-                value={shopDescription}
-                onChange={(e) => {
-                  setShopDescription(e.target.value);
-                }}
-              /> */}
               <Editor
                 onInit={(evt, editor) => (editorRef.current = editor)}
                 value={props.seller && shopDescription}
                 onChange={() => {
-                  //console.log(editorRef.current.getContent());
                   setShopDescription(editorRef.current.getContent());
-                  //setProdDescription(e.target.getContent());
                 }}
                 init={{
                   height: 300,
@@ -403,7 +454,9 @@ export default function Setting(props) {
             }}
           >
             <Grid xs={12}>
-              <Button className={classes.deactivateBtn}>Deactivate Shop</Button>
+              <Button className={classes.deactivateBtn} onClick={handleOpen}>
+                Deactivate Shop
+              </Button>
             </Grid>
           </Grid>
         </Grid>

@@ -55,6 +55,7 @@ export default function SellerProfile() {
 
   const sellerProfile = useSelector((state) => state.sellerProfile);
   const { seller } = sellerProfile;
+
   let content = "";
 
   if (page === "SHOP PROFILE") {

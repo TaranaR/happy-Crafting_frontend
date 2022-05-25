@@ -46,6 +46,9 @@ import {
   ORDER_DELIVERED_REQUEST,
   ORDER_DELIVERED_SUCCESS,
   ORDER_DELIVERED_FAIL,
+  DEACTIVATE_SHOP_REQUEST,
+  DEACTIVATE_SHOP_SUCCESS,
+  DEACTIVATE_SHOP_FAIL,
 } from "../../constants/sellerConstants";
 import { USER_LOGOUT } from "../../constants/userConstants";
 
@@ -398,6 +401,29 @@ export const sellersendEmailReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+export const sellerDeactivateShopReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DEACTIVATE_SHOP_REQUEST:
+      return {
+        loading: true,
+      };
+    case DEACTIVATE_SHOP_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case DEACTIVATE_SHOP_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
     default:
       return state;
   }

@@ -92,31 +92,38 @@ export default function ManageUser() {
                     width: 250,
                   },
                   {
-                    field: "is_active",
-                    headerName: "STATUS",
-                    sortable: false,
-                    width: 200,
-                    renderCell: (params) => (
-                      <Button
-                        variant="conained"
-                        style={{
-                          backgroundColor: params.value ? "#278A2E" : "#BA2C3C",
-                          color: "#ffffff",
-                        }}
-                        onClick={() => {
-                          const status = {
-                            id: params.id,
-                            is_active: !params.value,
-                          };
-                          dispatch(updateUserStatus(status));
-                          dispatch({ type: UPDATE_USER_STATUS_RESET });
-                          dispatch(getAllUserDetail());
-                        }}
-                      >
-                        {params.value ? "Active" : "InActive"}
-                      </Button>
-                    ),
+                    field: "name",
+                    headerName: "Name",
+                    width: 250,
+                    renderCell: (params) =>
+                      params.value ? params.value : "---",
                   },
+                  // {
+                  //   field: "is_active",
+                  //   headerName: "STATUS",
+                  //   sortable: false,
+                  //   width: 200,
+                  //   renderCell: (params) => (
+                  //     <Button
+                  //       variant="conained"
+                  //       style={{
+                  //         backgroundColor: params.value ? "#278A2E" : "#BA2C3C",
+                  //         color: "#ffffff",
+                  //       }}
+                  //       onClick={() => {
+                  //         const status = {
+                  //           id: params.id,
+                  //           is_active: !params.value,
+                  //         };
+                  //         dispatch(updateUserStatus(status));
+                  //         dispatch({ type: UPDATE_USER_STATUS_RESET });
+                  //         dispatch(getAllUserDetail());
+                  //       }}
+                  //     >
+                  //       {params.value ? "Active" : "InActive"}
+                  //     </Button>
+                  //   ),
+                  // },
                 ]}
                 rows={data ? data : []}
                 // getRowId={(row) => row.internalId}

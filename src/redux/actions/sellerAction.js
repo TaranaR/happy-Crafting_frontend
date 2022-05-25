@@ -44,6 +44,9 @@ import {
   ORDER_DELIVERED_REQUEST,
   ORDER_DELIVERED_SUCCESS,
   ORDER_DELIVERED_FAIL,
+  DEACTIVATE_SHOP_REQUEST,
+  DEACTIVATE_SHOP_SUCCESS,
+  DEACTIVATE_SHOP_FAIL,
 } from "../../constants/sellerConstants";
 import axios from "axios";
 import {
@@ -509,6 +512,37 @@ export const orderDelivered = (orderId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ORDER_DELIVERED_FAIL,
+      palyload: error,
+    });
+  }
+};
+
+export const deactivateShop = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: DEACTIVATE_SHOP_REQUEST,
+    });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.delete(
+      `${LOCAL_URL}/api/userapi/deactivateShop/`,
+      config
+    );
+
+    dispatch({
+      type: DEACTIVATE_SHOP_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: DEACTIVATE_SHOP_FAIL,
       palyload: error,
     });
   }

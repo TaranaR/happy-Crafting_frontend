@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core";
 import { Box } from "@mui/material";
 import { Container, Typography } from "@mui/material";
 import SignUp from "./SignUp";
@@ -30,7 +30,11 @@ const useStyles = makeStyles((theme) => ({
 
   boxWrapper: {
     //marginLeft: "20%",
+    width: "100%",
     marginTop: "14%",
+    [theme.breakpoints.down("md")]: {
+      marginTop: "2%",
+    },
     marginRight: "5%",
     padding: 50,
     height: "100%",
@@ -38,23 +42,21 @@ const useStyles = makeStyles((theme) => ({
     //border: "1px solid black",
   },
   formWrapper: {
-    // alignItems: "center",
-    // justifyContent: "center",
-    //border: "1px solid black",
     boxShadow: "2px 0px 10px rgb(109,110,110)",
     backdropFilter: "blur(25)",
     borderRadius: "20px",
-    height: "65%",
-    minHeight: "65%",
-    width: "50%",
-    position: "absolute",
+    height: "90%",
+    [theme.breakpoints.down("md")]: { height: "100%" },
+    border: "1px solid grey",
+    // width: "50%",
+    //position: "absolute",
     backgroundColor: "#E9D5DA",
 
     "& .MuiTextField-root": {
-      margin: theme.spacing(1),
+      //margin: theme.spacing(1),
       background: "#ffffff",
       //width: "380px",
-      width: "155%",
+      //width: "155%",
       borderRadius: 5,
     },
     "& .MuiButtonBase-root": {
@@ -79,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginSignup(props) {
   const classes = useStyles();
+  const theme = useTheme();
 
   const dispatch = useDispatch();
   const userRegister = useSelector((state) => state.userRegister);
@@ -118,7 +121,18 @@ export default function LoginSignup(props) {
       <Box className={classes.root}>
         <CssBaseline />
         <Grid container>
-          <Grid item xs={6}>
+          <Grid
+            item
+            xs={12}
+            lg={6}
+            md={6}
+            display={{ xs: "none", lg: "block", md: "block" }}
+            // sx={{
+            //   [theme.breakpoints.down("sm")]: {
+            //     height: "2%",
+            //   },
+            // }}
+          >
             <Typography
               variant="h1"
               sx={{
@@ -128,7 +142,8 @@ export default function LoginSignup(props) {
                 margin: "10%",
                 marginTop: "25%",
                 padding: 10,
-                color: "#00000",
+                // color: "#663300",
+                color: "#000000",
               }}
             >
               Happy Crafting
@@ -136,7 +151,9 @@ export default function LoginSignup(props) {
           </Grid>
           <Grid
             item
-            xs={6}
+            xs={12}
+            lg={6}
+            md={6}
             // style={{ backgroundColor: "#000000", height: "102vh" }}
           >
             <Box className={classes.boxWrapper}>{content}</Box>

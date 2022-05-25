@@ -33,7 +33,8 @@ import {
   userRemoveProductFromCollectionReducer,
   userAddReviewForProductReducer,
   userChangePasswordReducer,
-  userGetUserDataReducer,
+  userDeactivateUserAccountReducer,
+  userGetAllRandomProductsReducer,
 } from "../reducers/userReducer";
 
 import {
@@ -51,6 +52,7 @@ import {
   sellerOrderDispatchedBySellerReducer,
   sellersendEmailReducer,
   sellerOrderDeliveredReducer,
+  sellerDeactivateShopReducer,
 } from "../reducers/sellerReducer";
 
 import {
@@ -104,7 +106,8 @@ const rootReducer = combineReducers({
   userRemoveProductFromCollection: userRemoveProductFromCollectionReducer,
   userAddReviewForProduct: userAddReviewForProductReducer,
   userChangePassword: userChangePasswordReducer,
-  userGetUserData: userGetUserDataReducer,
+  userDeactivateUserAccount: userDeactivateUserAccountReducer,
+  userGetAllRandomProducts: userGetAllRandomProductsReducer,
 
   //seller
   sellerCreateShop: sellerCreateShopReducer,
@@ -121,6 +124,7 @@ const rootReducer = combineReducers({
   sellerOrderDispatchedBySeller: sellerOrderDispatchedBySellerReducer,
   sellersendEmail: sellersendEmailReducer,
   sellerOrderDelivered: sellerOrderDeliveredReducer,
+  sellerDeactivateShop: sellerDeactivateShopReducer,
 
   //admin
   adminDetail: adminDetailReducer,

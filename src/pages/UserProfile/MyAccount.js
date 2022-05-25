@@ -8,8 +8,12 @@ import {
   updateUserProfile,
   getUserProfile,
   getCartDataByUser,
+  changePassword,
+  deactivateUserAccount,
+  logout,
 } from "../../redux/actions/userAction";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useTheme } from "@mui/material/styles";
 import {
   Box,
   Button,
@@ -18,32 +22,39 @@ import {
   Grid,
   TextField,
   Typography,
+  Modal,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import { Label } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
-import { USER_UPDATE_PROFILE_RESET } from "../../constants/userConstants";
+import {
+  CHANGE_PASSWORD_RESET,
+  USER_UPDATE_PROFILE_RESET,
+} from "../../constants/userConstants";
 import Snackbar from "@mui/material/Snackbar";
 import AlertTitle from "@mui/material/AlertTitle";
 import Alert from "@mui/material/Alert";
+import ChangePassword from "../../components/ChangePassword";
+import { Divider } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     height: "100vh",
+    marginTop: "5%",
   },
-  containerWrapper: {
-    margin: "50px",
-  },
+
   typographyClass: {
     fontFamily: ["El Messiri", "sans-serif"].join(","),
   },
 
   formWrapper: {
-    backgroundColor: "#ECE5DB",
-
     padding: "30px",
-    // height: "50vh",
-    width: "93vh",
+    width: "93%",
     margin: "10px",
 
     "& .MuiOutlinedInput-root": {
@@ -88,11 +99,26 @@ const useStyles = makeStyles(() => ({
       },
     },
   },
-
+  modelWrapper: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    borderRadius: 5,
+    width: "45%",
+    [theme.breakpoints.down("md")]: {
+      width: "80%",
+    },
+    maxHeight: "95%",
+    backgroundColor: "white",
+    boxShadow: 24,
+    p: 4,
+  },
   linksWrapper: {
     backgroundColor: "#ECE5DB",
     padding: "30px",
     textAlign: "center",
+    width: "93%",
   },
 
   links: {
@@ -106,21 +132,42 @@ const useStyles = makeStyles(() => ({
 export default function MyAccount() {
   const classes = useStyles();
   const navigate = useNavigate();
+  const theme = useTheme();
+  const dispatch = useDispatch();
 
   const userProfile = useSelector((state) => state.userProfile);
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-  //const userLogin = useSelector((state) => state.userLogin);
-  const [snackOpen, setSnackOpen] = useState(false);
+  const userDeactivateUserAccount = useSelector(
+    (state) => state.userDeactivateUserAccount
+  );
 
-  // const { token } = userLogin;
+  const [snackOpen, setSnackOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+
   const token = JSON.parse(localStorage.getItem("userInfo"));
+
   const { success, userInfo } = userUpdateProfile;
   const { user } = userProfile;
+  const { success: deactivateShopSuccess } = userDeactivateUserAccount;
+
+  const userChangePassword = useSelector((state) => state.userChangePassword);
+  const { changePasswordData } = userChangePassword;
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    if (deactivateShopSuccess) {
+      dispatch(logout());
+    }
+  }, [deactivateShopSuccess]);
+
+  useEffect(() => {
+    if (changePasswordData === "") {
+      setTimeout(handleClose, 2000);
+    }
+  }, [changePasswordData]);
 
   useEffect(() => {
     dispatch(getCartDataByUser());
@@ -158,156 +205,260 @@ export default function MyAccount() {
     dispatch(getUserProfile());
   };
 
+  const handleOpen = () => {
+    dispatch({ type: CHANGE_PASSWORD_RESET });
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+  const handleCloseDialog = () => setOpenDialog(false);
+
+  const changePasswordHandler = (data) => {
+    dispatch({ type: CHANGE_PASSWORD_RESET });
+    dispatch(changePassword(data));
+  };
+
+  const deactivateUserAccountHandler = () => {
+    dispatch(deactivateUserAccount());
+  };
+
   return (
     <Fragment>
-      <Box className={classes.root}>
-        <Container className={classes.containerWrapper}>
-          <Grid container spacing={2}>
-            <Grid item xs={8}>
-              <Grid>
-                <Grid
-                  className={classes.typographyClass}
-                  style={{ fontSize: 30 }}
-                >
-                  Account
-                </Grid>
-              </Grid>
-              <Grid borderBottom={2} margin={1}>
-                <Grid
-                  className={classes.typographyClass}
-                  style={{ fontSize: 18 }}
-                >
-                  Edit Profile
-                </Grid>
-              </Grid>
-              <Grid className={classes.formWrapper}>
-                <Grid
-                  className={classes.typographyClass}
-                  style={{ fontSize: 15 }}
-                  padding={0.5}
-                >
-                  Username
-                </Grid>
-                <Grid>
-                  <TextField
-                    size="small"
-                    fullWidth
-                    sx={{
-                      backgroundColor: "#F8F9FB",
-                    }}
-                    padding={0.5}
-                    value={user ? user.username : ""}
-                    disabled
-                  />
-                </Grid>
-                <Grid
-                  className={classes.typographyClass}
-                  style={{ fontSize: 15 }}
-                  padding={0.5}
-                >
-                  Name
-                </Grid>
-                <Grid>
-                  <TextField
-                    size="small"
-                    fullWidth
-                    sx={{ backgroundColor: "#F8F9FB" }}
-                    padding={0.5}
-                    value={name}
-                    onChange={(e) => {
-                      setName(e.target.value);
-                    }}
-                  />
-                </Grid>
-                <Grid
-                  className={classes.typographyClass}
-                  style={{ fontSize: 15 }}
-                  padding={0.5}
-                >
-                  Email Address
-                </Grid>
-                <Grid>
-                  <TextField
-                    size="small"
-                    fullWidth
-                    sx={{ backgroundColor: "#F8F9FB" }}
-                    padding={0.5}
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                  />
-                </Grid>
-                <Grid style={{ textAlign: "right" }}>
-                  <Button
-                    className={classes.btnClass}
-                    style={{ marginTop: "30px" }}
-                    onClick={profileUpdateHandler}
-                  >
-                    Save Changes
-                  </Button>
-                </Grid>
-              </Grid>
-              <Grid borderBottom={2} margin={1}>
-                <Grid
-                  className={classes.typographyClass}
-                  style={{ fontSize: 18 }}
-                  marginTop={10}
-                >
-                  Change Password
-                </Grid>
-              </Grid>
+      <Modal open={open} onClose={handleClose}>
+        <Box className={classes.modelWrapper}>
+          <ChangePassword
+            classes={classes}
+            onChangePassword={changePasswordHandler}
+          />
+        </Box>
+      </Modal>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {/* {"Use Google's location service?"} */}
+          Are you sure, you want to deactivate your account?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            By deactivating account you won't be able to shop products anymore.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Disagree</Button>
+          <Button onClick={deactivateUserAccountHandler} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Container className={classes.root}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} lg={8} md={8}>
+            <Grid
+              item
+              xs={12}
+              className={classes.typographyClass}
+              style={{ fontSize: 30 }}
+            >
+              Account
+            </Grid>
 
-              <Grid className={classes.formWrapper}>
-                <Grid style={{ textAlign: "left" }}>
-                  <Button className={classes.btnClass}>Change Password</Button>
-                </Grid>
+            <Grid
+              item
+              xs={12}
+              className={classes.typographyClass}
+              style={{ fontSize: 18 }}
+            >
+              Edit Profile
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+            <Grid
+              xs={12}
+              className={classes.formWrapper}
+              style={{ backgroundColor: "#ECE5DB" }}
+            >
+              <Grid
+                xs={12}
+                item
+                className={classes.typographyClass}
+                style={{ fontSize: 15 }}
+                padding={0.5}
+              >
+                Username
               </Grid>
-
-              <Grid className={classes.formWrapper} marginTop={5}>
-                <Grid style={{ textAlign: "left" }}>
-                  <Button className={classes.deactivateBtn}>
-                    Deactivate Account
-                  </Button>
-                </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  size="small"
+                  fullWidth
+                  sx={{
+                    backgroundColor: "#F8F9FB",
+                  }}
+                  padding={0.5}
+                  value={user ? user.username : ""}
+                  disabled
+                />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                className={classes.typographyClass}
+                style={{ fontSize: 15 }}
+                padding={0.5}
+              >
+                Name
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  size="small"
+                  fullWidth
+                  sx={{ backgroundColor: "#F8F9FB" }}
+                  padding={0.5}
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                className={classes.typographyClass}
+                style={{ fontSize: 15 }}
+                padding={0.5}
+              >
+                Email Address
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  size="small"
+                  fullWidth
+                  sx={{ backgroundColor: "#F8F9FB" }}
+                  padding={0.5}
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} style={{ textAlign: "right" }}>
+                <Button
+                  className={classes.btnClass}
+                  style={{ marginTop: "30px" }}
+                  onClick={profileUpdateHandler}
+                >
+                  Save Changes
+                </Button>
               </Grid>
             </Grid>
-            <Grid item xs={4}>
-              <Container className={classes.linksWrapper}>
-                <Grid margin={1}>
-                  {/* <NavLink
-                    to="/"
-                    className={classes.links}
-                    style={{ textAlign: "right" }}
-                  >
-                    Orders
-                  </NavLink> */}
-                  <Button
-                    className={classes.linksBtn}
-                    onClick={() => {
-                      navigate("/myorder");
-                    }}
-                  >
-                    Orders
-                  </Button>
-                </Grid>
-                <Grid margin={1}>
-                  {/* <NavLink to="/" className={classes.links}>
-                    My Collection
-                  </NavLink> */}
-                  <Button
-                    className={classes.linksBtn}
-                    onClick={() => {
-                      navigate("/mycollection");
-                    }}
-                  >
-                    My Collection
-                  </Button>
-                </Grid>
-              </Container>
+
+            <Grid
+              className={classes.typographyClass}
+              style={{ fontSize: 18 }}
+              marginTop={10}
+            >
+              Change Password
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              className={classes.formWrapper}
+              style={{ backgroundColor: "#ECE5DB", marginTop: "2%" }}
+            >
+              <Grid item xs={12} style={{ textAlign: "left" }}>
+                <Button className={classes.btnClass} onClick={handleOpen}>
+                  Change Password
+                </Button>
+              </Grid>
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              className={classes.formWrapper}
+              marginTop={5}
+              style={{ backgroundColor: "#ECE5DB" }}
+            >
+              <Grid item xs={12} style={{ textAlign: "left" }}>
+                <Button
+                  className={classes.deactivateBtn}
+                  onClick={handleOpenDialog}
+                >
+                  Deactivate Account
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
-        </Container>
+
+          <Grid
+            item
+            xs={12}
+            lg={4}
+            md={4}
+            sx={{
+              marginTop: "6%",
+              [theme.breakpoints.down("sm")]: {
+                marginTop: "4%",
+              },
+            }}
+          >
+            <Grid
+              className={classes.typographyClass}
+              style={{ fontSize: 18 }}
+              display={{ sx: "block", lg: "none", md: "none" }}
+            >
+              Shortcuts
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              display={{ sx: "block", lg: "none", md: "none" }}
+            >
+              <Divider />
+            </Grid>
+            <Grid
+              container
+              style={{
+                backgroundColor: "#ECE5DB",
+                padding: "30px",
+                width: "93%",
+                marginTop: "2%",
+              }}
+            >
+              <Grid item xs={12}>
+                <Button
+                  className={classes.linksBtn}
+                  onClick={() => {
+                    navigate("/myorder");
+                  }}
+                >
+                  Orders
+                </Button>
+              </Grid>
+              <Grid item xs={12} style={{ marginTop: "3%" }}>
+                <Button
+                  className={classes.linksBtn}
+                  onClick={() => {
+                    navigate("/mycollection");
+                  }}
+                >
+                  My Collection
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+
         {userInfo && (
           <Snackbar
             open={snackOpen}
@@ -324,7 +475,7 @@ export default function MyAccount() {
             </Alert>
           </Snackbar>
         )}
-      </Box>
+      </Container>
     </Fragment>
   );
 }

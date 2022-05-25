@@ -15,10 +15,10 @@ import {
 const useStyles = makeStyles(() => ({
   root: {
     marginTop: "3%",
-    marginLeft: "5%",
+    marginLeft: "20%",
     height: "50%",
     padding: "30px",
-    width: "90%",
+    width: "60%",
     textAlign: "center",
     border: "1px solid #B8C1BA",
     //boxShadow: "5px 5px #B8C1BA",
@@ -86,7 +86,7 @@ export default function ManageSeller() {
                   {
                     field: "shop_logo",
                     headerName: "IMAGE",
-                    width: 100,
+                    width: 150,
                     renderCell: (params) => (
                       <img
                         src={params.value}
@@ -97,18 +97,18 @@ export default function ManageSeller() {
                   {
                     field: "shop_name",
                     headerName: "SHOP NAME",
-                    width: 150,
+                    width: 200,
                   },
                   {
                     field: "location",
                     headerName: "LOCATION",
-                    width: 150,
+                    width: 200,
                   },
-                  {
-                    field: "description",
-                    headerName: "DESCRIPTION",
-                    width: 500,
-                  },
+                  // {
+                  //   field: "description",
+                  //   headerName: "DESCRIPTION",
+                  //   width: 500,
+                  // },
 
                   {
                     field: "is_active",

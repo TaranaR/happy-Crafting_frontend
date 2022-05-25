@@ -5,14 +5,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@mui/material/styles";
 import {
   changePassword,
-  getUserData,
   getUserProfile,
 } from "../../../redux/actions/userAction";
 import Snackbar from "@mui/material/Snackbar";
 import AlertTitle from "@mui/material/AlertTitle";
 import Alert from "@mui/material/Alert";
 import { updateUserProfile } from "../../../redux/actions/userAction";
-import { USER_UPDATE_PROFILE_RESET } from "../../../constants/userConstants";
+import {
+  CHANGE_PASSWORD_RESET,
+  USER_UPDATE_PROFILE_RESET,
+} from "../../../constants/userConstants";
 import {
   Container,
   Grid,
@@ -22,7 +24,7 @@ import {
   Box,
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
-import ChangePassword from "../../ChangePassword";
+import ChangePassword from "../../../components/ChangePassword";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,19 +94,16 @@ export default function SellerAccount() {
 
   const userProfile = useSelector((state) => state.userProfile);
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-  const userGetUserData = useSelector((state) => state.userGetUserData);
 
   const token = JSON.parse(localStorage.getItem("userInfo"));
   const { success, userInfo } = userUpdateProfile;
   const { user } = userProfile;
-  const { userData } = userGetUserData;
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
   useEffect(() => {
     dispatch(getUserProfile());
-    dispatch(getUserData());
   }, []);
 
   useEffect(() => {
@@ -123,6 +122,7 @@ export default function SellerAccount() {
   }, [dispatch, navigate, user, success]);
 
   const handleOpen = () => {
+    dispatch({ type: CHANGE_PASSWORD_RESET });
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
@@ -144,22 +144,21 @@ export default function SellerAccount() {
   };
 
   const changePasswordHandler = (data) => {
-    console.log(data);
-    dispatch(changePassword(userData.id, data));
+    dispatch({ type: CHANGE_PASSWORD_RESET });
+    dispatch(changePassword(data));
   };
 
   return (
     <Fragment>
-      {open && (
-        <Modal open={open} onClose={handleClose}>
-          <Box className={classes.modelWrapper}>
-            <ChangePassword
-              classes={classes}
-              onChangePassword={changePasswordHandler}
-            />
-          </Box>
-        </Modal>
-      )}
+      <Modal open={open} onClose={handleClose}>
+        <Box className={classes.modelWrapper}>
+          <ChangePassword
+            classes={classes}
+            onChangePassword={changePasswordHandler}
+          />
+        </Box>
+      </Modal>
+
       <Container className={classes.root}>
         <Grid container spacing={2}>
           <Grid item xs={12} style={{ fontSize: 20 }}>
@@ -336,7 +335,7 @@ export default function SellerAccount() {
               </Button>
             </Grid>
           </Grid>
-          <Grid container style={{ margin: "20px", textAlign: "center" }}>
+          {/* <Grid container style={{ margin: "20px", textAlign: "center" }}>
             <Grid
               item
               xs={12}
@@ -350,7 +349,7 @@ export default function SellerAccount() {
                 Deactivate Account
               </Button>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
 
         {userInfo && (

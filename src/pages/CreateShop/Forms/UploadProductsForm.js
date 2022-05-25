@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch, createDispatchHook } from "react-redux";
 import { Container, Grid, Button } from "@material-ui/core";
+import { Alert } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { TextField } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
@@ -30,6 +31,7 @@ export default function UploadProductsForm(props) {
   const editorRef = useRef(null);
 
   const [selectedFile, setSelectedFile] = useState("");
+  const [errormsg, setErrormsg] = useState("");
   const sellerGetMainCategory = useSelector(
     (state) => state.sellerGetMainCategory
   );
@@ -75,11 +77,9 @@ export default function UploadProductsForm(props) {
 
   let fileExtension = "";
 
-  if (error) {
-    console.log(error);
-  }
-
   useEffect(() => {
+    setErrormsg("");
+    dispatch({ type: GET_PRODUCT_DETAILS_RESET });
     dispatch(getMainCategory());
     // dispatch(getSubCategory());
     // dispatch(getTypeOfProduct());
@@ -108,10 +108,6 @@ export default function UploadProductsForm(props) {
       setIsCustomizable(prodDetail["is_customizable"]);
     }
   }, [prodDetail]);
-
-  //console.log(prodDetail);
-
-  console.log(prodColor);
 
   if (mainCatInfo) {
     main = Object.values(mainCatInfo);
@@ -190,7 +186,8 @@ export default function UploadProductsForm(props) {
         prodDescription === undefined ||
         prodSize === undefined
       ) {
-        console.log("hello");
+        setErrormsg("Add all the fields");
+        console.log("hiiiii");
         return;
       } else {
         // console.log(prodPrice);
@@ -412,16 +409,16 @@ export default function UploadProductsForm(props) {
               }}
             /> */}
           </Grid>
-          <Grid item xs={3} style={{ padding: "15px" }}>
+          {/* <Grid item xs={3} style={{ padding: "15px" }}>
             Is Customizable
-          </Grid>
-          <Grid item xs={9} style={{ textAlign: "left", padding: "5px" }}>
+          </Grid> */}
+          {/* <Grid item xs={9} style={{ textAlign: "left", padding: "5px" }}>
             {/* <CustomCheckbox
               onChange={(e) => {
                 setIsCustomizable(e.target.checked);
               }}
             /> */}
-            <Checkbox
+          {/*<Checkbox
               checked={isCustomizable}
               onChange={(e) => {
                 setIsCustomizable(e.target.checked);
@@ -430,7 +427,7 @@ export default function UploadProductsForm(props) {
                 color: "#745D3E",
               }}
             />
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} style={{ padding: "15px" }}>
             {!loading && (
               <Button
@@ -463,11 +460,40 @@ export default function UploadProductsForm(props) {
               </LoadingButton>
             )}
           </Grid>
-          <Grid item xs={12}>
-            {/* {loading && <CircularProgress style={{ color: "#745D3E" }} />} */}
-            {prodInfo && prodInfo.message}
-            {/* {error && error} */}
-          </Grid>
+          {errormsg && (
+            <Grid
+              item
+              xs={12}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                color: "red",
+                marginTop: 0,
+                marginBottom: 10,
+              }}
+            >
+              <Alert severity="error" style={{ width: "100%" }}>
+                {errormsg}
+              </Alert>
+            </Grid>
+          )}
+          {/* {prodInfo && (
+            <Grid
+              item
+              xs={12}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                color: "red",
+                marginTop: 0,
+                marginBottom: 10,
+              }}
+            >
+              <Alert severity="success" style={{ width: "100%" }}>
+                {prodInfo.message}
+              </Alert>
+            </Grid>
+          )} */}
         </Grid>
       </Container>
     </Fragment>

@@ -104,6 +104,12 @@ import {
   GET_USER_DATA_REQUEST,
   GET_USER_DATA_SUCCESS,
   GET_USER_DATA_FAIL,
+  DEACTIVATE_USER_ACCOUNT_REQUEST,
+  DEACTIVATE_USER_ACCOUNT_SUCCESS,
+  DEACTIVATE_USER_ACCOUNT_FAIL,
+  GET_ALL_RANDOM_PRODUCT_REQUEST,
+  GET_ALL_RANDOM_PRODUCT_SUCCESS,
+  GET_ALL_RANDOM_PRODUCT_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import { ADMIN_DETAILS_RESET } from "../../constants/adminConstants";
@@ -986,8 +992,7 @@ export const addReviewForProduct = (review) => async (dispatch) => {
   }
 };
 
-export const changePassword = (user, data) => async (dispatch) => {
-  console.log(user, data);
+export const changePassword = (changePassword) => async (dispatch) => {
   try {
     dispatch({
       type: CHANGE_PASSWORD_REQUEST,
@@ -1003,13 +1008,14 @@ export const changePassword = (user, data) => async (dispatch) => {
     };
 
     const { data } = await axios.put(
-      `${LOCAL_URL}/api/userapi/changePassword/${user}/`,
-      data,
+      `${LOCAL_URL}/api/userapi/changePassword/`,
+      changePassword,
       config
     );
 
     dispatch({
       type: CHANGE_PASSWORD_SUCCESS,
+      payload: data,
     });
   } catch (error) {
     dispatch({
@@ -1019,9 +1025,40 @@ export const changePassword = (user, data) => async (dispatch) => {
   }
 };
 
-export const getUserData = () => async (dispatch) => {
+export const deactivateUserAccount = () => async (dispatch) => {
   try {
-    dispatch({ type: GET_USER_DATA_REQUEST });
+    dispatch({
+      type: DEACTIVATE_USER_ACCOUNT_REQUEST,
+    });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.delete(
+      `${LOCAL_URL}/api/userapi/deactivateUserAccount/`,
+      config
+    );
+
+    dispatch({
+      type: DEACTIVATE_USER_ACCOUNT_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: DEACTIVATE_USER_ACCOUNT_FAIL,
+      palyload: error,
+    });
+  }
+};
+
+export const getAllRandomProducts = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_ALL_RANDOM_PRODUCT_REQUEST });
 
     const token = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -1033,17 +1070,12 @@ export const getUserData = () => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      `${LOCAL_URL}/api/userapi/getUserData/`,
+      `${LOCAL_URL}/api/userapi/getAllRandomProducts/`,
       config
     );
-    dispatch({
-      type: GET_USER_DATA_SUCCESS,
-      payload: data,
-    });
+
+    dispatch({ type: GET_ALL_RANDOM_PRODUCT_SUCCESS, payload: data });
   } catch (error) {
-    dispatch({
-      type: GET_USER_DATA_FAIL,
-      payload: error,
-    });
+    dispatch({ type: GET_ALL_RANDOM_PRODUCT_FAIL, payload: error });
   }
 };

@@ -10,11 +10,14 @@ import Container from "@mui/material/Container";
 import Snackbar from "@mui/material/Snackbar";
 import AlertTitle from "@mui/material/AlertTitle";
 import Alert from "@mui/material/Alert";
+import { useTheme } from "@material-ui/core";
 
 export default function SignUp(props) {
   const usernameInputRef = useRef();
   const passwordInputRef = useRef();
   const emailInputRef = useRef();
+
+  const theme = useTheme();
 
   const [snackOpen, setSnackOpen] = useState(false);
   const navigate = useNavigate();
@@ -60,46 +63,82 @@ export default function SignUp(props) {
       maxWidth="xs"
       className={props.classes.formWrapper}
     >
-      <Box sx={{ marginTop: "15%" }}>
-        <Typography
-          component="h1"
-          variant="h3"
-          style={{ textAlign: "center", color: "#000000" }}
+      <Box
+        sx={{
+          marginTop: "15%",
+          padding: 2,
+          [theme.breakpoints.down("sm")]: {
+            marginTop: "10%",
+          },
+        }}
+      >
+        <Grid item xs={12} display={{ xs: "block", lg: "none", md: "none" }}>
+          <Typography
+            variant="h3"
+            sx={{
+              flex: 1,
+              fontFamily: ["Dancing Script", "cursive"].join(","),
+              fontWeight: "bold",
+              backgroundImage:
+                "repeating-conic-gradient( #af4261 1%, #764C47 5%)",
+              backgroundSize: "100%",
+              WebkitBackgroundClip: "text",
+              MozBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Happy Crafting
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sx={{
+            textAlign: "center",
+            color: "#000000",
+            [theme.breakpoints.down("sm")]: { marginTop: "3%" },
+          }}
         >
-          Sign up
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: "3%" }}>
+          <Typography
+            component="h1"
+            variant="h3"
+            sx={{
+              [theme.breakpoints.down("sm")]: {
+                fontSize: 25,
+              },
+            }}
+          >
+            Sign up
+          </Typography>
+        </Grid>
+        <Grid component="form" onSubmit={handleSubmit} sx={{ mt: "10%" }}>
           <Grid container spacing={2}>
-            <Grid item>
+            <Grid item xs={12}>
               <TextField
                 required
-                id="email"
+                fullWidth
                 placeholder="Email Address"
                 name="email"
                 inputRef={emailInputRef}
-                sx={{ width: "155%" }}
               />
             </Grid>
-            <Grid item>
+            <Grid item xs={12}>
               <TextField
                 required
-                id="UserName"
+                fullWidth
                 placeholder="User Name"
                 name="UserName"
                 inputRef={usernameInputRef}
-                sx={{ width: "155%" }}
               />
             </Grid>
-            <Grid item>
+            <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
                 name="password"
                 placeholder="Password"
                 type="password"
-                id="password"
                 inputRef={passwordInputRef}
-                sx={{ width: "155%" }}
               />
             </Grid>
           </Grid>
@@ -152,7 +191,7 @@ export default function SignUp(props) {
               </NavLink>
             </Grid>
           </Grid>
-        </Box>
+        </Grid>
       </Box>
       {/* {userInfo && (
         <Snackbar

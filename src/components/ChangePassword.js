@@ -19,15 +19,14 @@ const useStyles = makeStyles(() => ({
 
 export default function ChangePassword(props) {
   const classes = useStyles();
-  const theme = useTheme();
+
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
 
   const userChangePassword = useSelector((state) => state.userChangePassword);
-  const { success, error: e } = userChangePassword;
+  const { changePasswordData, success } = userChangePassword;
 
   const changePasswordHandler = () => {
     setError("");
@@ -45,13 +44,11 @@ export default function ChangePassword(props) {
     }
   };
 
-  console.log(e);
-
   useEffect(() => {
-    if (success) {
-      setMessage("Password Changes");
+    if (changePasswordData) {
+      setError(changePasswordData);
     }
-  }, [success]);
+  }, [changePasswordData]);
 
   return (
     <Fragment>
@@ -74,6 +71,7 @@ export default function ChangePassword(props) {
           </Grid>
           <Grid item xs={12} lg={9} md={9}>
             <TextField
+              type="password"
               size="small"
               fullWidth
               variant="outlined"
@@ -94,6 +92,7 @@ export default function ChangePassword(props) {
           </Grid>
           <Grid item xs={12} lg={9} md={9}>
             <TextField
+              type="password"
               size="small"
               fullWidth
               variant="outlined"
@@ -114,6 +113,7 @@ export default function ChangePassword(props) {
           </Grid>
           <Grid item xs={12} lg={9} md={9}>
             <TextField
+              type="password"
               size="small"
               fullWidth
               variant="outlined"
@@ -149,7 +149,22 @@ export default function ChangePassword(props) {
               </Alert>
             </Grid>
           )}
-          {message && (
+
+          {/* {changePasswordData && (
+            <Grid
+              item
+              xs={12}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Alert severity="error" style={{ width: "80%" }}>
+                {changePasswordData}
+              </Alert>
+            </Grid>
+          )} */}
+          {success && error === "" && (
             <Grid
               item
               xs={12}
@@ -159,7 +174,7 @@ export default function ChangePassword(props) {
               }}
             >
               <Alert severity="success" style={{ width: "80%" }}>
-                {message}
+                Password Changed.
               </Alert>
             </Grid>
           )}

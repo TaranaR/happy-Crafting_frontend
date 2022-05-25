@@ -112,7 +112,6 @@ export default function ManageProducts() {
 
   const handleOpen = () => {
     setProdId(null);
-    console.log("----", prodId);
     setOpen(true);
     dispatch({ type: GET_PRODUCT_DETAILS_RESET });
   };
