@@ -24,10 +24,11 @@ export default function Footer() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        minHeight: "150vh",
+        minHeight: "200vh",
+        marginTop: "100%",
       }}
     >
-      <CssBaseline />
+      {/* <CssBaseline /> */}
       <Box
         component="footer"
         sx={{
@@ -35,6 +36,7 @@ export default function Footer() {
           px: 2,
           mt: "auto",
           backgroundColor: "#000000",
+
           color: "#ffffff",
         }}
       >

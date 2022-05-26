@@ -1,7 +1,8 @@
 import { Fragment, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Grid, Container, Button } from "@material-ui/core";
+import { useTheme } from "@mui/material/styles";
+import { Box, Grid, Container, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { TextField } from "@mui/material";
 import Stepper from "@mui/material/Stepper";
@@ -12,6 +13,7 @@ import UploadProductsForm from "./Forms/UploadProductsForm";
 import StartSellingForm from "./Forms/StartSellingForm";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartDataByUser } from "../../redux/actions/userAction";
+import { GET_PRODUCT_DETAILS_RESET } from "../../constants/userConstants";
 
 const steps = [
   "Create Shop",
@@ -48,6 +50,7 @@ const useStyles = makeStyles(() => ({
 export default function CreateShop() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
 
   const sellerCreateShop = useSelector((state) => state.sellerCreateShop);
@@ -59,7 +62,6 @@ export default function CreateShop() {
 
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
-      // console.log("Completed");
       navigate("/profile");
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -76,7 +78,14 @@ export default function CreateShop() {
   }
   if (activeStep === 1) {
     if (shopInfo) {
-      content = <UploadProductsForm classes={classes} />;
+      dispatch({ type: GET_PRODUCT_DETAILS_RESET });
+      content = (
+        <UploadProductsForm
+          classes={classes}
+          prodId={undefined}
+          onClose={undefined}
+        />
+      );
     } else {
       setActiveStep(0);
     }
@@ -124,22 +133,13 @@ export default function CreateShop() {
           <Box
             sx={{
               display: "flex",
-              pt: 5,
-              mt: "5vh",
-              ml: "30vh",
-              mr: "25vh",
+              pt: 3,
+              mt: "1%",
+              ml: "80%",
+              mr: "25%",
             }}
           >
-            {/* <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Back
-            </Button> */}
             <Box sx={{ flex: "1 1 auto" }} />
-
             <Button
               onClick={handleNext}
               variant="contained"

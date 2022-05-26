@@ -110,6 +110,12 @@ import {
   GET_ALL_RANDOM_PRODUCT_REQUEST,
   GET_ALL_RANDOM_PRODUCT_SUCCESS,
   GET_ALL_RANDOM_PRODUCT_FAIL,
+  LIKE_PRODUCT_REQUEST,
+  LIKE_PRODUCT_SUCCESS,
+  LIKE_PRODUCT_FAIL,
+  GET_FEATURED_PRODUCTS_REQUEST,
+  GET_FEATURED_PRODUCTS_SUCCESS,
+  GET_FEATURED_PRODUCTS_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import { ADMIN_DETAILS_RESET } from "../../constants/adminConstants";
@@ -448,34 +454,35 @@ export const getSubCategoryByMainCategoryName = (name) => async (dispatch) => {
   }
 };
 
-export const getAllProductsBySubCategoryName = (sub) => async (dispatch) => {
-  try {
-    dispatch({ type: GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_REQUEST });
+export const getAllProductsBySubCategoryName =
+  (sub, sortby) => async (dispatch) => {
+    try {
+      dispatch({ type: GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_REQUEST });
 
-    const token = JSON.parse(localStorage.getItem("userInfo"));
+      const token = JSON.parse(localStorage.getItem("userInfo"));
 
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: token && `Bearer ${token.access}`,
-      },
-    };
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: token && `Bearer ${token.access}`,
+        },
+      };
 
-    const { data } = await axios.get(
-      `${LOCAL_URL}/api/userapi/getAllProductBySubCategory/${sub}`,
-      config
-    );
-    dispatch({
-      type: GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_FAIL,
-      payload: error,
-    });
-  }
-};
+      const { data } = await axios.get(
+        `${LOCAL_URL}/api/userapi/getAllProductBySubCategory/${sub}/${sortby}`,
+        config
+      );
+      dispatch({
+        type: GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_ALL_PRODUCT_BY_SUB_CATEGORY_NAME_FAIL,
+        payload: error,
+      });
+    }
+  };
 
 export const getSubCategoryBySubCategoryName = (sub) => async (dispatch) => {
   try {
@@ -1060,12 +1067,9 @@ export const getAllRandomProducts = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ALL_RANDOM_PRODUCT_REQUEST });
 
-    const token = JSON.parse(localStorage.getItem("userInfo"));
-
     const config = {
       headers: {
         "Content-type": "application/json",
-        Authorization: token && `Bearer ${token.access}`,
       },
     };
 
@@ -1077,5 +1081,53 @@ export const getAllRandomProducts = () => async (dispatch) => {
     dispatch({ type: GET_ALL_RANDOM_PRODUCT_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: GET_ALL_RANDOM_PRODUCT_FAIL, payload: error });
+  }
+};
+
+export const likeProduct = (product) => async (dispatch) => {
+  try {
+    dispatch({ type: LIKE_PRODUCT_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.post(
+      `${LOCAL_URL}/api/userapi/addLike/`,
+      product,
+      config
+    );
+    dispatch({ type: LIKE_PRODUCT_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: LIKE_PRODUCT_FAIL, payload: error });
+  }
+};
+
+export const getFeaturedProducts = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_FEATURED_PRODUCTS_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token && `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/getFeaturedProducts/`,
+      config
+    );
+
+    dispatch({ type: GET_FEATURED_PRODUCTS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: GET_FEATURED_PRODUCTS_FAIL, payload: error });
   }
 };

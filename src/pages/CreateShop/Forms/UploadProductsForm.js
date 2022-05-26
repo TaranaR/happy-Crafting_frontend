@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch, createDispatchHook } from "react-redux";
-import { Container, Grid, Button } from "@material-ui/core";
+import { Grid, Container, Button } from "@mui/material";
 import { Alert } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { TextField } from "@mui/material";
@@ -22,9 +22,7 @@ import {
 } from "../../../redux/actions/sellerAction";
 import { getProductDetails } from "../../../redux/actions/userAction";
 import { GET_PRODUCT_DETAILS_RESET } from "../../../constants/userConstants";
-import { CREATE_PRODUCT_RESET } from "../../../constants/sellerConstants";
-import { ContactMail } from "@mui/icons-material";
-import { HexColorPicker, RgbaColorPicker } from "react-colorful";
+import { HexColorPicker } from "react-colorful";
 
 export default function UploadProductsForm(props) {
   const dispatch = useDispatch();
@@ -38,9 +36,7 @@ export default function UploadProductsForm(props) {
   const sellerGetSubCategory = useSelector(
     (state) => state.sellerGetSubCategory
   );
-  // const sellerGetTypeOfProduct = useSelector(
-  //   (state) => state.sellerGetTypeOfProduct
-  // );
+
   const userProfileInfo = useSelector((state) => state.userProfile);
 
   const sellerCreateProdInfo = useSelector(
@@ -50,17 +46,18 @@ export default function UploadProductsForm(props) {
   const { user } = userProfileInfo;
   const { mainCatInfo } = sellerGetMainCategory;
   const { subCatInfo } = sellerGetSubCategory;
-  //const { prodTypeInfo } = sellerGetTypeOfProduct;
+
   const { loading, prodInfo, error } = sellerCreateProdInfo;
 
-  const username = user.username;
-  // const [color, setColor] = useState("");
+  const username = window.localStorage.getItem("username");
+
+  console.log(username);
+
   //Create Product
   const [prodName, setProdName] = useState("");
   const [prodPrice, setProdPrice] = useState("");
   const [prodMainCat, setProdMainCat] = useState("");
   const [prodSubCat, setProdSubCat] = useState("");
-  //const [prodType, setProdType] = useState("");
 
   const usergetProductDetails = useSelector(
     (state) => state.userGetProductDetails
@@ -92,9 +89,11 @@ export default function UploadProductsForm(props) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   dispatch({ type: GET_PRODUCT_DETAILS_RESET });
-  // }, [props.prodId]);
+  useEffect(() => {
+    if (prodInfo) {
+      setErrormsg("");
+    }
+  }, [prodInfo]);
 
   useEffect(() => {
     if (prodDetail) {
@@ -187,7 +186,14 @@ export default function UploadProductsForm(props) {
         prodSize === undefined
       ) {
         setErrormsg("Add all the fields");
-        console.log("hiiiii");
+        console.log(
+          prodName,
+          prodPrice,
+          prodSubCat,
+          prodDescription,
+          prodSize,
+          prodImage
+        );
         return;
       } else {
         // console.log(prodPrice);
@@ -212,12 +218,18 @@ export default function UploadProductsForm(props) {
     <Fragment>
       <Container className={props.classes.formWrapper}>
         <Grid container spacing={2}>
-          <Grid item xs={3} style={{ padding: "15px" }}>
+          <Grid
+            item
+            xs={3}
+            sx={{ padding: "15px" }}
+            display={{ xs: "none", lg: "block", md: "block" }}
+          >
             Name
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} lg={9} md={9}>
             <TextField
               size="small"
+              placeholder="Product Name"
               fullWidth
               value={prodName}
               onChange={(e) => {
@@ -225,13 +237,19 @@ export default function UploadProductsForm(props) {
               }}
             />
           </Grid>
-          <Grid item xs={3} style={{ padding: "15px" }}>
+          <Grid
+            item
+            xs={3}
+            style={{ padding: "15px" }}
+            display={{ xs: "none", lg: "block", md: "block" }}
+          >
             Price
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} lg={9} md={9}>
             <TextField
               size="small"
               fullWidth
+              placeholder="Product Price"
               type="number"
               value={prodPrice}
               onChange={(e) => {
@@ -239,25 +257,29 @@ export default function UploadProductsForm(props) {
               }}
             />
           </Grid>
-          <Grid item xs={3} style={{ padding: "15px" }}>
+          <Grid
+            item
+            xs={3}
+            style={{ padding: "15px" }}
+            display={{ xs: "none", lg: "block", md: "block" }}
+          >
             Type of Product
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} lg={9} md={9}>
             <Select
-              labelId="demo-select-small"
-              id="demo-select-small"
               value={prodMainCat}
               onChange={(e) => {
-                setProdMainCat(e.target.value);
                 console.log(e.target.value);
+                setProdMainCat(e.target.value);
                 dispatch(getSubCategory(e.target.value));
               }}
               fullWidth
               size="small"
               displayEmpty
+              style={{ color: "#AAAAAA" }}
             >
               <MenuItem value="">
-                <em>None</em>
+                <em>Select Category</em>
               </MenuItem>
               {main &&
                 main.map((item) => (
@@ -268,20 +290,17 @@ export default function UploadProductsForm(props) {
             </Select>
             {subCatInfo && (
               <Select
-                labelId="demo-select-small"
-                id="demo-select-small"
-                value={prodSubCat}
+                // value={prodSubCat}
                 onChange={(e) => {
                   setProdSubCat(e.target.value);
-                  //dispatch(getTypeOfProduct(e.target.value));
                 }}
                 fullWidth
                 size="small"
                 displayEmpty
-                style={{ marginTop: "10px" }}
+                style={{ marginTop: "10px", color: "#AAAAAA" }}
               >
                 <MenuItem value="">
-                  <em>None</em>
+                  <em>Select Type</em>
                 </MenuItem>
                 {sub &&
                   sub.map((item) => (
@@ -292,10 +311,15 @@ export default function UploadProductsForm(props) {
               </Select>
             )}
           </Grid>
-          <Grid item xs={3} style={{ padding: "15px" }}>
+          <Grid
+            item
+            xs={3}
+            style={{ padding: "15px" }}
+            display={{ xs: "none", lg: "block", md: "block" }}
+          >
             Description
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} lg={9} md={9}>
             <Editor
               onInit={(evt, editor) => (editorRef.current = editor)}
               value={props.prodId && prodDescription}
@@ -336,10 +360,15 @@ export default function UploadProductsForm(props) {
               }}
             />
           </Grid>
-          <Grid item xs={3} style={{ padding: "15px" }}>
+          <Grid
+            item
+            xs={3}
+            style={{ padding: "15px" }}
+            display={{ xs: "none", lg: "block", md: "block" }}
+          >
             Product Images
           </Grid>
-          <Grid item xs={9} style={{ textAlign: "left" }}>
+          <Grid item xs={12} lg={9} md={9} style={{ textAlign: "left" }}>
             <label htmlFor="upload-photo">
               <input
                 type="file"
@@ -369,13 +398,19 @@ export default function UploadProductsForm(props) {
               Upload
             </Button>
           </Grid>
-          <Grid item xs={3} style={{ padding: "15px" }}>
+          <Grid
+            item
+            xs={3}
+            style={{ padding: "15px" }}
+            display={{ xs: "none", lg: "block", md: "block" }}
+          >
             Size
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} lg={9} md={9}>
             <TextField
               fullWidth
               size="small"
+              placeholder="Product Size"
               multiline
               maxRows={5}
               value={prodSize}
@@ -384,50 +419,22 @@ export default function UploadProductsForm(props) {
               }}
             />
           </Grid>
-          <Grid item xs={3} style={{ padding: "15px" }}>
+          <Grid
+            item
+            xs={3}
+            style={{ padding: "15px" }}
+            display={{ xs: "none", lg: "block", md: "block" }}
+          >
             Color
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} lg={9} md={9}>
             <HexColorPicker
               color={prodColor ? prodColor : "#000000"}
               onChange={setProdColor}
               style={{ height: 100, width: "100%" }}
             />
-            {/* <RgbaColorPicker
-              color={prodColor}
-              onChange={setProdColor}
-              style={{ height: 100, width: 100 }}
-            /> */}
-            {/* <TextField
-              fullWidth
-              size="small"
-              multiline
-              value={prodColor}
-              maxRows={5}
-              onChange={(e) => {
-                setProdColor(e.target.value);
-              }}
-            /> */}
           </Grid>
-          {/* <Grid item xs={3} style={{ padding: "15px" }}>
-            Is Customizable
-          </Grid> */}
-          {/* <Grid item xs={9} style={{ textAlign: "left", padding: "5px" }}>
-            {/* <CustomCheckbox
-              onChange={(e) => {
-                setIsCustomizable(e.target.checked);
-              }}
-            /> */}
-          {/*<Checkbox
-              checked={isCustomizable}
-              onChange={(e) => {
-                setIsCustomizable(e.target.checked);
-              }}
-              style={{
-                color: "#745D3E",
-              }}
-            />
-          </Grid> */}
+
           <Grid item xs={12} style={{ padding: "15px" }}>
             {!loading && (
               <Button
@@ -477,23 +484,11 @@ export default function UploadProductsForm(props) {
               </Alert>
             </Grid>
           )}
-          {/* {prodInfo && (
-            <Grid
-              item
-              xs={12}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                color: "red",
-                marginTop: 0,
-                marginBottom: 10,
-              }}
-            >
-              <Alert severity="success" style={{ width: "100%" }}>
-                {prodInfo.message}
-              </Alert>
+          {prodInfo && (
+            <Grid item xs={12}>
+              {prodInfo.message}
             </Grid>
-          )} */}
+          )}
         </Grid>
       </Container>
     </Fragment>

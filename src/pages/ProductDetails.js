@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Modal from "@mui/material/Modal";
 import {
   getProductDetails,
@@ -9,6 +9,8 @@ import {
   addToCart,
   addToMyCollection,
   getUserById,
+  likeProduct,
+  getUserProfile,
 } from "../redux/actions/userAction";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Container, Grid, Button, TextField } from "@mui/material";
@@ -45,6 +47,7 @@ export default function ProductDetails() {
   const params = useParams();
   const classes = useStyles();
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const theme = useTheme();
 
@@ -54,7 +57,8 @@ export default function ProductDetails() {
   const [open, setOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [reviewsArray, setReviewsArray] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [likes, setLikes] = useState([]);
 
   const usergetProductDetails = useSelector(
     (state) => state.userGetProductDetails
@@ -66,6 +70,7 @@ export default function ProductDetails() {
     (state) => state.userAddToMyCollection
   );
   const userGetUserById = useSelector((state) => state.userGetUserById);
+  const userLikeProduct = useSelector((state) => state.userLikeProduct);
 
   const { userInfo } = userGetUserById;
   const { user } = userProfile;
@@ -73,11 +78,17 @@ export default function ProductDetails() {
   const { prodInfo } = usergetProductDetails;
   const { cartData, loading: cartLoading } = userAddToCart;
   const { myCollectionData } = userAddToMyCollection;
+  const { likeInfo, loading, success } = userLikeProduct;
   const prodId = params.prodId;
-  let reviews = [];
-  let likeBtn = "";
 
   const token = JSON.parse(localStorage.getItem("userInfo"));
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "auto",
+    });
+  }, []);
 
   useEffect(() => {
     dispatch(getCartDataByUser());
@@ -85,12 +96,29 @@ export default function ProductDetails() {
 
   useEffect(() => {
     dispatch(getProductDetails(prodId));
-    //dispatch(getCartDataByUser());
-    window.scrollTo({
-      top: 0,
-      behavior: "auto",
-    });
-  }, [dispatch]);
+    dispatch(getUserProfile());
+  }, []);
+
+  useEffect(() => {
+    setLikes(false);
+    if (prodInfo && user) {
+      prodInfo["likes"].map((item) => {
+        if (item.owner === user.id) {
+          setIsLiked(true);
+        }
+      });
+    }
+  }, [prodInfo]);
+
+  useEffect(() => {
+    setIsLiked(false);
+  }, [location]);
+
+  useEffect(() => {
+    if (success) {
+      dispatch(getProductDetails(prodId));
+    }
+  }, [success]);
 
   useEffect(() => {
     if (prodInfo) {
@@ -100,21 +128,23 @@ export default function ProductDetails() {
 
   useEffect(() => {
     if (prodInfo) {
-      if (prodInfo["reviews"].length >= 1) {
-        setIsLiked(true);
-      }
-    }
-  }, [dispatch, prodInfo]);
-
-  useEffect(() => {
-    if (prodInfo) {
-      if (prodInfo["reviews"].length >= 1) {
+      setReviews(prodInfo["reviews"]);
+      setLikes(prodInfo["likes"]);
+      if (prodInfo["reviews"]?.length >= 1) {
         prodInfo["reviews"].map((item) => {
           dispatch(getUserById(item.owner));
         });
       }
     }
   }, [prodInfo]);
+
+  useEffect(() => {
+    setInterval(() => {
+      if (myCollectionData) {
+        setShowAlert(false);
+      }
+    }, 3000);
+  }, [myCollectionData, showAlert]);
 
   const handleClose = () => setOpen(false);
 
@@ -125,14 +155,6 @@ export default function ProductDetails() {
   const decrementQtyHandler = () => {
     if (prodQty > 1) {
       setProdQty((prevState) => prevState - 1);
-    }
-  };
-
-  const likeHandler = () => {
-    if (token) {
-      setIsLiked((prevState) => !prevState);
-    } else {
-      navigate("/login");
     }
   };
 
@@ -167,17 +189,18 @@ export default function ProductDetails() {
     setShowAlert(true);
   };
 
-  useEffect(() => {
-    setInterval(() => {
-      if (myCollectionData) {
-        setShowAlert(false);
-      }
-    }, 3000);
-  }, [myCollectionData, showAlert]);
-
-  if (prodInfo) {
-    reviews = prodInfo["reviews"];
-  }
+  const likeProductHandler = () => {
+    const product = {
+      product: prodInfo["id"],
+    };
+    if (token) {
+      // setIsLiked((prevState) => !prevState);
+      setIsLiked(true);
+      dispatch(likeProduct(product));
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <Fragment>
@@ -242,22 +265,24 @@ export default function ProductDetails() {
                 {prodInfo && prodInfo["name"]}
               </Grid>
               <Grid item xs={6} style={{ textAlign: "right", fontSize: 20 }}>
-                <Button style={{ color: "#000000" }} onClick={likeHandler}>
+                <Button
+                  style={{ color: "#000000" }}
+                  onClick={likeProductHandler}
+                >
                   <FavoriteIcon
                     style={{
                       // color: isLiked ? "red" : "#7A7B7F",
                       color:
-                        reviews && reviews.length > 0
-                          ? "red"
-                          : isLiked
-                          ? "red"
-                          : "#7A7B7F",
+                        // likes && likes.length > 0
+                        //   ? "red"
+                        //   : isLiked
+                        isLiked ? "red" : "#7A7B7F",
                       marginRight: "2%",
                       marginTop: "2%",
                       //border: "1px solid red",
                     }}
                   />
-                  {prodInfo && prodInfo["reviews"].length}
+                  {prodInfo && prodInfo["likes"]?.length}
                 </Button>
               </Grid>
             </Grid>
@@ -371,7 +396,7 @@ export default function ProductDetails() {
       <Container className={classes.root}>
         <Grid container spacing={8}>
           <Grid item xs={12} lg={6} md={6}>
-            {reviews.length > 0 && (
+            {reviews?.length > 0 && (
               <Grid item xs={12} style={{ fontSize: 25 }}>
                 Reviews
               </Grid>

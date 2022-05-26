@@ -1,8 +1,9 @@
-import { Box, Fab, Grid } from "@material-ui/core";
+import { Box, Grid, Fab } from "@mui/material";
 import { Fragment, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -23,6 +24,7 @@ const useStyles = makeStyles(() => ({
 export default function MyShop() {
   const classes = useStyles();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   useEffect(() => {
     window.scrollTo({
@@ -35,11 +37,17 @@ export default function MyShop() {
     <Fragment>
       <Box className={classes.root}>
         <Box
-          style={{
-            height: "50vh",
+          sx={{
+            height: "60%",
+            [theme.breakpoints.down("md")]: {
+              height: "105%",
+            },
+            [theme.breakpoints.down("xs")]: {
+              height: "110%",
+            },
             width: "100%",
             backgroundColor: "#D5C6B1",
-            marginTop: "5vh",
+            marginTop: "5%",
           }}
         >
           <Grid container>
@@ -52,11 +60,11 @@ export default function MyShop() {
             </Grid>
             <Grid
               style={{
-                height: "20vh",
+                height: "100%",
               }}
               container
             >
-              <Grid item xs={4} className={classes.stepWrapper}>
+              <Grid item xs={12} lg={4} md={4} className={classes.stepWrapper}>
                 <Box>
                   <Fab
                     style={{
@@ -84,7 +92,7 @@ export default function MyShop() {
                   Create your account and start uploading products.
                 </Grid>
               </Grid>
-              <Grid item xs={4} className={classes.stepWrapper}>
+              <Grid item xs={12} lg={4} md={4} className={classes.stepWrapper}>
                 <Box>
                   <Fab
                     style={{
@@ -113,7 +121,7 @@ export default function MyShop() {
                   furniture, apparel and lifestyle products.
                 </Grid>
               </Grid>
-              <Grid item xs={4} className={classes.stepWrapper}>
+              <Grid item xs={12} lg={4} md={4} className={classes.stepWrapper}>
                 <Box>
                   <Fab
                     style={{
@@ -147,6 +155,7 @@ export default function MyShop() {
               style={{
                 textAlign: "center",
                 marginTop: "65px",
+                marginBottom: "5%",
               }}
               xs={12}
             >
@@ -156,7 +165,7 @@ export default function MyShop() {
                   color: "black",
                   backgroundColor: "#ffffff",
                   borderRadius: 20,
-                  width: "50vh",
+                  width: "50%",
                 }}
                 onClick={() => {
                   navigate("createshop");

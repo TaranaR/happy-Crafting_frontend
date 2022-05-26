@@ -26,6 +26,8 @@ import { Logout } from "@mui/icons-material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { getCartDataByUser } from "../../redux/actions/userAction";
 import { GiHamburgerMenu } from "react-icons/gi";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { useTheme } from "@mui/material/styles";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -47,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: 30,
+    },
   },
   titleLink: {
     color: "#ffffff",
@@ -103,8 +108,12 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerLink: {
     textDecoration: "none",
-    color: "#ffffff",
+    color: "#000000",
     fontWeight: "bold",
+  },
+  drawerLinkUser: {
+    textDecoration: "none",
+    color: "#777777",
   },
 }));
 
@@ -149,6 +158,8 @@ function Header(props) {
     (state) => state.userGetCartDataByUser
   );
   const { cartData } = userGetCartDataByUser;
+
+  const username = window.localStorage.getItem("username");
 
   useEffect(() => {
     setCartCount(0);
@@ -221,7 +232,7 @@ function Header(props) {
                   style={{
                     textAlign: "center",
                     height: "100%",
-                    backgroundColor: "#000000",
+                    backgroundColor: "#ffffff",
                   }}
                 >
                   <Grid
@@ -229,64 +240,141 @@ function Header(props) {
                     xs={12}
                     style={{
                       margin: 10,
+                      marginTop: 20,
                     }}
                   >
-                    <Grid item xs={12} style={{ marginTop: 30 }}>
+                    {token && (
+                      <Grid
+                        item
+                        xs={12}
+                        style={{ marginTop: "5%", marginBottom: "20%" }}
+                      >
+                        Welcome {username}
+                      </Grid>
+                    )}
+
+                    {sections.map((section, index) => (
+                      <div key={index}>
+                        <Grid
+                          item
+                          xs={12}
+                          style={{
+                            marginTop: "10%",
+                          }}
+                        >
+                          <NavLink
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                            to={section.url}
+                            className={classes.drawerLink}
+                          >
+                            <ArrowBackIosNewIcon
+                              style={{ transform: "scale(0.5)" }}
+                            />
+                            {section.title}
+                          </NavLink>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Divider style={{ backgroundColor: "GrayText" }} />
+                        </Grid>
+                      </div>
+                    ))}
+                    <Grid
+                      item
+                      xs={12}
+                      style={{
+                        marginTop: 50,
+                        marginBottom: 30,
+                      }}
+                    >
                       {!token && (
                         <Button
                           onClick={() => {
                             navigate("/login");
                           }}
-                          style={{ color: "white" }}
+                          style={{ color: "black" }}
                         >
                           Login | Join
                         </Button>
                       )}
                       {token && (
-                        <div>
-                          <NavLink to="/profile" className={classes.drawerLink}>
-                            Profile
-                          </NavLink>
-                          <br />
-                          <NavLink to="/myorder" className={classes.drawerLink}>
-                            My Orders
-                          </NavLink>
-                          <br />
-                          <NavLink
-                            to="/mycollection"
-                            className={classes.drawerLink}
+                        <Grid item xs={12} style={{ color: "#D0C9C0" }}>
+                          <Grid
+                            item
+                            xs={12}
+                            style={{
+                              textAlign: "right",
+                            }}
                           >
-                            My Collection
-                          </NavLink>
-                          <br />
-                          <NavLink
-                            to="/viewcart"
-                            className={classes.drawerLink}
+                            <NavLink
+                              to="/profile"
+                              className={classes.drawerLinkUser}
+                            >
+                              Profile
+                            </NavLink>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={12}
+                            style={{
+                              textAlign: "right",
+                            }}
                           >
-                            View Cart
-                          </NavLink>
-                        </div>
+                            <NavLink
+                              to="/myorder"
+                              className={classes.drawerLinkUser}
+                            >
+                              My Orders
+                            </NavLink>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={12}
+                            style={{
+                              textAlign: "right",
+                            }}
+                          >
+                            <NavLink
+                              to="/mycollection"
+                              className={classes.drawerLinkUser}
+                            >
+                              My Collection
+                            </NavLink>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={12}
+                            style={{
+                              textAlign: "right",
+                            }}
+                          >
+                            <NavLink
+                              to="/viewcart"
+                              className={classes.drawerLinkUser}
+                            >
+                              View Cart
+                            </NavLink>
+                          </Grid>
+                        </Grid>
                       )}
-                      <Divider style={{ backgroundColor: "white" }} />
                     </Grid>
-                    <Grid item xs={12} style={{ marginTop: 30 }}>
-                      {sections.map((section, index) => (
-                        <div key={index}>
-                          <NavLink
-                            to={section.url}
-                            className={classes.drawerLink}
-                          >
-                            {section.title}
-                          </NavLink>
-                          <br />
-                        </div>
-                      ))}
-                      <Divider style={{ backgroundColor: "white" }} />
-                    </Grid>
-                    <Grid item xs={12} style={{ marginTop: 50 }}>
+
+                    <Grid
+                      item
+                      xs={12}
+                      style={{
+                        marginTop: 30,
+                        textAlign: "right",
+                      }}
+                    >
                       {token && (
                         <Button
-                          style={{ width: "100%", color: "white" }}
+                          style={{
+                            width: "50%",
+                            color: "#777777",
+                          }}
                           onClick={() => {
                             dispatch(logout());
                             navigate("/");
@@ -371,7 +459,7 @@ function Header(props) {
                   >
                     <MenuItem disabled>
                       <Typography style={{ padding: 5, height: 20 }}>
-                        Welcome {window.localStorage.getItem("username")}
+                        Welcome {username}
                       </Typography>
                     </MenuItem>
                     <MenuItem onClick={handleClose} id="Profile">

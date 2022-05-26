@@ -306,7 +306,7 @@ function App() {
             (token && (
               <>
                 <Header title="Happy Crafting" sections={sections} />
-                {user.is_seller ? <SellerProfile /> : <Profile />}
+                {user && user.is_seller ? <SellerProfile /> : <Profile />}
 
                 <Footer />
               </>

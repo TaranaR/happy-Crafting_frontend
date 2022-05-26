@@ -14,7 +14,7 @@ export default function Review(props) {
         props.userInfo.map((item, index) => {
           return (
             item[props.owner] && (
-              <>
+              <Fragment key={index}>
                 <Grid container style={{ marginTop: "30px" }}>
                   <Grid
                     item
@@ -39,7 +39,7 @@ export default function Review(props) {
                   </Grid>
                 </Grid>
                 <Divider />
-              </>
+              </Fragment>
             )
           );
         })}

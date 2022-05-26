@@ -1,5 +1,5 @@
 import { Fragment, useState, useRef } from "react";
-import { Grid, Container, Button } from "@material-ui/core";
+import { Grid, Container, Button } from "@mui/material";
 import { TextField } from "@mui/material";
 import { createSellerShop } from "../../../redux/actions/sellerAction";
 import { Editor } from "@tinymce/tinymce-react";
@@ -7,18 +7,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { storage } from "../../../constants/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
+import { useTheme } from "@mui/material/styles";
 
 export default function CreateShopForm(props) {
   const dispatch = useDispatch();
+  const theme = useTheme();
+
   const [selectedFile, setSelectedFile] = useState("");
   const editorRef = useRef(null);
-  // const userProfileInfo = useSelector((state) => state.userProfile);
+
   const sellerCreateShopInfo = useSelector((state) => state.sellerCreateShop);
 
-  // const { user } = userProfileInfo;
   const { loading, shopInfo, error } = sellerCreateShopInfo;
-
-  //const username = user.username;
 
   const username = localStorage.getItem("username");
 
@@ -81,11 +81,17 @@ export default function CreateShopForm(props) {
     <Fragment>
       <Container className={props.classes.formWrapper}>
         <Grid container spacing={2}>
-          <Grid item xs={3} style={{ padding: "15px" }}>
+          <Grid
+            item
+            xs={3}
+            style={{ padding: "15px" }}
+            display={{ xs: "none", lg: "block", md: "block" }}
+          >
             Shop Name
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} lg={9} md={9}>
             <TextField
+              placeholder="Shop Name"
               fullWidth
               size="small"
               onChange={(e) => {
@@ -93,10 +99,15 @@ export default function CreateShopForm(props) {
               }}
             />
           </Grid>
-          <Grid item xs={3} style={{ padding: "15px" }}>
+          <Grid
+            item
+            xs={3}
+            style={{ padding: "15px" }}
+            display={{ xs: "none", lg: "block", md: "block" }}
+          >
             Shop Logo
           </Grid>
-          <Grid item xs={9} style={{ textAlign: "left" }}>
+          <Grid item xs={12} lg={9} md={9} style={{ textAlign: "left" }}>
             <label htmlFor="upload-photo">
               <input
                 type="file"
@@ -125,19 +136,15 @@ export default function CreateShopForm(props) {
               Upload
             </Button>
           </Grid>
-          <Grid item xs={3} style={{ padding: "15px" }}>
+          <Grid
+            item
+            xs={3}
+            style={{ padding: "15px" }}
+            display={{ xs: "none", lg: "block", md: "block" }}
+          >
             Describe your shop
           </Grid>
-          <Grid item xs={9}>
-            {/* <TextField
-              fullWidth
-              size="small"
-              multiline
-              maxRows={5}
-              onChange={(e) => {
-                setShopDescription(e.target.value);
-              }}
-            /> */}
+          <Grid item xs={12} lg={9} md={9}>
             <Editor
               onInit={(evt, editor) => (editorRef.current = editor)}
               onChange={() => {
@@ -175,23 +182,29 @@ export default function CreateShopForm(props) {
               }}
             />
           </Grid>
-          <Grid item xs={3} style={{ padding: "15px" }}>
+          <Grid
+            item
+            xs={3}
+            style={{ padding: "15px" }}
+            display={{ xs: "none", lg: "block", md: "block" }}
+          >
             Location
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} lg={9} md={9}>
             <TextField
               fullWidth
               size="small"
+              placeholder="Location"
               onChange={(e) => {
                 setShopLocation(e.target.value);
               }}
             />
           </Grid>
-          <Grid item xs={12} style={{ padding: "15px", marginTop: "6vh" }}>
+          <Grid item xs={12} sx={{ padding: "15px", marginTop: "6%" }}>
             <Button
               type="submit"
               variant="contained"
-              style={{
+              sx={{
                 backgroundColor: "#745D3E",
                 color: "#ffffff",
                 width: "150px",

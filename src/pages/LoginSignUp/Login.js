@@ -149,17 +149,20 @@ export default function Login(props) {
               />
             </Grid>
           </Grid>
-          <Grid item>
+          {/* <Grid item xs={12}>
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-          </Grid>
+          </Grid> */}
           <Grid
+            item
+            xs={12}
             sx={{
               width: "75%",
               alignContent: "center",
               marginLeft: "10%",
+              marginTop: "10%",
             }}
           >
             {!loading && (
@@ -248,10 +251,6 @@ export default function Login(props) {
             sx={{ width: "100%" }}
           >
             <AlertTitle>Error</AlertTitle>
-            {/* {errorArr.map((item) => {
-              return <p>{item}</p>;
-            })} */}
-            {/* {errorArr.join("\n")} */}
             Invalid username or password
           </Alert>
         </Snackbar>

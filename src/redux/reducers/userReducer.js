@@ -121,6 +121,12 @@ import {
   GET_ALL_RANDOM_PRODUCT_REQUEST,
   GET_ALL_RANDOM_PRODUCT_SUCCESS,
   GET_ALL_RANDOM_PRODUCT_FAIL,
+  LIKE_PRODUCT_REQUEST,
+  LIKE_PRODUCT_SUCCESS,
+  LIKE_PRODUCT_FAIL,
+  GET_FEATURED_PRODUCTS_REQUEST,
+  GET_FEATURED_PRODUCTS_SUCCESS,
+  GET_FEATURED_PRODUCTS_FAIL,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -986,6 +992,51 @@ export const userGetAllRandomProductsReducer = (state = {}, action) => {
         allProducts: action.payload,
       };
     case GET_ALL_RANDOM_PRODUCT_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userLikeProductReducer = (state = {}, action) => {
+  switch (action.type) {
+    case LIKE_PRODUCT_REQUEST:
+      return {
+        loading: true,
+      };
+    case LIKE_PRODUCT_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        likeInfo: action.payload,
+      };
+    case LIKE_PRODUCT_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userGetFeaturedProductsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_FEATURED_PRODUCTS_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_FEATURED_PRODUCTS_SUCCESS:
+      return {
+        loading: false,
+        featuredProducts: action.payload,
+      };
+    case GET_FEATURED_PRODUCTS_FAIL:
       return {
         loading: false,
         error: action.payload,

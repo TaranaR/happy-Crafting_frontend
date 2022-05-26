@@ -10,15 +10,13 @@ import { Container } from "@material-ui/core";
 import { useMediaQuery, useTheme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import startImage from "../Images/mainPage1.jpeg";
-import pillow from "/home/dev/Documents/Tarana/Happy-Crafting/happy_crafting_frontend/src/Images/pillow.jpeg";
-import painting from "/home/dev/Documents/Tarana/Happy-Crafting/happy_crafting_frontend/src/Images/painting.jpeg";
-import phoneCase from "/home/dev/Documents/Tarana/Happy-Crafting/happy_crafting_frontend/src/Images/phoneCase.jpeg";
 import { getAdminDetail } from "../redux/actions/adminAction";
 import {
   getRandomSubCategory,
   getRandom4Products,
   getRandomProductByCategory,
   getCartDataByUser,
+  getFeaturedProducts,
 } from "../redux/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -76,24 +74,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const images = [
-  {
-    url: pillow,
-    title: "Pillow",
-    width: "30%",
-  },
-  {
-    url: painting,
-    title: "Painting",
-    width: "30%",
-  },
-  {
-    url: phoneCase,
-    title: "Phone Cases",
-    width: "30%",
-  },
-];
-
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: "relative",
   margin: "10px",
@@ -108,6 +88,7 @@ const ImageButton = styled(ButtonBase)(({ theme }) => ({
   },
   "&:hover, &.Mui-focusVisible": {
     zIndex: 1,
+    color: "#000000",
     "& .MuiImageBackdrop-root": {
       opacity: 0.15,
     },
@@ -149,7 +130,7 @@ const ImageBackdrop = styled("span")(({ theme }) => ({
   top: 0,
   bottom: 0,
   backgroundColor: theme.palette.common.black,
-  opacity: 0.4,
+  opacity: 0.5,
   transition: theme.transitions.create("opacity"),
 }));
 
@@ -183,14 +164,25 @@ const Home = (props) => {
   const userGetRandomProductByCategory = useSelector(
     (state) => state.userGetRandomProductByCategory
   );
+  const userGetFeaturedProducts = useSelector(
+    (state) => state.userGetFeaturedProducts
+  );
 
   const { randProdCat } = userGetRandomProductByCategory;
   const { randProd } = usergetRandom4Product;
   const { randSubCat } = userGetRandomSubCategory;
   const { cartData } = userGetCartDataByUser;
   const { mainCatInfo } = sellerGetMainCategory;
+  const { featuredProducts } = userGetFeaturedProducts;
 
   const token = JSON.parse(localStorage.getItem("userInfo"));
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "auto",
+    });
+  }, []);
 
   useEffect(() => {
     if (!cartData) {
@@ -200,6 +192,7 @@ const Home = (props) => {
 
   useEffect(() => {
     dispatch(getRandom4Products());
+    dispatch(getFeaturedProducts());
     dispatch(getRandomSubCategory());
     if (!mainCatInfo) {
       dispatch(getMainCategory());
@@ -246,34 +239,42 @@ const Home = (props) => {
               width: "100%",
             }}
           >
-            {images.map((image) => (
-              <ImageButton
-                focusRipple
-                key={image.title}
-                style={{
-                  width: image.width,
-                }}
-              >
-                <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
-                <ImageBackdrop className="MuiImageBackdrop-root" />
-                <Image>
-                  <Typography
-                    component="span"
-                    variant="subtitle1"
-                    color="inherit"
-                    sx={{
-                      position: "relative",
-                      p: 4,
-                      pt: 2,
-                      pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+            {featuredProducts &&
+              featuredProducts.map((item) => (
+                <ImageButton
+                  focusRipple
+                  key={item.id}
+                  style={{
+                    width: "30%",
+                  }}
+                  onClick={() => {
+                    navigate(`/products/${item.id}`);
+                  }}
+                >
+                  <ImageSrc
+                    style={{
+                      backgroundImage: `url(${item.image})`,
                     }}
-                  >
-                    {image.title}
-                    <ImageMarked className="MuiImageMarked-root" />
-                  </Typography>
-                </Image>
-              </ImageButton>
-            ))}
+                  />
+                  <ImageBackdrop className="MuiImageBackdrop-root" />
+                  <Image>
+                    <Typography
+                      component="span"
+                      variant="subtitle1"
+                      color="inherit"
+                      sx={{
+                        position: "relative",
+                        p: 4,
+                        pt: 2,
+                        pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                      }}
+                    >
+                      {item.name}
+                      <ImageMarked className="MuiImageMarked-root" />
+                    </Typography>
+                  </Image>
+                </ImageButton>
+              ))}
           </Box>
         </Container>
       </Box>
@@ -347,7 +348,7 @@ const Home = (props) => {
                   navigate("/discovermore");
                 }}
               >
-                Explore Now
+                Discover More
               </Button>
             </Grid>
           </Grid>

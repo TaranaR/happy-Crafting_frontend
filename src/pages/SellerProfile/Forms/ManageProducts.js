@@ -41,6 +41,16 @@ const useStyles = makeStyles((theme) => ({
     transform: "translate(-50%, -50%)",
     borderRadius: 5,
     width: "45%",
+    // [theme.breakpoints.down("xs")]: {
+    //   width: "90%",
+    //   maxHeight: "100%",
+    //   overflow: "scroll",
+    // },
+    [theme.breakpoints.down("md")]: {
+      width: "80%",
+      maxHeight: "100%",
+      overflow: "scroll",
+    },
     maxHeight: "99%",
     //bgcolor: "background.paper",
     backgroundColor: "white",

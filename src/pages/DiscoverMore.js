@@ -32,7 +32,12 @@ export default function DiscoverMore() {
 
   const { allProducts } = userGetAllRandomProducts;
 
-  console.log(allProducts);
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "auto",
+    });
+  }, []);
 
   useEffect(() => {
     dispatch(getAllRandomProducts());
