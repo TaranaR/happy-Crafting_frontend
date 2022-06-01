@@ -7,19 +7,21 @@ import {
   deleteMainCategory,
 } from "../../redux/actions/adminAction";
 import { DataGrid } from "@mui/x-data-grid";
-import { TextField } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "@mui/material/Modal";
 import { Box, Button, Container, Divider, Grid } from "@mui/material";
 import { CREATE_MAIN_CATEGORY_RESET } from "../../constants/adminConstants";
+import { GET_MAINCATEGORY_RESET } from "../../constants/sellerConstants";
 
 const useStyles = makeStyles(() => ({
   root: {
     marginTop: "3%",
-    marginLeft: "20%",
+    marginLeft: "25%",
     height: "10%",
     padding: "30px",
-    width: "60%",
+    width: "50%",
     textAlign: "center",
     border: "1px solid #B8C1BA",
     //boxShadow: "5px 5px #B8C1BA",
@@ -69,17 +71,34 @@ export default function ManageCategory() {
   const createMainCatInfo = useSelector(
     (state) => state.adminCreateMainCategory
   );
+  const adminDeleteMainCategory = useSelector(
+    (state) => state.adminDeleteMainCategory
+  );
   const { mainCatInfo } = getMainCategoryInfo;
   const { mainCategoryInfo, loading, error } = createMainCatInfo;
+  const { success } = adminDeleteMainCategory;
 
   useEffect(() => {
     dispatch(getMainCategory());
-    if (!mainCatInfo) {
+    if (mainCatInfo) {
+      dispatch({ type: GET_MAINCATEGORY_RESET });
       dispatch(getMainCategory());
-    } else {
-      setData(mainCatInfo);
     }
-  }, [dispatch, mainCatInfo]);
+  }, []);
+
+  useEffect(() => {
+    if (!mainCatInfo) {
+      dispatch({ type: GET_MAINCATEGORY_RESET });
+      dispatch(getMainCategory());
+    }
+  }, [mainCatInfo]);
+
+  useEffect(() => {
+    if (success) {
+      dispatch({ type: GET_MAINCATEGORY_RESET });
+      dispatch(getMainCategory());
+    }
+  }, [success]);
 
   const handleOpen = () => {
     dispatch({ type: CREATE_MAIN_CATEGORY_RESET });
@@ -87,20 +106,20 @@ export default function ManageCategory() {
   };
   const handleClose = () => setOpen(false);
 
-  const deleteCategoryHandler = () => {
-    dispatch(deleteMainCategory(mainCatId));
+  const deleteCategoryHandler = (id) => {
+    dispatch(deleteMainCategory(id));
+    dispatch({ type: GET_MAINCATEGORY_RESET });
     dispatch(getMainCategory());
   };
 
   const submitHandler = () => {
     if (mainCatName === "") return;
-
-    console.log("in");
     const main = {
       main_cat_name: mainCatName,
     };
     dispatch(createMainCategory(main));
-
+    dispatch({ type: GET_MAINCATEGORY_RESET });
+    dispatch(getMainCategory());
     setMainCatName("");
   };
 
@@ -129,8 +148,8 @@ export default function ManageCategory() {
                   style={{
                     backgroundColor: "#826F66",
                     color: "#ffffff",
-                    width: "150px",
-                    height: "30px",
+                    width: "25%",
+                    height: "4vh",
                   }}
                   onClick={submitHandler}
                 >
@@ -151,18 +170,18 @@ export default function ManageCategory() {
       <Box className={classes.root}>
         <Grid container>
           <Grid item xs={12} style={{ fontSize: 25, fontWeight: "bold" }}>
-            Manage Main Category
+            Manage Category
           </Grid>
           <Grid item xs={12}>
             <Divider style={{ width: "100%" }} />
           </Grid>
-          <Grid xs={12} style={{ textAlign: "right", marginTop: "20px" }}>
+          <Grid item xs={12} style={{ textAlign: "right", marginTop: "20px" }}>
             <Button
               style={{
                 border: "2px solid #06113C",
                 borderRadius: 25,
                 color: "#06113C",
-                width: "160px",
+                width: "30%",
                 height: "4vh",
               }}
               onClick={handleOpen}
@@ -170,49 +189,47 @@ export default function ManageCategory() {
               <AddIcon style={{ marginRight: "5px" }} />
               Add Category
             </Button>
-            <Button
-              style={{
-                border: "2px solid #BA2C3C",
-                borderRadius: 25,
-                color: "#BA2C3C",
-                width: "140px",
-                height: "4vh",
-                marginLeft: "20px",
-              }}
-              onClick={deleteCategoryHandler}
-            >
-              Delete
-            </Button>
           </Grid>
-          <Grid item xs={12} style={{ marginTop: "10px" }}>
+          <Grid item xs={12} style={{ marginTop: "2%" }}>
             <Box
               style={{
-                height: "50vh",
+                height: "100%",
                 width: "100%",
                 // boxShadow:
                 //   "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px",
               }}
             >
               <DataGrid
-                style={{ height: 400 }}
+                style={{ height: 370 }}
                 pageSize={pageSize}
                 onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                 rowsPerPageOptions={[5, 10, 20]}
                 pagination
-                checkboxSelection
-                rowHeight={60}
-                onCellClick={(row) => {
-                  setmainCatId(row.id);
-                }}
+                rowHeight={55}
                 columns={[
                   {
                     field: "main_cat_name",
                     headerName: "Main Category Name",
-                    width: 300,
+                    width: 400,
+                  },
+                  {
+                    field: "action",
+                    headerName: "Action",
+                    width: 100,
+
+                    // Important: passing id from customers state so I can delete or edit each user
+                    renderCell: (id) => (
+                      <IconButton
+                        onClick={() => {
+                          deleteCategoryHandler(id.id);
+                        }}
+                      >
+                        <DeleteIcon sx={{ "&:hover": { color: "red" } }} />
+                      </IconButton>
+                    ),
                   },
                 ]}
-                rows={data ? data : []}
-                // getRowId={(row) => row.internalId}
+                rows={mainCatInfo ? mainCatInfo : []}
               />
             </Box>
           </Grid>

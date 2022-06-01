@@ -99,7 +99,9 @@ export default function MyOrder() {
                         >
                           <div>
                             Order Date &nbsp;&nbsp;&nbsp;
-                            {Moment(item["created"]).format("DD-MM-YYYY")}
+                            {Moment(item["created"]).format(
+                              "DD-MM-YYYY, HH:mm"
+                            )}
                           </div>
                         </AccordionSummary>
                         <AccordionDetails>

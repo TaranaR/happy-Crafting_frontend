@@ -119,7 +119,6 @@ import {
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import { ADMIN_DETAILS_RESET } from "../../constants/adminConstants";
-import { async } from "@firebase/util";
 
 export const login = (user) => async (dispatch) => {
   try {

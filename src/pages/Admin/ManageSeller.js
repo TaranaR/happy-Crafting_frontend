@@ -36,22 +36,36 @@ export default function ManageSeller() {
 
   const [pageSize, setPageSize] = useState(5);
   // const [sellerId, setSellerId] = useState("");
-  const [data, setData] = useState([]);
 
   const allSellerDetails = useSelector((state) => state.getAllSellerDetails);
   const updatedSeller = useSelector((state) => state.updateSellerStatus);
   const { seller } = allSellerDetails;
-  const { success, message } = updatedSeller;
+  const { success } = updatedSeller;
+
+  // useEffect(() => {
+  //   dispatch(getAllSellerDetail());
+  //   if (!seller || success) {
+  //     dispatch({ type: UPDATE_SELLER_STATUS_RESET });
+  //     dispatch(getAllSellerDetail());
+  //   } else {
+  //     setData(seller);
+  //   }
+  // }, [dispatch, seller, success]);
 
   useEffect(() => {
     dispatch(getAllSellerDetail());
-    if (!seller || success) {
+    if (!seller) {
+      dispatch({ type: GET_ALL_SELLERS_RESET });
+      dispatch(getAllSellerDetail());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (success) {
       dispatch({ type: UPDATE_SELLER_STATUS_RESET });
       dispatch(getAllSellerDetail());
-    } else {
-      setData(seller);
     }
-  }, [dispatch, seller, success]);
+  }, [success]);
 
   return (
     <Fragment>
@@ -63,7 +77,7 @@ export default function ManageSeller() {
           <Grid item xs={12}>
             <Divider style={{ width: "100%" }} />
           </Grid>
-          <Grid item xs={12} style={{ marginTop: "20px" }}>
+          <Grid item xs={12} style={{ marginTop: "5%" }}>
             <Box
               style={{
                 height: "50vh",
@@ -78,6 +92,7 @@ export default function ManageSeller() {
                 onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                 rowsPerPageOptions={[5, 10, 20]}
                 pagination
+                disableColumnSelector
                 rowHeight={90}
                 // onCellClick={(row) => {
                 //   setSellerId(row.id);
@@ -87,6 +102,7 @@ export default function ManageSeller() {
                     field: "shop_logo",
                     headerName: "IMAGE",
                     width: 150,
+                    sortable: false,
                     renderCell: (params) => (
                       <img
                         src={params.value}
@@ -103,13 +119,8 @@ export default function ManageSeller() {
                     field: "location",
                     headerName: "LOCATION",
                     width: 200,
+                    sortable: false,
                   },
-                  // {
-                  //   field: "description",
-                  //   headerName: "DESCRIPTION",
-                  //   width: 500,
-                  // },
-
                   {
                     field: "is_active",
                     headerName: "STATUS",
@@ -136,7 +147,7 @@ export default function ManageSeller() {
                     ),
                   },
                 ]}
-                rows={data ? data : []}
+                rows={seller ? seller : []}
                 // getRowId={(row) => row.internalId}
               />
             </Box>

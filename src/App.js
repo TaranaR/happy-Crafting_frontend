@@ -32,6 +32,7 @@ import ConfirmOrder from "./pages/ConfirmOrder";
 import MyOrder from "./pages/MyOrder";
 import MyCollection from "./pages/MyCollection";
 import DiscoverMore from "./pages/DiscoverMore";
+import AdminFooter from "./pages/Admin/global/AdminFooter";
 
 const useStyles = makeStyles((theme) => ({
   root: {

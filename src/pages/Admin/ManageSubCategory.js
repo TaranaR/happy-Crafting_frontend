@@ -9,6 +9,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { getMainCategory } from "../../redux/actions/sellerAction";
 import {
   getAllSubCategory,
@@ -17,22 +18,22 @@ import {
   getMainCatName,
 } from "../../redux/actions/adminAction";
 import { DataGrid, GridCellEditStopReasons } from "@mui/x-data-grid";
-import { Select, TextField } from "@mui/material";
+import { IconButton, Select, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "@mui/material/Modal";
 import { Box, Button, Container, Divider, Grid } from "@mui/material";
 import { CREATE_SUB_CATEGORY_RESET } from "../../constants/adminConstants";
+import { GET_SUBCATEGORY_RESET } from "../../constants/sellerConstants";
 
 const useStyles = makeStyles(() => ({
   root: {
     marginTop: "3%",
-    marginLeft: "20%",
+    marginLeft: "25%",
     height: "10%",
     padding: "30px",
-    width: "60%",
+    width: "50%",
     textAlign: "center",
     border: "1px solid #B8C1BA",
-    //boxShadow: "5px 5px #B8C1BA",
     boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
   },
   modelWrapper: {
@@ -43,7 +44,6 @@ const useStyles = makeStyles(() => ({
     borderRadius: 5,
     width: "45%",
     maxHeight: "50%",
-    //bgcolor: "background.paper",
     backgroundColor: "white",
     boxShadow: 24,
     p: 4,
@@ -70,8 +70,6 @@ export default function ManageSubCategory() {
   const [open, setOpen] = useState(false);
   const [pageSize, setPageSize] = useState(5);
   const [subCatName, setSubCatName] = useState("");
-  const [data, setData] = useState("");
-  const [subCatId, setSubCatId] = useState("");
   const [mainCatId, setMainCatId] = useState("");
 
   const getMainCategoryInfo = useSelector(
@@ -81,20 +79,37 @@ export default function ManageSubCategory() {
     (state) => state.adminGetAllSubCategory
   );
   const createSubCatInfo = useSelector((state) => state.adminCreateSubCategory);
+  const adminDeleteSubCategory = useSelector(
+    (state) => state.adminDeleteSubCategory
+  );
 
   const { mainCatInfo } = getMainCategoryInfo;
   const { subCatInfo } = getSubCategoryInfo;
+  const { success } = adminDeleteSubCategory;
   const { subCategoryInfo, loading, error } = createSubCatInfo;
   let main = [];
 
   useEffect(() => {
     dispatch(getAllSubCategory());
-    if (!subCatInfo) {
+    if (subCatInfo) {
+      dispatch({ type: GET_SUBCATEGORY_RESET });
       dispatch(getAllSubCategory());
-    } else {
-      setData(subCatInfo);
     }
-  }, [dispatch, subCatInfo]);
+  }, []);
+
+  useEffect(() => {
+    if (!subCatInfo) {
+      dispatch({ type: GET_SUBCATEGORY_RESET });
+      dispatch(getAllSubCategory());
+    }
+  }, [subCatInfo]);
+
+  useEffect(() => {
+    if (success) {
+      dispatch({ type: GET_SUBCATEGORY_RESET });
+      dispatch(getAllSubCategory());
+    }
+  }, [success]);
 
   if (mainCatInfo) {
     main = Object.values(mainCatInfo);
@@ -107,8 +122,9 @@ export default function ManageSubCategory() {
   };
   const handleClose = () => setOpen(false);
 
-  const deleteSubCategoryHandler = () => {
-    dispatch(deleteSubCategory(subCatId));
+  const deleteSubCategoryHandler = (id) => {
+    dispatch(deleteSubCategory(id));
+    dispatch({ type: GET_SUBCATEGORY_RESET });
     dispatch(getAllSubCategory());
   };
 
@@ -120,24 +136,12 @@ export default function ManageSubCategory() {
       sub_cat_name: subCatName,
     };
     dispatch(createSubCategory(sub));
+    dispatch({ type: GET_SUBCATEGORY_RESET });
+    dispatch(getAllSubCategory());
 
     setSubCatName("");
     setMainCatId("");
   };
-
-  // const getMainName = (id) => {
-  //   dispatch(getMainCategory());
-  //   let name = "";
-  //   main &&
-  //     main.map((item) => {
-  //       if (item.id === id) {
-  //         name = item.main_cat_name;
-  //       }
-  //       return name;
-  //     });
-  // };
-
-  //Object.values(data).map((item) => console.log(item));
 
   return (
     <Fragment>
@@ -223,7 +227,7 @@ export default function ManageSubCategory() {
                 border: "2px solid #06113C",
                 borderRadius: 25,
                 color: "#06113C",
-                width: "160px",
+                width: "30%",
                 height: "4vh",
               }}
               onClick={handleOpen}
@@ -231,80 +235,48 @@ export default function ManageSubCategory() {
               <AddIcon style={{ marginRight: "5px" }} />
               Add SubCategory
             </Button>
-            <Button
-              style={{
-                border: "2px solid #BA2C3C",
-                borderRadius: 25,
-                color: "#BA2C3C",
-                width: "140px",
-                height: "4vh",
-                marginLeft: "20px",
-              }}
-              onClick={deleteSubCategoryHandler}
-            >
-              Delete
-            </Button>
           </Grid>
           <Grid item xs={12} style={{ marginTop: "10px" }}>
             <Box
               style={{
-                height: "50vh",
+                height: "100%",
                 width: "100%",
                 // boxShadow:
                 //   "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px",
               }}
             >
               <DataGrid
-                style={{ height: 400 }}
+                style={{ height: 370 }}
                 pageSize={pageSize}
                 onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                 rowsPerPageOptions={[5, 10, 20]}
                 pagination
-                checkboxSelection
-                rowHeight={60}
-                onCellClick={(row) => {
-                  setSubCatId(row.id);
-                }}
+                rowHeight={55}
                 columns={[
-                  // {
-                  //   field: "main_cat_id",
-                  //   headerName: "Main Category Name",
-                  //   width: 300,
-                  //   renderCell: (params) => {
-                  //     main.map((item) => {
-                  //       if (item.id === params.value) {
-                  //         return <span>{item.main_cat_name}</span>;
-                  //       }
-                  //     });
-                  //   },
-                  // },
                   {
                     field: "sub_cat_name",
                     headerName: "Sub Category Name",
-                    width: 300,
+                    width: 400,
+                  },
+                  {
+                    field: "action",
+                    headerName: "Action",
+                    width: 100,
+
+                    // Important: passing id from customers state so I can delete or edit each user
+                    renderCell: (id) => (
+                      <IconButton
+                        onClick={() => {
+                          deleteSubCategoryHandler(id.id);
+                        }}
+                      >
+                        <DeleteIcon sx={{ "&:hover": { color: "red" } }} />
+                      </IconButton>
+                    ),
                   },
                 ]}
-                rows={data ? data : []}
-                // getRowId={(row) => row.internalId}
+                rows={subCatInfo ? subCatInfo : []}
               />
-              {/* <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Main Category</TableCell>
-                      <TableCell>Sub Category Name</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {Object.values(data).map((row) => (
-                      <TableRow>
-                        <TableCell>{row.main_cat_id}</TableCell>
-                        <TableCell>{row.sub_cat_name}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer> */}
             </Box>
           </Grid>
         </Grid>

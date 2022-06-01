@@ -18,7 +18,7 @@ import { makeStyles, alpha } from "@material-ui/core/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { logout } from "../../redux/actions/userAction";
 import Badge from "@mui/material/Badge";
-import { Avatar, Drawer, Icon } from "@mui/material";
+import { Drawer } from "@mui/material";
 import { Divider, ListItemIcon } from "@material-ui/core";
 import { PersonAdd } from "@mui/icons-material";
 import CreateIcon from "@mui/icons-material/Create";

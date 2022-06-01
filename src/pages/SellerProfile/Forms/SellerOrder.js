@@ -99,6 +99,7 @@ export default function SellerOrder() {
       dispatch(getOrderedProductBySeller());
     }
   }, [success]);
+
   useEffect(() => {
     if (deliveredSuccess) {
       dispatch({ type: GET_ORDERED_PRODUCT_SELLER_RESET });
@@ -154,7 +155,7 @@ export default function SellerOrder() {
   return (
     <Fragment>
       <Container className={classes.root}>
-        <Modal open={open}>
+        <Modal open={open} onClose={handleClose}>
           <Box className={classes.modelWrapper}>
             <Grid container spacing={3} style={{ marginTop: "5%", padding: 5 }}>
               <Grid item xs={12} style={{ textAlign: "center", fontSize: 20 }}>
@@ -222,7 +223,7 @@ export default function SellerOrder() {
                         }}
                       >
                         Order Date &nbsp;&nbsp;&nbsp;
-                        {Moment(item["created"]).format("DD-MM-YYYY")}
+                        {Moment(item["created"]).format("DD-MM-YYYY, HH:mm")}
                       </AccordionSummary>
                       <AccordionDetails>
                         <OrderedProductBySeller

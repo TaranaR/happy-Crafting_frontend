@@ -49,6 +49,8 @@ import {
   DEACTIVATE_SHOP_REQUEST,
   DEACTIVATE_SHOP_SUCCESS,
   DEACTIVATE_SHOP_FAIL,
+  GET_MAINCATEGORY_RESET,
+  GET_SUBCATEGORY_RESET,
 } from "../../constants/sellerConstants";
 import { USER_LOGOUT } from "../../constants/userConstants";
 
@@ -91,6 +93,8 @@ export const sellerGetMainCategoryReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
+    case GET_MAINCATEGORY_RESET:
+      return {};
     default:
       return state;
   }
@@ -112,6 +116,8 @@ export const sellerGetSubCategoryReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
+    case GET_SUBCATEGORY_RESET:
+      return {};
     case USER_LOGOUT:
       return {};
     default:

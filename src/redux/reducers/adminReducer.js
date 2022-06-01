@@ -34,17 +34,26 @@ import {
   DELETE_SUB_CATEGORY_REQUEST,
   DELETE_SUB_CATEGORY_SUCCESS,
   DELETE_SUB_CATEGORY_FAIL,
-  CREATE_TYPE_OF_PRODUCT_REQUEST,
-  CREATE_TYPE_OF_PRODUCT_SUCCESS,
-  CREATE_TYPE_OF_PRODUCT_FAIL,
-  CREATE_TYPE_OF_PRODUCT_RESET,
-  DELETE_TYPE_OF_PRODUCT_REQUEST,
-  DELETE_TYPE_OF_PRODUCT_SUCCESS,
-  DELETE_TYPE_OF_PRODUCT_FAIL,
   GET_ALL_SUB_CATEGORY_REQUEST,
   GET_ALL_SUB_CATEGORY_SUCCESS,
   GET_ALL_SUB_CATEGORY_FAIL,
+  DELETE_MAIN_CATEGORY_RESET,
+  DELETE_SUB_CATEGORY_RESET,
+  GET_ALL_ORDER_DETAILS_REQUEST,
+  GET_ALL_ORDER_DETAILS_SUCCESS,
+  GET_ALL_ORDER_DETAILS_FAIL,
+  GET_ALL_ORDER_DETAILS_RESET,
+  GET_RECENT_ORDER_DETAILS_REQUEST,
+  GET_RECENT_ORDER_DETAILS_SUCCESS,
+  GET_RECENT_ORDER_DETAILS_FAIL,
+  GET_RECENT_ORDER_DETAILS_RESET,
 } from "../../constants/adminConstants";
+import {
+  GET_ORDER_DETAILS_FAIL,
+  GET_ORDER_DETAILS_REQUEST,
+  GET_ORDER_DETAILS_RESET,
+  GET_ORDER_DETAILS_SUCCESS,
+} from "../../constants/userConstants";
 
 export const adminDetailReducer = (state = { admin: {} }, action) => {
   switch (action.type) {
@@ -146,9 +155,7 @@ export const getAllUserDetailsReducer = (state = { user: {} }, action) => {
         error: action.payload,
       };
     case GET_ALL_USER_RESET:
-      return {
-        user: {},
-      };
+      return {};
     default:
       return state;
   }
@@ -223,7 +230,8 @@ export const adminDeleteMainCategoryReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
-
+    case DELETE_MAIN_CATEGORY_RESET:
+      return {};
     default:
       return state;
   }
@@ -268,50 +276,8 @@ export const adminDeleteSubCategoryReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
-    default:
-      return state;
-  }
-};
-
-export const adminCreateTypeOfProductReducer = (state = {}, action) => {
-  switch (action.type) {
-    case CREATE_TYPE_OF_PRODUCT_REQUEST:
-      return {
-        loading: true,
-      };
-    case CREATE_TYPE_OF_PRODUCT_SUCCESS:
-      return {
-        loading: false,
-        typeOfProductInfo: action.payload,
-      };
-    case CREATE_TYPE_OF_PRODUCT_FAIL:
-      return {
-        loading: false,
-        error: action.payload,
-      };
-    case CREATE_TYPE_OF_PRODUCT_RESET:
+    case DELETE_SUB_CATEGORY_RESET:
       return {};
-    default:
-      return state;
-  }
-};
-
-export const adminDeleteTypeOfProductReducer = (state = {}, action) => {
-  switch (action.type) {
-    case DELETE_TYPE_OF_PRODUCT_REQUEST:
-      return {
-        loading: true,
-      };
-    case DELETE_TYPE_OF_PRODUCT_SUCCESS:
-      return {
-        loading: false,
-        success: true,
-      };
-    case DELETE_TYPE_OF_PRODUCT_FAIL:
-      return {
-        loading: false,
-        error: action.payload,
-      };
     default:
       return state;
   }
@@ -340,25 +306,60 @@ export const adminGetAllSubCategoryReducer = (state = {}, action) => {
   }
 };
 
-// export const adminGetAllTypeOfProductReducer = (state = {}, action) => {
-//   switch (action.type) {
-//     case GET_ALL_TYPE_OF_PRODUCT_REQUEST:
-//       return {
-//         loading: true,
-//       };
-//     case GET_ALL_TYPE_OF_PRODUCT_SUCCESS:
-//       return {
-//         loading: false,
-//         typeInfo: action.payload,
-//       };
-//     case GET_ALL_TYPE_OF_PRODUCT_FAIL:
-//       return {
-//         loading: false,
-//         error: action.payload,
-//       };
-//     case ADMIN_LOGOUT:
-//       return {};
-//     default:
-//       return state;
-//   }
-// };
+export const adminGetAllOrderDetailsReducer = (
+  state = { allorders: {} },
+  action
+) => {
+  switch (action.type) {
+    case GET_ALL_ORDER_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case GET_ALL_ORDER_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        allorders: action.payload,
+      };
+    case GET_ALL_ORDER_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case GET_ALL_ORDER_DETAILS_RESET:
+      return {
+        allorders: {},
+      };
+    default:
+      return state;
+  }
+};
+
+export const adminGetRecentOrderDetailsReducer = (
+  state = { recentorders: {} },
+  action
+) => {
+  switch (action.type) {
+    case GET_RECENT_ORDER_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case GET_RECENT_ORDER_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        recentorders: action.payload,
+      };
+    case GET_RECENT_ORDER_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case GET_RECENT_ORDER_DETAILS_RESET:
+      return {
+        recentorders: {},
+      };
+    default:
+      return state;
+  }
+};

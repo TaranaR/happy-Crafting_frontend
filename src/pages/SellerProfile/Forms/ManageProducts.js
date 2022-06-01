@@ -150,24 +150,23 @@ export default function ManageProducts() {
 
   prodId && console.log("prodid", prodId);
 
-  const updateProductHandler = (row) => {
-    const dataField = `${row.field}`;
-    const prod = {
-      id: row.id,
-      [dataField]: row.props.value,
-    };
-    if (row.props.value) {
-      dispatch(updateSellerProduct(prod));
-    }
-    dispatch({ type: SELLER_PRODUCT_UPDATE_RESET });
-    dispatch(getProductsBySeller());
-    // setData(prodUpdatedInfo);
-    // console.log(row.id);
-    // console.log(row.field, row.props.value);
-  };
+  // const updateProductHandler = (row) => {
+  //   const dataField = `${row.field}`;
+  //   const prod = {
+  //     id: row.id,
+  //     [dataField]: row.props.value,
+  //   };
+  //   if (row.props.value) {
+  //     dispatch(updateSellerProduct(prod));
+  //   }
+  //   dispatch({ type: SELLER_PRODUCT_UPDATE_RESET });
+  //   dispatch(getProductsBySeller());
+  //   // setData(prodUpdatedInfo);
+  //   // console.log(row.id);
+  //   // console.log(row.field, row.props.value);
+  // };
 
   const deleteProductHandler = (id) => {
-    console.log("in", id);
     dispatch(deleteSellerProduct(id));
     dispatch({ type: SELLER_PRODUCT_UPDATE_RESET });
     dispatch(getProductsBySeller());
@@ -228,17 +227,6 @@ export default function ManageProducts() {
                 <AddIcon style={{ marginRight: "5px" }} />
                 Add Product
               </AddBtn>
-              {/* {prodId && (
-                <AddDeleteBtn
-                  style={{
-                    border: "2px solid #BA2C3C",
-                    color: "#BA2C3C",
-                  }}
-                  onClick={deleteProductHandler}
-                >
-                  Update or Delete
-                </AddDeleteBtn>
-              )} */}
             </Grid>
 
             <Grid item xs={12} style={{ marginTop: "20px" }}>
@@ -252,10 +240,6 @@ export default function ManageProducts() {
                   disableColumnFilter
                   disableColumnMenu
                   rowHeight={80}
-                  // onCellClick={(row) => {
-                  //   setProdId(row.id);
-                  // }}
-                  //  onEditCellPropsChange={updateProductHandler}
                   columns={[
                     {
                       field: "image",
@@ -281,25 +265,6 @@ export default function ManageProducts() {
                       headerName: "PRICE",
                       width: 80,
                     },
-                    // {
-                    //   field: "description",
-                    //   sortable: false,
-                    //   headerName: "DESCRIPTION",
-                    //   width: 1000,
-                    //   align: "left",
-                    //   editable: true,
-                    //   // renderCell: (params) => (
-                    //   //   <div dangerouslySetInnerHTML={{ __html: params }}></div>
-                    //   // ),
-                    //   renderCell: (params) => {
-                    //     console.log(params.value);
-                    //     return (
-                    //       <span
-                    //         dangerouslySetInnerHTML={{ __html: params.value }}
-                    //       ></span>
-                    //     );
-                    //   },
-                    // },
                     {
                       field: "size",
                       sortable: false,

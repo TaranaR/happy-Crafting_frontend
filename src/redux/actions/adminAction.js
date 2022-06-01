@@ -27,22 +27,24 @@ import {
   DELETE_SUB_CATEGORY_REQUEST,
   DELETE_SUB_CATEGORY_SUCCESS,
   DELETE_SUB_CATEGORY_FAIL,
-  CREATE_TYPE_OF_PRODUCT_REQUEST,
-  CREATE_TYPE_OF_PRODUCT_SUCCESS,
-  CREATE_TYPE_OF_PRODUCT_FAIL,
-  DELETE_TYPE_OF_PRODUCT_REQUEST,
-  DELETE_TYPE_OF_PRODUCT_SUCCESS,
-  DELETE_TYPE_OF_PRODUCT_FAIL,
   GET_ALL_SUB_CATEGORY_REQUEST,
   GET_ALL_SUB_CATEGORY_SUCCESS,
   GET_ALL_SUB_CATEGORY_FAIL,
-  GET_ALL_TYPE_OF_PRODUCT_REQUEST,
-  GET_ALL_TYPE_OF_PRODUCT_SUCCESS,
-  GET_ALL_TYPE_OF_PRODUCT_FAIL,
+  GET_ALL_ORDER_DETAILS_REQUEST,
+  GET_ALL_ORDER_DETAILS_SUCCESS,
+  GET_ALL_ORDER_DETAILS_FAIL,
+  GET_RECENT_ORDER_DETAILS_REQUEST,
+  GET_RECENT_ORDER_DETAILS_SUCCESS,
+  GET_RECENT_ORDER_DETAILS_FAIL,
 } from "../../constants/adminConstants";
 import axios from "axios";
 import { LOCAL_URL } from "../../constants/global";
-import { USER_LOGOUT } from "../../constants/userConstants";
+import {
+  GET_ORDER_DETAILS_FAIL,
+  GET_ORDER_DETAILS_REQUEST,
+  GET_ORDER_DETAILS_SUCCESS,
+  USER_LOGOUT,
+} from "../../constants/userConstants";
 
 export const getAdminDetail = () => async (dispatch) => {
   try {
@@ -330,71 +332,6 @@ export const deleteSubCategory = (id) => async (dispatch) => {
   }
 };
 
-export const createTypeOfProduct = (type) => async (dispatch) => {
-  try {
-    dispatch({
-      type: CREATE_TYPE_OF_PRODUCT_REQUEST,
-    });
-
-    const token = JSON.parse(localStorage.getItem("userInfo"));
-
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${token.access}`,
-      },
-    };
-
-    const { data } = await axios.post(
-      `${LOCAL_URL}/api/adminapi/createTypeOfProduct/`,
-      type,
-      config
-    );
-
-    dispatch({
-      type: CREATE_TYPE_OF_PRODUCT_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: CREATE_TYPE_OF_PRODUCT_FAIL,
-      palyload: error,
-    });
-  }
-};
-
-export const  deleteTypeOfProduct = (id) => async (dispatch) => {
-  try {
-    dispatch({
-      type: DELETE_TYPE_OF_PRODUCT_REQUEST,
-    });
-
-    const token = JSON.parse(localStorage.getItem("userInfo"));
-
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${token.access}`,
-      },
-    };
-
-    const { data } = await axios.delete(
-      `${LOCAL_URL}/api/adminapi/deleteTypeOfProduct/${id}`,
-      config
-    );
-
-    dispatch({
-      type: DELETE_TYPE_OF_PRODUCT_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: DELETE_TYPE_OF_PRODUCT_FAIL,
-      palyload: error,
-    });
-  }
-};
-
 export const getAllSubCategory = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ALL_SUB_CATEGORY_REQUEST });
@@ -419,49 +356,62 @@ export const getAllSubCategory = () => async (dispatch) => {
   }
 };
 
-export const getAllTypeOfProduct = () => async (dispatch) => {
+export const getAllOrderDetail = () => async (dispatch) => {
   try {
-    dispatch({ type: GET_ALL_TYPE_OF_PRODUCT_REQUEST });
+    dispatch({ type: GET_ALL_ORDER_DETAILS_REQUEST });
+
+    const token = JSON.parse(localStorage.getItem("userInfo"));
 
     const config = {
       headers: {
         "Content-type": "application/json",
+        Authorization: `Bearer ${token.access}`,
       },
     };
 
     const { data } = await axios.get(
-      `${LOCAL_URL}/api/adminapi/getTypeOfProduct/`,
+      `${LOCAL_URL}/api/adminapi/getAllOrdersDetails/`,
       config
     );
 
-    dispatch({ type: GET_ALL_TYPE_OF_PRODUCT_SUCCESS, payload: data });
+    dispatch({
+      type: GET_ALL_ORDER_DETAILS_SUCCESS,
+      payload: data,
+    });
   } catch (error) {
     dispatch({
-      type: GET_ALL_TYPE_OF_PRODUCT_FAIL,
+      type: GET_ALL_ORDER_DETAILS_FAIL,
       payload: error,
     });
   }
 };
 
-// export const getMainCatName = async (id) => {
-//   try {
-//     const config = {
-//       headers: {
-//         "Content-type": "application/json",
-//       },
-//     };
+export const getRecentOrderDetail = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_RECENT_ORDER_DETAILS_REQUEST });
 
-//     const { data } = await axios.get(
-//       `${LOCAL_URL}/api/adminapi/getMainCatName/${id}`,
-//       config
-//     );
+    const token = JSON.parse(localStorage.getItem("userInfo"));
 
-//     // const { data } = await axios.get(
-//     //   `${LOCAL_URL}/api/adminapi/getMainCatName/${id}`,
-//     //   config
-//     // );
-//     return data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/adminapi/getRecentOrdersDetails/`,
+      config
+    );
+
+    dispatch({
+      type: GET_RECENT_ORDER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_RECENT_ORDER_DETAILS_FAIL,
+      payload: error,
+    });
+  }
+};

@@ -67,9 +67,9 @@ import {
   adminDeleteMainCategoryReducer,
   adminCreateSubCategoryReducer,
   adminDeleteSubCategoryReducer,
-  adminCreateTypeOfProductReducer,
-  adminDeleteTypeOfProductReducer,
   adminGetAllSubCategoryReducer,
+  adminGetAllOrderDetailsReducer,
+  adminGetRecentOrderDetailsReducer,
 } from "../reducers/adminReducer";
 
 const rootReducer = combineReducers({
@@ -140,9 +140,9 @@ const rootReducer = combineReducers({
   adminDeleteMainCategory: adminDeleteMainCategoryReducer,
   adminCreateSubCategory: adminCreateSubCategoryReducer,
   adminDeleteSubCategory: adminDeleteSubCategoryReducer,
-  adminCreateTypeOfProduct: adminCreateTypeOfProductReducer,
-  adminDeleteTypeOfProduct: adminDeleteTypeOfProductReducer,
   adminGetAllSubCategory: adminGetAllSubCategoryReducer,
+  adminGetAllOrderDetails: adminGetAllOrderDetailsReducer,
+  adminGetRecentOrderDetails: adminGetRecentOrderDetailsReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

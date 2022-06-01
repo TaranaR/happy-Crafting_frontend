@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useDebugValue, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -35,23 +35,21 @@ export default function ManageUser() {
   const dispatch = useDispatch();
 
   const [pageSize, setPageSize] = useState(5);
-  // const [sellerId, setSellerId] = useState("");
-  const [data, setData] = useState([]);
 
   const allUserDetails = useSelector((state) => state.getAllUserDetails);
-  const updatedUser = useSelector((state) => state.updateUserStatus);
+
   const { user } = allUserDetails;
-  const { success } = updatedUser;
 
   useEffect(() => {
     dispatch(getAllUserDetail());
-    if (!user || success) {
-      dispatch({ type: UPDATE_USER_STATUS_RESET });
+  }, []);
+
+  useEffect(() => {
+    if (!user) {
+      dispatch(GET_ALL_USER_RESET);
       dispatch(getAllUserDetail());
-    } else {
-      setData(user);
     }
-  }, [dispatch, user, success]);
+  }, [user]);
 
   return (
     <Fragment>
@@ -63,7 +61,7 @@ export default function ManageUser() {
           <Grid item xs={12}>
             <Divider style={{ width: "100%" }} />
           </Grid>
-          <Grid item xs={12} style={{ marginTop: "20px" }}>
+          <Grid item xs={12} style={{ marginTop: "5%" }}>
             <Box
               style={{
                 height: "50vh",
@@ -125,7 +123,7 @@ export default function ManageUser() {
                   //   ),
                   // },
                 ]}
-                rows={data ? data : []}
+                rows={user ? user : []}
                 // getRowId={(row) => row.internalId}
               />
             </Box>
