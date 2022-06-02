@@ -113,7 +113,6 @@ export default function SellerAccount() {
       if (!user || !user.email || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserProfile());
-        console.log(user);
       } else {
         setName(user.name);
         setEmail(user.email);

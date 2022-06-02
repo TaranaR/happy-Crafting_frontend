@@ -2,6 +2,9 @@ import { Fragment, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import MenuItem from "@mui/material/MenuItem";
+import { styled } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
+
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -18,20 +21,26 @@ import {
   getMainCatName,
 } from "../../redux/actions/adminAction";
 import { DataGrid, GridCellEditStopReasons } from "@mui/x-data-grid";
-import { IconButton, Select, TextField } from "@mui/material";
+import { ButtonBase, IconButton, Select, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "@mui/material/Modal";
 import { Box, Button, Container, Divider, Grid } from "@mui/material";
 import { CREATE_SUB_CATEGORY_RESET } from "../../constants/adminConstants";
 import { GET_SUBCATEGORY_RESET } from "../../constants/sellerConstants";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "3%",
     marginLeft: "25%",
     height: "10%",
     padding: "30px",
     width: "50%",
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+      marginLeft: 0,
+      marginTop: "5%",
+      padding: "20px",
+    },
     textAlign: "center",
     border: "1px solid #B8C1BA",
     boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
@@ -43,6 +52,7 @@ const useStyles = makeStyles(() => ({
     transform: "translate(-50%, -50%)",
     borderRadius: 5,
     width: "45%",
+    [theme.breakpoints.down("md")]: { width: "90%" },
     maxHeight: "50%",
     backgroundColor: "white",
     boxShadow: 24,
@@ -64,9 +74,41 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const AddBtn = styled(ButtonBase)(({ theme }) => ({
+  border: "2px solid #242F9B",
+  borderRadius: 25,
+  color: "#242F9B",
+  width: "170px",
+  [theme.breakpoints.down("sm")]: {
+    width: "170px",
+    height: "30px",
+    margin: "3px",
+    marginLeft: 0,
+  },
+  [theme.breakpoints.down("md")]: {
+    width: "170px",
+    height: "30px",
+    marginLeft: 0,
+  },
+  [theme.breakpoints.down("lg")]: {
+    width: "170px",
+    height: "30px",
+  },
+  [theme.breakpoints.up("lg")]: {
+    width: "170px",
+    height: "30px",
+  },
+  editBtn: {
+    "&:hover ": {
+      color: "primary",
+    },
+  },
+}));
+
 export default function ManageSubCategory() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [pageSize, setPageSize] = useState(5);
   const [subCatName, setSubCatName] = useState("");
@@ -191,11 +233,14 @@ export default function ManageSubCategory() {
                 <Button
                   type="submit"
                   variant="contained"
-                  style={{
-                    backgroundColor: "#826F66",
+                  sx={{
+                    backgroundColor: "#242F9B",
                     color: "#ffffff",
-                    width: "150px",
-                    height: "30px",
+                    width: "25%",
+                    [theme.breakpoints.down("md")]: {
+                      width: "50%",
+                    },
+                    height: "4vh",
                   }}
                   onClick={submitHandler}
                 >
@@ -222,19 +267,10 @@ export default function ManageSubCategory() {
             <Divider style={{ width: "100%" }} />
           </Grid>
           <Grid item xs={12} style={{ textAlign: "right", marginTop: "20px" }}>
-            <Button
-              style={{
-                border: "2px solid #06113C",
-                borderRadius: 25,
-                color: "#06113C",
-                width: "30%",
-                height: "4vh",
-              }}
-              onClick={handleOpen}
-            >
+            <AddBtn onClick={handleOpen} style={{ marginRight: "1%" }}>
               <AddIcon style={{ marginRight: "5px" }} />
-              Add SubCategory
-            </Button>
+              Add Product
+            </AddBtn>
           </Grid>
           <Grid item xs={12} style={{ marginTop: "10px" }}>
             <Box
@@ -251,6 +287,7 @@ export default function ManageSubCategory() {
                 onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                 rowsPerPageOptions={[5, 10, 20]}
                 pagination
+                disableColumnSelector
                 rowHeight={55}
                 columns={[
                   {
@@ -262,8 +299,8 @@ export default function ManageSubCategory() {
                     field: "action",
                     headerName: "Action",
                     width: 100,
+                    sortable: false,
 
-                    // Important: passing id from customers state so I can delete or edit each user
                     renderCell: (id) => (
                       <IconButton
                         onClick={() => {

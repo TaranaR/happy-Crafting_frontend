@@ -14,7 +14,7 @@ import { useTheme } from "@mui/material/styles";
 const useStyles = makeStyles(() => ({
   root: {
     marginTop: "5%",
-    height: "100vh",
+    height: "100%",
   },
   image: {
     height: "20vh",
@@ -165,7 +165,7 @@ export default function AllProductsBySubCategory(props) {
                 sx={{
                   margin: "10px",
                   marginTop: "5%",
-                  height: "100%",
+                  height: "50%",
                 }}
               >
                 {allProdSub &&

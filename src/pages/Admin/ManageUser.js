@@ -12,13 +12,19 @@ import {
   UPDATE_USER_STATUS_RESET,
 } from "../../constants/adminConstants";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "3%",
     marginLeft: "20%",
     height: "50%",
     padding: "30px",
     width: "60%",
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+      marginLeft: 0,
+      marginTop: "5%",
+      padding: "20px",
+    },
     textAlign: "center",
     border: "1px solid #B8C1BA",
     //boxShadow: "5px 5px #B8C1BA",
@@ -69,11 +75,12 @@ export default function ManageUser() {
               }}
             >
               <DataGrid
-                style={{ height: 400, textAlign: "center" }}
+                style={{ height: "100%", textAlign: "center" }}
                 pageSize={pageSize}
                 onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                 rowsPerPageOptions={[5, 10, 20]}
                 pagination
+                disableColumnSelector
                 rowHeight={90}
                 // onCellClick={(row) => {
                 //   setSellerId(row.id);
@@ -83,6 +90,7 @@ export default function ManageUser() {
                     field: "email",
                     headerName: "EMAIL ID",
                     width: 250,
+                    sortable: false,
                   },
                   {
                     field: "username",

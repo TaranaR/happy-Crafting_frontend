@@ -127,6 +127,13 @@ import {
   GET_FEATURED_PRODUCTS_REQUEST,
   GET_FEATURED_PRODUCTS_SUCCESS,
   GET_FEATURED_PRODUCTS_FAIL,
+  VERIFY_EMAILID_REQUEST,
+  VERIFY_EMAILID_SUCCESS,
+  VERIFY_EMAILID_FAIL,
+  SET_NEW_PASSWORD_REQUEST,
+  SET_NEW_PASSWORD_SUCCESS,
+  SET_NEW_PASSWORD_FAIL,
+  SET_NEW_PASSWORD_RESET,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -382,30 +389,6 @@ export const userGetRandomProductByCategoryReducer = (
   }
 };
 
-// export const userGetAllRandomProductByCategoryReducer = (
-//   state = {},
-//   action
-// ) => {
-//   switch (action.type) {
-//     case GET_ALL_PRODUCT_BY_CATEGORY_REQUEST:
-//       return {
-//         loading: true,
-//       };
-//     case GET_ALL_PRODUCT_BY_CATEGORY_SUCCESS:
-//       return {
-//         loading: false,
-//         prodCat: action.payload,
-//       };
-//     case GET_ALL_PRODUCT_BY_CATEGORY_FAIL:
-//       return {
-//         loading: false,
-//         error: action.payload,
-//       };
-//     default:
-//       return state;
-//   }
-// };
-
 export const userGetSubCatgoryByMainCategoryNameReducer = (
   state = {},
   action
@@ -500,32 +483,6 @@ export const userAddToCartReducer = (state = {}, action) => {
       return state;
   }
 };
-
-// export const userUpdateCartByProductReducer = (state = {}, action) => {
-//   switch (action.type) {
-//     case UPDATE_CART_BY_PRODUCT_REQUEST:
-//       return {
-//         loading: true,
-//         success: false,
-//       };
-//     case UPDATE_CART_BY_PRODUCT_SUCCESS:
-//       return {
-//         loading: false,
-//         success: true,
-//         message: action.payload,
-//       };
-//     case UPDATE_CART_BY_PRODUCT_FAIL:
-//       return {
-//         loading: false,
-//         success: false,
-//         error: action.payload,
-//       };
-//     case USER_LOGOUT:
-//       return {};
-//     default:
-//       return state;
-//   }
-// };
 
 export const userGetCartDataByUserReducer = (state = {}, action) => {
   switch (action.type) {
@@ -1041,6 +998,54 @@ export const userGetFeaturedProductsReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+export const userVerifyEmailReducer = (state = {}, action) => {
+  switch (action.type) {
+    case VERIFY_EMAILID_REQUEST:
+      return {
+        loading: true,
+      };
+    case VERIFY_EMAILID_SUCCESS:
+      return {
+        loading: false,
+        verified: action.payload,
+      };
+    case VERIFY_EMAILID_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userSetNewPasswordReducer = (
+  state = { loading: false, success: false, setNewPasswordData: {} },
+  action
+) => {
+  switch (action.type) {
+    case SET_NEW_PASSWORD_REQUEST:
+      return {
+        loading: true,
+      };
+    case SET_NEW_PASSWORD_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        setNewPasswordData: action.payload,
+      };
+    case SET_NEW_PASSWORD_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case SET_NEW_PASSWORD_RESET:
+      return {};
     default:
       return state;
   }

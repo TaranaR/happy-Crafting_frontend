@@ -140,8 +140,9 @@ export default function AdminHeader(props) {
   const handleClose = (e) => {
     if (e.target.innerText === "Logout") {
       dispatch(logout());
+      navigate("/login");
     } else if (e.target.innerText === "Profile") {
-      //navigate("/profile");
+      navigate("/adminprofile");
     }
     setAnchorEl(null);
   };
@@ -250,7 +251,7 @@ export default function AdminHeader(props) {
                             }}
                           >
                             <NavLink
-                              to="/profile"
+                              to="/adminprofile"
                               className={classes.drawerLinkUser}
                             >
                               Profile

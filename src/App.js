@@ -33,6 +33,8 @@ import MyOrder from "./pages/MyOrder";
 import MyCollection from "./pages/MyCollection";
 import DiscoverMore from "./pages/DiscoverMore";
 import AdminFooter from "./pages/Admin/global/AdminFooter";
+import AdminProfile from "./pages/Admin/AdminProfile/AdminProfile";
+import ForgotPassword from "./pages/LoginSignUp/ForgotPassword";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -286,6 +288,30 @@ function App() {
             </>
           }
         />
+        <Route
+          path="/adminprofile"
+          element={
+            <>
+              {(error && !!admin) ||
+                (admin && !admin.isAdmin && (
+                  <>
+                    <Header title="Happy Crafting" sections={sections} />
+                    <Home />
+                    <Footer />
+                  </>
+                ))}
+              {admin && admin.isAdmin && (
+                <>
+                  <AdminHeader
+                    title="Happy Crafting"
+                    sections={adminSections}
+                  />
+                  <AdminProfile />
+                </>
+              )}
+            </>
+          }
+        />
 
         <Route
           path="/login"
@@ -294,6 +320,14 @@ function App() {
             (token && <Navigate to="/" />)
           }
         />
+
+        <Route
+          path="/forgotpassword"
+          element={
+            (!token && <ForgotPassword />) || (token && <Navigate to="/" />)
+          }
+        />
+
         <Route
           path="/signup"
           element={

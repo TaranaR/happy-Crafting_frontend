@@ -150,20 +150,6 @@ export default function ChangePassword(props) {
             </Grid>
           )}
 
-          {/* {changePasswordData && (
-            <Grid
-              item
-              xs={12}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <Alert severity="error" style={{ width: "80%" }}>
-                {changePasswordData}
-              </Alert>
-            </Grid>
-          )} */}
           {success && error === "" && (
             <Grid
               item

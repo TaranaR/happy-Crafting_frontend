@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
+import { useTheme } from "@mui/material/styles";
 import {
   getAllSellerDetail,
   updateSellerStatus,
@@ -12,13 +13,19 @@ import {
   UPDATE_SELLER_STATUS_RESET,
 } from "../../constants/adminConstants";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "3%",
     marginLeft: "20%",
-    height: "50%",
+    height: "100%",
     padding: "30px",
     width: "60%",
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+      marginLeft: 0,
+      marginTop: "5%",
+      padding: "20px",
+    },
     textAlign: "center",
     border: "1px solid #B8C1BA",
     //boxShadow: "5px 5px #B8C1BA",
@@ -33,6 +40,7 @@ const useStyles = makeStyles(() => ({
 export default function ManageSeller() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const [pageSize, setPageSize] = useState(5);
   // const [sellerId, setSellerId] = useState("");
@@ -87,7 +95,9 @@ export default function ManageSeller() {
               }}
             >
               <DataGrid
-                style={{ height: 400 }}
+                style={{
+                  height: "100%",
+                }}
                 pageSize={pageSize}
                 onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                 rowsPerPageOptions={[5, 10, 20]}

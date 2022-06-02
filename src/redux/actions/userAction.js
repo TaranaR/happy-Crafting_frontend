@@ -32,9 +32,6 @@ import {
   GET_RANDOM_PRODUCT_BY_CATEGORY_REQUEST,
   GET_RANDOM_PRODUCT_BY_CATEGORY_SUCCESS,
   GET_RANDOM_PRODUCT_BY_CATEGORY_FAIL,
-  GET_ALL_PRODUCT_BY_CATEGORY_REQUEST,
-  GET_ALL_PRODUCT_BY_CATEGORY_SUCCESS,
-  GET_ALL_PRODUCT_BY_CATEGORY_FAIL,
   GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_REQUEST,
   GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_FAIL,
   GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_SUCCESS,
@@ -56,9 +53,6 @@ import {
   REMOVE_PRODUCT_FROM_CART_REQUEST,
   REMOVE_PRODUCT_FROM_CART_SUCCESS,
   REMOVE_PRODUCT_FROM_CART_FAIL,
-  UPDATE_CART_BY_PRODUCT_REQUEST,
-  UPDATE_CART_BY_PRODUCT_SUCCESS,
-  UPDATE_CART_BY_PRODUCT_FAIL,
   GET_SHIPPING_ADDRESS_BY_USER_REQUEST,
   GET_SHIPPING_ADDRESS_BY_USER_SUCCESS,
   GET_SHIPPING_ADDRESS_BY_USER_RESET,
@@ -101,9 +95,6 @@ import {
   CHANGE_PASSWORD_REQUEST,
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD_FAIL,
-  GET_USER_DATA_REQUEST,
-  GET_USER_DATA_SUCCESS,
-  GET_USER_DATA_FAIL,
   DEACTIVATE_USER_ACCOUNT_REQUEST,
   DEACTIVATE_USER_ACCOUNT_SUCCESS,
   DEACTIVATE_USER_ACCOUNT_FAIL,
@@ -116,6 +107,12 @@ import {
   GET_FEATURED_PRODUCTS_REQUEST,
   GET_FEATURED_PRODUCTS_SUCCESS,
   GET_FEATURED_PRODUCTS_FAIL,
+  VERIFY_EMAILID_REQUEST,
+  VERIFY_EMAILID_SUCCESS,
+  VERIFY_EMAILID_FAIL,
+  SET_NEW_PASSWORD_REQUEST,
+  SET_NEW_PASSWORD_SUCCESS,
+  SET_NEW_PASSWORD_FAIL,
 } from "../../constants/userConstants";
 import { LOCAL_URL } from "../../constants/global";
 import { ADMIN_DETAILS_RESET } from "../../constants/adminConstants";
@@ -398,32 +395,6 @@ export const getRandomProductByCategory = (cat) => async (dispatch) => {
   }
 };
 
-// export const getAllProductByCategory = (cat) => async (dispatch) => {
-//   try {
-//     dispatch({ type: GET_ALL_PRODUCT_BY_CATEGORY_REQUEST });
-
-//     const token = JSON.parse(localStorage.getItem("userInfo"));
-
-//     const config = {
-//       headers: {
-//         "Content-type": "application/json",
-//         Authorization: token && `Bearer ${token.access}`,
-//       },
-//     };
-
-//     const { data } = await axios.get(
-//       `${LOCAL_URL}/api/userapi/getAllProductByCategory/${cat}`,
-//       config
-//     );
-//     dispatch({
-//       type: GET_ALL_PRODUCT_BY_CATEGORY_SUCCESS,
-//       payload: data,
-//     });
-//   } catch (error) {
-//     dispatch({ type: GET_ALL_PRODUCT_BY_CATEGORY_FAIL, payload: error });
-//   }
-// };
-
 export const getSubCategoryByMainCategoryName = (name) => async (dispatch) => {
   try {
     dispatch({ type: GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_REQUEST });
@@ -535,31 +506,6 @@ export const addToCart = (cart) => async (dispatch) => {
     dispatch({ type: ADD_TO_CART_FAIL, payload: error });
   }
 };
-
-// export const updateCartByProduct = (prod) => async (dispatch) => {
-//   console.log(prod);
-//   try {
-//     dispatch({ type: UPDATE_CART_BY_PRODUCT_REQUEST });
-
-//     const token = JSON.parse(localStorage.getItem("userInfo"));
-
-//     const config = {
-//       headers: {
-//         "Content-type": "application/json",
-//         Authorization: token && `Bearer ${token.access}`,
-//       },
-//     };
-
-//     const { data } = await axios.post(
-//       `${LOCAL_URL}/api/userapi/updateCartByProduct/`,
-//       prod,
-//       config
-//     );
-//     dispatch({ type: UPDATE_CART_BY_PRODUCT_SUCCESS, payload: data });
-//   } catch (error) {
-//     dispatch({ type: UPDATE_CART_BY_PRODUCT_FAIL, payload: error });
-//   }
-// };
 
 export const getCartDataByUser = () => async (dispatch) => {
   try {
@@ -1128,5 +1074,56 @@ export const getFeaturedProducts = () => async (dispatch) => {
     dispatch({ type: GET_FEATURED_PRODUCTS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: GET_FEATURED_PRODUCTS_FAIL, payload: error });
+  }
+};
+
+export const verifyEmailId = (email) => async (dispatch) => {
+  try {
+    dispatch({ type: VERIFY_EMAILID_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get(
+      `${LOCAL_URL}/api/userapi/verifyEmail/${email}`,
+      config
+    );
+
+    dispatch({ type: VERIFY_EMAILID_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: VERIFY_EMAILID_FAIL, payload: error });
+  }
+};
+
+export const setNewPassword = (newPasswordData) => async (dispatch) => {
+  try {
+    dispatch({
+      type: SET_NEW_PASSWORD_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.put(
+      `${LOCAL_URL}/api/userapi/changePassword/`,
+      newPasswordData,
+      config
+    );
+
+    dispatch({
+      type: SET_NEW_PASSWORD_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SET_NEW_PASSWORD_FAIL,
+      palyload: error,
+    });
   }
 };

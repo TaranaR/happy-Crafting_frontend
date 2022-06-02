@@ -122,6 +122,8 @@ export default function SellerOrder() {
       users.map((item) => {
         const content = {
           to_user: item.email,
+          to_name: item.name,
+          from_name: "HappyCrafting",
           otp: otp,
         };
         if (userId === item.id) {
@@ -137,13 +139,12 @@ export default function SellerOrder() {
   };
 
   const verifyOtp = () => {
-    // console.log("v", typeof otp, typeof enteredOTP);
     if (parseInt(enteredOTP) === otp) {
       console.log("OTP Varified", otp, orderId);
       dispatch(orderDelivered(orderId));
       handleClose();
     }
-    errorContent = <Alert severity="error">OTP didn't batch</Alert>;
+    errorContent = <Alert severity="error">OTP didn't match</Alert>;
   };
 
   // console.log(emailSendData, otp);

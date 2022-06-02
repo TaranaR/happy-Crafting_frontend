@@ -16,6 +16,7 @@ import { useTheme } from "@material-ui/core";
 
 export default function Login(props) {
   const theme = useTheme();
+
   const usernameInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -210,7 +211,7 @@ export default function Login(props) {
             style={{ marginTop: "10px" }}
           >
             <Grid item xs={4}>
-              <NavLink to="#" style={{ color: "#000000" }}>
+              <NavLink to="/forgotpassword" style={{ color: "#000000" }}>
                 Forgot password?
               </NavLink>
             </Grid>

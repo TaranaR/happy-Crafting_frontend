@@ -119,7 +119,7 @@ export default function LoginSignup(props) {
   return (
     <Fragment>
       <Box className={classes.root}>
-        <CssBaseline />
+        {/* <CssBaseline /> */}
         <Grid container>
           <Grid
             item

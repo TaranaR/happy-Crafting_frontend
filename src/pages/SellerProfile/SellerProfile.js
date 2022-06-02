@@ -12,6 +12,7 @@ import ManageProducts from "./Forms/ManageProducts";
 import SellerAccount from "./Forms/SellerAccount";
 import SellerOrder from "./Forms/SellerOrder";
 import { GET_ORDERED_PRODUCT_SELLER_RESET } from "../../constants/sellerConstants";
+import ShopDeactivatePage from "../../components/ShopDeactivatePage";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -58,14 +59,18 @@ export default function SellerProfile() {
 
   let content = "";
 
-  if (page === "SHOP PROFILE") {
+  console.log(seller);
+
+  if (page === "SHOP PROFILE" && seller.is_active) {
     content = <Setting seller={seller} />;
-  } else if (page === "MANAGE PRODUCTS") {
+  } else if (page === "MANAGE PRODUCTS" && seller.is_active) {
     content = <ManageProducts />;
   } else if (page === "MY ACCOUNT") {
     content = <SellerAccount />;
-  } else if (page === "VIEW ORDERS") {
+  } else if (page === "VIEW ORDERS" && seller.is_active) {
     content = <SellerOrder />;
+  } else {
+    content = <ShopDeactivatePage />;
   }
   // let button = isActive ? classes.activeBtn : classes.inactiveBtn;
 

@@ -305,7 +305,6 @@ export default function ManageProducts() {
                       headerName: "Action",
                       width: 150,
 
-                      // Important: passing id from customers state so I can delete or edit each user
                       renderCell: (id) => (
                         <>
                           <IconButton

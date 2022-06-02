@@ -37,6 +37,8 @@ import {
   userGetAllRandomProductsReducer,
   userLikeProductReducer,
   userGetFeaturedProductsReducer,
+  userVerifyEmailReducer,
+  userSetNewPasswordReducer,
 } from "../reducers/userReducer";
 
 import {
@@ -112,6 +114,8 @@ const rootReducer = combineReducers({
   userGetAllRandomProducts: userGetAllRandomProductsReducer,
   userLikeProduct: userLikeProductReducer,
   userGetFeaturedProducts: userGetFeaturedProductsReducer,
+  userVerifyEmail: userVerifyEmailReducer,
+  userSetNewPassword: userSetNewPasswordReducer,
 
   //seller
   sellerCreateShop: sellerCreateShopReducer,

@@ -1,9 +1,30 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import CreateIcon from "@mui/icons-material/Create";
-import LockResetIcon from "@mui/icons-material/LockReset";
+import { useTheme } from "@mui/material/styles";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Modal,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
+import AlertTitle from "@mui/material/AlertTitle";
+import Alert from "@mui/material/Alert";
+import { Divider } from "@material-ui/core";
+import ChangePassword from "../../components/ChangePassword";
+import {
+  CHANGE_PASSWORD_RESET,
+  USER_UPDATE_PROFILE_RESET,
+} from "../../constants/userConstants";
 import {
   updateUserProfile,
   getUserProfile,
@@ -12,34 +33,6 @@ import {
   deactivateUserAccount,
   logout,
 } from "../../redux/actions/userAction";
-import CircularProgress from "@mui/material/CircularProgress";
-import { useTheme } from "@mui/material/styles";
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  Grid,
-  TextField,
-  Typography,
-  Modal,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
-import { Label } from "@mui/icons-material";
-import { NavLink } from "react-router-dom";
-import {
-  CHANGE_PASSWORD_RESET,
-  USER_UPDATE_PROFILE_RESET,
-} from "../../constants/userConstants";
-import Snackbar from "@mui/material/Snackbar";
-import AlertTitle from "@mui/material/AlertTitle";
-import Alert from "@mui/material/Alert";
-import ChangePassword from "../../components/ChangePassword";
-import { Divider } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
