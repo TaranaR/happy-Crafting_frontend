@@ -1,4 +1,7 @@
 import { Fragment, useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Editor } from "@tinymce/tinymce-react";
+import { v4 } from "uuid";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@mui/material/Avatar";
 import {
@@ -7,30 +10,24 @@ import {
   Divider,
   Grid,
   TextField,
-  Box,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { storage } from "../../../constants/firebase";
 import { useTheme } from "@mui/material/styles";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { v4 } from "uuid";
-import { useDispatch, useSelector } from "react-redux";
 import Snackbar from "@mui/material/Snackbar";
 import AlertTitle from "@mui/material/AlertTitle";
 import Alert from "@mui/material/Alert";
-import { Editor } from "@tinymce/tinymce-react";
-import Modal from "@mui/material/Modal";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../../constants/firebase";
 import {
   deactivateShop,
   getSellerProfile,
   updateSellerProfile,
 } from "../../../redux/actions/sellerAction";
 import { SELLER_UPDATE_PROFILE_RESET } from "../../../constants/sellerConstants";
-// import firebase from "firebase/compat/app";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,6 +77,8 @@ export default function Setting(props) {
   const [open, setOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState("");
   const [snackOpen, setSnackOpen] = useState(false);
+  const [imgSnackOpen, setImgSnackOpen] = useState(false);
+
   const [shopName, setShopName] = useState("");
   const [shopLogo, setShopLogo] = useState("");
   const [shopDescription, setShopDescription] = useState("");
@@ -111,6 +110,7 @@ export default function Setting(props) {
       return;
     }
     setSnackOpen(false);
+    setImgSnackOpen(false);
   };
 
   const submitHandler = () => {
@@ -141,28 +141,10 @@ export default function Setting(props) {
   }
 
   const uploadShopLogohandler = () => {
-    // // Delete Existing Shop Logo
-
-    // const fileRef = firebase.storage().refFromURL(shopLogo);
-
-    // console.log("file in database before deleting" + fileRef.exists());
-
-    // fileRef
-    //   .delete()
-    //   .then(() => {
-    //     console.log("file Deleted");
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-
-    // console.log("file in database after deleting" + fileRef.exists());
-
     //Image Upload
     console.log(selectedFile);
 
     if (selectedFile === "") return;
-    //if (sellerInfo) return;
 
     const imageRef = ref(
       storage,
@@ -170,7 +152,7 @@ export default function Setting(props) {
     );
 
     uploadBytes(imageRef, selectedFile).then(() => {
-      alert("Image uploaded");
+      setImgSnackOpen(true);
       getDownloadURL(imageRef).then((url) => {
         setShopLogo(url);
       });
@@ -195,7 +177,6 @@ export default function Setting(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {/* {"Use Google's location service?"} */}
           Are you sure, you want to deactivate your shop?
         </DialogTitle>
         <DialogContent>
@@ -275,7 +256,6 @@ export default function Setting(props) {
               md={8}
               style={{
                 textAlign: "left",
-                // border: "1px solid black",
                 [theme.breakpoints.down("md")]: {
                   textAlign: "center",
                 },
@@ -291,9 +271,6 @@ export default function Setting(props) {
                   onChange={imageUploadHandler.bind(this)}
                 />
                 Change Logo
-                {/* <label id="filename" style={{ marginLeft: "10px" }}>
-                  {selectedFile["name"]}
-                </label> */}
               </label>
               <Button
                 id="fileUpload"
@@ -405,7 +382,6 @@ export default function Setting(props) {
                 marginTop: "4%",
                 textAlign: "left",
                 textAlign: "center",
-                //marginLeft: "30%",
               }}
             >
               <Button
@@ -460,6 +436,19 @@ export default function Setting(props) {
             </Grid>
           </Grid>
         </Grid>
+        <Snackbar
+          open={imgSnackOpen}
+          autoHideDuration={1000}
+          onClose={handleSnackClose}
+        >
+          <Alert
+            onClose={handleSnackClose}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            <AlertTitle>Success</AlertTitle>Image Uploaded
+          </Alert>
+        </Snackbar>
       </Container>
     </Fragment>
   );

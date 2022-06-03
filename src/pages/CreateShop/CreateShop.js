@@ -1,17 +1,16 @@
 import { Fragment, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@mui/material/styles";
-import { Box, Grid, Container, Button } from "@mui/material";
+import { Box, Container, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { TextField } from "@mui/material";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import CreateShopForm from "./Forms/CreateShopForm";
 import UploadProductsForm from "./Forms/UploadProductsForm";
 import StartSellingForm from "./Forms/StartSellingForm";
-import { useDispatch, useSelector } from "react-redux";
 import { getCartDataByUser } from "../../redux/actions/userAction";
 import { GET_PRODUCT_DETAILS_RESET } from "../../constants/userConstants";
 

@@ -43,7 +43,6 @@ import {
 
 import {
   sellerCreateShopReducer,
-  sellerGetTypeOfProductReducer,
   sellerCreateProductReducer,
   sellerProfileReducer,
   sellerUpdateProfileReducer,
@@ -125,7 +124,6 @@ const rootReducer = combineReducers({
   sellerProductBySeller: sellerGetProductBySellerReducer,
   sellerUpdateProduct: sellerUpdateProductReducer,
   sellerDeleteProduct: sellerDeleteProductReducer,
-  sellerGetTypeOfProduct: sellerGetTypeOfProductReducer,
   sellerGetMainCategory: sellerGetMainCategoryReducer,
   sellerGetSubCategory: sellerGetSubCategoryReducer,
   sellerGetOrderedProductBySeller: sellerGetOrderedProductBySellerReducer,

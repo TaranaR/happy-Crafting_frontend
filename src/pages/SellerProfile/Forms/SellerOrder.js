@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Moment from "moment";
 import Modal from "@mui/material/Modal";
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,8 +13,6 @@ import {
   Box,
   TextField,
   Button,
-  Alert,
-  AlertTitle,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
@@ -22,8 +21,6 @@ import {
   orderDispatchedBySeller,
   sendEmail,
 } from "../../../redux/actions/sellerAction";
-import { useDispatch, useSelector } from "react-redux";
-
 import OrderedProductBySeller from "../../../components/OrderedProductBySeller";
 import { GET_ORDERED_PRODUCT_SELLER_RESET } from "../../../constants/sellerConstants";
 
@@ -85,8 +82,7 @@ export default function SellerOrder() {
   const { orderedProduct } = sellerGetOrderedProductBySeller;
   const { orderMaster, orderDetail, products, users } = orderedProduct;
   const { success: deliveredSuccess } = sellerOrderDelivered;
-
-  let errorContent = "";
+  const [errorContent, setErrorContent] = useState("");
 
   useEffect(() => {
     dispatch({ type: GET_ORDERED_PRODUCT_SELLER_RESET });
@@ -130,24 +126,22 @@ export default function SellerOrder() {
           dispatch(sendEmail(content));
         }
         setOtp(otp);
-        console.log(orderId);
+
         setOrderId(orderId);
       });
     }
-    console.log("g", otp);
+
     handleOpen();
   };
 
   const verifyOtp = () => {
     if (parseInt(enteredOTP) === otp) {
-      console.log("OTP Varified", otp, orderId);
       dispatch(orderDelivered(orderId));
       handleClose();
+    } else {
+      setErrorContent("OTP didn't match");
     }
-    errorContent = <Alert severity="error">OTP didn't match</Alert>;
   };
-
-  // console.log(emailSendData, otp);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -182,7 +176,6 @@ export default function SellerOrder() {
                 style={{
                   textAlign: "center",
                   width: "25%",
-                  marginBottom: "5%",
                 }}
               >
                 <Button variant="contained" onClick={verifyOtp}>
@@ -190,7 +183,15 @@ export default function SellerOrder() {
                 </Button>
               </Grid>
               {errorContent && (
-                <Grid item xs={12}>
+                <Grid
+                  item
+                  xs={12}
+                  sx={{
+                    fontFamily: ["Lora", "serif"].join(","),
+                    textAlign: "center",
+                    color: "red",
+                  }}
+                >
                   {errorContent}
                 </Grid>
               )}

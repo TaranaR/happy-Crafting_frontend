@@ -48,12 +48,6 @@ import {
   GET_RECENT_ORDER_DETAILS_FAIL,
   GET_RECENT_ORDER_DETAILS_RESET,
 } from "../../constants/adminConstants";
-import {
-  GET_ORDER_DETAILS_FAIL,
-  GET_ORDER_DETAILS_REQUEST,
-  GET_ORDER_DETAILS_RESET,
-  GET_ORDER_DETAILS_SUCCESS,
-} from "../../constants/userConstants";
 
 export const adminDetailReducer = (state = { admin: {} }, action) => {
   switch (action.type) {

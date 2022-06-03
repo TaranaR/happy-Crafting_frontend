@@ -1,8 +1,7 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Container,
   Box,
   Grid,
   Card,
@@ -23,17 +22,10 @@ import {
   getRecentOrderDetail,
 } from "../../redux/actions/adminAction";
 import OrderDetails from "../../components/OrderDetails";
-import { getUserById } from "../../redux/actions/userAction";
-import { GET_USER_BY_ID_RESET } from "../../constants/userConstants";
-import {
-  GET_ALL_ORDER_DETAILS_RESET,
-  GET_RECENT_ORDER_DETAILS_RESET,
-} from "../../constants/adminConstants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "3%",
-    // border: "1px solid black",
     width: "95%",
     marginLeft: "2.5%",
   },
@@ -42,10 +34,6 @@ const useStyles = makeStyles((theme) => ({
 export default function AdminHome() {
   const dispatch = useDispatch();
   const classes = useStyles();
-  // const [orders, setOrders] = useState();
-  // const [users, setUsers] = useState();
-  // const [address, setAddress] = useState();
-  // const [allOrderData, setAllOrderData] = useState();
 
   const getAllUserDetails = useSelector((state) => state.getAllUserDetails);
   const getAllSellerDetails = useSelector((state) => state.getAllSellerDetails);

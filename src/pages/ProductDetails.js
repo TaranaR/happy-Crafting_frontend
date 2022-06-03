@@ -2,6 +2,15 @@ import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Modal from "@mui/material/Modal";
+import { useTheme } from "@mui/material/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import { Box, Container, Grid, Button, TextField } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import AlertTitle from "@mui/material/AlertTitle";
+import Alert from "@mui/material/Alert";
+import Review from "../components/Review";
+import AddedProductToCart from "../components/AddedProductToCart";
+import { GET_CART_DATA_BY_USER_RESET } from "../constants/userConstants";
 import {
   getProductDetails,
   getCartDataByUser,
@@ -12,18 +21,8 @@ import {
   likeProduct,
   getUserProfile,
 } from "../redux/actions/userAction";
-import { makeStyles } from "@material-ui/core/styles";
-import { Box, Container, Grid, Button, TextField } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import Snackbar from "@mui/material/Snackbar";
-import AlertTitle from "@mui/material/AlertTitle";
-import Alert from "@mui/material/Alert";
-import Review from "../components/Review";
-import AddedProductToCart from "../components/AddedProductToCart";
-import { GET_CART_DATA_BY_USER_RESET } from "../constants/userConstants";
-import { useTheme } from "@mui/material/styles";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "5vh",
   },
@@ -34,7 +33,10 @@ const useStyles = makeStyles(() => ({
     transform: "translate(-50%, -50%)",
     borderRadius: 10,
     width: "30%",
-    //height: "65%",
+    [theme.breakpoints.down("sm")]: {
+      width: "80%",
+      maxHeight: "80%",
+    },
     maxHeight: "75%",
     textAlign: "center",
     backgroundColor: "white",
@@ -51,9 +53,7 @@ export default function ProductDetails() {
   const dispatch = useDispatch();
   const theme = useTheme();
 
-  const [snackOpen, setSnackOpen] = useState(false);
   const [prodQty, setProdQty] = useState(1);
-  const [qty, setQty] = useState(1);
   const [open, setOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -78,7 +78,7 @@ export default function ProductDetails() {
   const { prodInfo } = usergetProductDetails;
   const { cartData, loading: cartLoading } = userAddToCart;
   const { myCollectionData } = userAddToMyCollection;
-  const { likeInfo, loading, success } = userLikeProduct;
+  const { success } = userLikeProduct;
   const prodId = params.prodId;
 
   const token = JSON.parse(localStorage.getItem("userInfo"));
@@ -166,10 +166,9 @@ export default function ProductDetails() {
         price: prodInfo["price"],
         totalAmount: prodInfo["price"] * prodQty,
       };
-      // if (!cartData) {
+
       dispatch(addToCart(cart));
 
-      //setInterval(() => setOpen(true), 700);
       if (!cartLoading) {
         setOpen(true);
         dispatch({ type: GET_CART_DATA_BY_USER_RESET });
@@ -194,7 +193,6 @@ export default function ProductDetails() {
       product: prodInfo["id"],
     };
     if (token) {
-      // setIsLiked((prevState) => !prevState);
       setIsLiked(true);
       dispatch(likeProduct(product));
     } else {
@@ -216,11 +214,7 @@ export default function ProductDetails() {
         </Modal>
       )}
       {showAlert && (
-        <Alert
-          //onClose={handleSnackClose}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
+        <Alert severity="success" sx={{ width: "100%" }}>
           <AlertTitle>Success</AlertTitle>
           {myCollectionData}
         </Alert>
@@ -271,15 +265,9 @@ export default function ProductDetails() {
                 >
                   <FavoriteIcon
                     style={{
-                      // color: isLiked ? "red" : "#7A7B7F",
-                      color:
-                        // likes && likes.length > 0
-                        //   ? "red"
-                        //   : isLiked
-                        isLiked ? "red" : "#7A7B7F",
+                      color: isLiked ? "red" : "#7A7B7F",
                       marginRight: "2%",
                       marginTop: "2%",
-                      //border: "1px solid red",
                     }}
                   />
                   {prodInfo && prodInfo["likes"]?.length}

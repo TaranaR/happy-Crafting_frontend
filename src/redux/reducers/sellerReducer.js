@@ -2,9 +2,6 @@ import {
   CREATE_SHOP_REQUEST,
   CREATE_SHOP_SUCCESS,
   CREATE_SHOP_FAIL,
-  GET_TYPEOFPROD_REQUEST,
-  GET_TYPEOFPROD_SUCCESS,
-  GET_TYPEOFPROD_FAIL,
   GET_MAINCATEGORY_REQUEST,
   GET_MAINCATEGORY_SUCCESS,
   GET_MAINCATEGORY_FAIL,
@@ -118,29 +115,6 @@ export const sellerGetSubCategoryReducer = (state = {}, action) => {
       };
     case GET_SUBCATEGORY_RESET:
       return {};
-    case USER_LOGOUT:
-      return {};
-    default:
-      return state;
-  }
-};
-
-export const sellerGetTypeOfProductReducer = (state = {}, action) => {
-  switch (action.type) {
-    case GET_TYPEOFPROD_REQUEST:
-      return {
-        loading: true,
-      };
-    case GET_TYPEOFPROD_SUCCESS:
-      return {
-        loading: false,
-        prodTypeInfo: action.payload,
-      };
-    case GET_TYPEOFPROD_FAIL:
-      return {
-        loading: false,
-        error: action.payload,
-      };
     case USER_LOGOUT:
       return {};
     default:

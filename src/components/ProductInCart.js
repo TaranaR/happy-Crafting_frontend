@@ -7,14 +7,6 @@ import {
   IconButton,
   Box,
 } from "@mui/material";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getProductById,
-  addToCart,
-  getCartDataByUser,
-  removeProductFromCart,
-} from "../redux/actions/userAction";
 import { NavLink } from "react-router-dom";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useTheme } from "@mui/material/styles";
@@ -46,17 +38,16 @@ export default function ProductInCart(props) {
     <Fragment>
       <Grid item xs={12} style={{ padding: "5px" }}>
         {prodInfo &&
-          Object.values(prodInfo).map((item) => {
+          Object.values(prodInfo).map((item, index) => {
             if (item.id === prodId) {
               // console.log("---", item.id);
               return (
-                <Box key={item.id}>
+                <Box key={index}>
                   <Grid
                     item
                     xs={12}
                     style={{
                       padding: "10px",
-                      //border: "1px solid black",
                       borderRadius: 10,
                     }}
                   >
@@ -68,7 +59,6 @@ export default function ProductInCart(props) {
                             style={{
                               height: "15vh",
                               width: "15vh",
-                              // border: "5px solid #534340",
                               borderRadius: 10,
                             }}
                           />
@@ -117,7 +107,6 @@ export default function ProductInCart(props) {
                               borderRadius: 2,
                               height: "100%",
                               padding: "5px",
-                              //margin: "5px",
                               display: "flex",
                               justifyContent: "space-between",
                               [theme.breakpoints.down("sm")]: {
@@ -139,7 +128,6 @@ export default function ProductInCart(props) {
                               inputProps={{ style: { fontSize: 12 } }}
                               style={{
                                 width: "7vh",
-                                // height: "20%",
                                 border: "none",
                                 marginTop: "2px",
                               }}

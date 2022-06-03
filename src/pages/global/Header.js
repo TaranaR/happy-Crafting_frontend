@@ -1,7 +1,9 @@
+import React, { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AppBar,
   Container,
-  CssBaseline,
   Grid,
   IconButton,
   Toolbar,
@@ -9,25 +11,16 @@ import {
 } from "@material-ui/core";
 import { Menu, MenuItem } from "@material-ui/core";
 import { AccountCircle } from "@mui/icons-material";
-import { useDispatch, useSelector } from "react-redux";
-import { InputBase } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
 import { Button } from "@material-ui/core";
-import { NavLink, useNavigate } from "react-router-dom";
 import { makeStyles, alpha } from "@material-ui/core/styles";
-import SearchIcon from "@mui/icons-material/Search";
-import { logout } from "../../redux/actions/userAction";
 import Badge from "@mui/material/Badge";
 import { Drawer } from "@mui/material";
-import { Divider, ListItemIcon } from "@material-ui/core";
-import { PersonAdd } from "@mui/icons-material";
-import CreateIcon from "@mui/icons-material/Create";
+import { Divider } from "@material-ui/core";
 import { Logout } from "@mui/icons-material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { getCartDataByUser } from "../../redux/actions/userAction";
 import { GiHamburgerMenu } from "react-icons/gi";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { useTheme } from "@mui/material/styles";
+import { logout } from "../../redux/actions/userAction";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -401,7 +394,7 @@ function Header(props) {
                 </NavLink>
               </Typography>
 
-              <div className={classes.search}>
+              {/* <div className={classes.search}>
                 {showSearch && (
                   <InputBase
                     placeholder="Search…"
@@ -412,10 +405,10 @@ function Header(props) {
                     inputProps={{ "aria-label": "search" }}
                   />
                 )}
-              </div>
-              <IconButton onClick={searchIconClick}>
+              </div> */}
+              {/* <IconButton onClick={searchIconClick}>
                 <SearchIcon className={classes.searchIcon} />
-              </IconButton>
+              </IconButton> */}
 
               {!token && (
                 <Button

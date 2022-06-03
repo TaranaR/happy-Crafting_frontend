@@ -1,32 +1,23 @@
 import { Fragment, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
 import MenuItem from "@mui/material/MenuItem";
 import { styled } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
-
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { getMainCategory } from "../../redux/actions/sellerAction";
-import {
-  getAllSubCategory,
-  createSubCategory,
-  deleteSubCategory,
-  getMainCatName,
-} from "../../redux/actions/adminAction";
-import { DataGrid, GridCellEditStopReasons } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import { ButtonBase, IconButton, Select, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "@mui/material/Modal";
 import { Box, Button, Container, Divider, Grid } from "@mui/material";
 import { CREATE_SUB_CATEGORY_RESET } from "../../constants/adminConstants";
 import { GET_SUBCATEGORY_RESET } from "../../constants/sellerConstants";
+import { getMainCategory } from "../../redux/actions/sellerAction";
+import {
+  getAllSubCategory,
+  createSubCategory,
+  deleteSubCategory,
+} from "../../redux/actions/adminAction";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -249,7 +240,6 @@ export default function ManageSubCategory() {
               </Grid>
               <Grid item xs={12}>
                 {loading && "Loading...."}
-                {/* {mainCategoryInfo && mainCategoryInfo.message} */}
                 {subCategoryInfo && setOpen(false)}
                 {error && error}
               </Grid>
@@ -277,8 +267,6 @@ export default function ManageSubCategory() {
               style={{
                 height: "100%",
                 width: "100%",
-                // boxShadow:
-                //   "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px",
               }}
             >
               <DataGrid

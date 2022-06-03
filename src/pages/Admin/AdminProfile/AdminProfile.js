@@ -1,22 +1,14 @@
 import { Fragment, useState, useRef } from "react";
+import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import MyAccount from "./Forms/MyAccount";
 import ChangePassword from "./Forms/ChangePassword";
-import { useDispatch } from "react-redux";
 import { CHANGE_PASSWORD_RESET } from "../../../constants/userConstants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "20px",
-    // border: "1px solid black",
   },
   button: {
     padding: "10px",

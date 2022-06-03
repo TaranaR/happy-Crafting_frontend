@@ -1,18 +1,17 @@
 import { Fragment, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@mui/material/styles";
-import {
-  getSubCategoryByMainCategoryName,
-  getRandomProductByCategory,
-} from "../redux/actions/userAction";
-import { useDispatch, useSelector } from "react-redux";
-import { Box, Container, Grid } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
-import indexBg from "../Images/WallArtindexBg.jpeg";
+import { useDispatch, useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import { Box, Container, Grid } from "@material-ui/core";
 import {
   BsFillArrowLeftCircleFill,
   BsFillArrowRightCircleFill,
 } from "react-icons/bs";
+import indexBg from "../Images/WallArtindexBg.jpeg";
+import {
+  getSubCategoryByMainCategoryName,
+  getRandomProductByCategory,
+} from "../redux/actions/userAction";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -125,9 +124,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProductCategoryPage(props) {
   const classes = useStyles();
-  const theme = useTheme();
   const dispatch = useDispatch();
+
   const [currentImg, setCurrentImg] = useState(0);
+
   const userGetSubCatgoryByMainCategoryName = useSelector(
     (state) => state.userGetSubCatgoryByMainCategoryName
   );
@@ -150,10 +150,6 @@ export default function ProductCategoryPage(props) {
   }, [dispatch, props.cat]);
 
   useEffect(() => {
-    // const changeSlide = setInterval(
-    //   () => setCurrentImg((prevState) => 1 - prevState),
-    //   3000
-    // );
     const changeSlide = setInterval(
       () =>
         setCurrentImg((prevState) =>
@@ -297,7 +293,6 @@ export default function ProductCategoryPage(props) {
     <Fragment>
       <Box className={classes.root}>
         <Box className={classes.mainContainer}>
-          {/* <Container> */}
           <Grid container>
             <Grid
               item
@@ -319,17 +314,10 @@ export default function ProductCategoryPage(props) {
                       xs={6}
                       lg={3}
                       md={3}
-                      // style={{
-                      //   textAlign: "center",
-                      //   fontSize: 25,
-                      //   padding: "10px",
-                      //   border: "1px solid black",
-                      // }}
                       className={classes.linkWarpper}
                     >
                       <NavLink
                         to={`/${item.sub_cat_name}`}
-                        //state={{ cat: `${props.cat}` }}
                         className={classes.typeLink}
                       >
                         {item.sub_cat_name}
@@ -339,7 +327,6 @@ export default function ProductCategoryPage(props) {
                 })}
             </Grid>
           </Grid>
-          {/* </Container> */}
         </Box>
         <Container style={{ marginTop: "10%" }}>
           <Grid container spacing={3}>
@@ -350,7 +337,6 @@ export default function ProductCategoryPage(props) {
               md={6}
               style={{
                 textAlign: "center",
-                // marginTop: "5%",
                 fontSize: 18,
               }}
             >

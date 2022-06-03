@@ -1,10 +1,16 @@
 import { Fragment, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Grid, Radio, Box, Button } from "@mui/material";
 import { Divider } from "@material-ui/core";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { useTheme } from "@mui/material/styles";
+import Modal from "@mui/material/Modal";
+import logo from "../Images/orderConfirm.gif";
+import CartSummary from "../components/CartSummary";
+import { GET_CART_DATA_BY_USER_RESET } from "../constants/userConstants";
 import {
   getShippingAddressById,
   getCartDataByUser,
@@ -12,19 +18,11 @@ import {
   addOrderDetails,
   removeCartDataByUser,
 } from "../redux/actions/userAction";
-import { useDispatch, useSelector } from "react-redux";
-import { useTheme } from "@mui/material/styles";
-import { GET_CART_DATA_BY_USER_RESET } from "../constants/userConstants";
-import ViewCart from "./ViewCart";
-import CartSummary from "../components/CartSummary";
-import Modal from "@mui/material/Modal";
-import logo from "../Images/orderConfirm.gif";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
     marginTop: "3%",
-    //border: "1px solid black",
   },
   modelWrapper: {
     position: "absolute",
@@ -97,7 +95,6 @@ export default function ConfirmOrder() {
   useEffect(() => {
     if (orderId && cartData) {
       cartData.map((item) => {
-        console.log("---", item["seller_id"]);
         const orderDetail = {
           order_master_id: orderId,
           quantity: item["quantity"],
@@ -105,7 +102,6 @@ export default function ConfirmOrder() {
         };
         dispatch(addOrderDetails(orderDetail));
       });
-      // dispatch(removeCartDataByUser());
       handleOpen();
     }
   }, [orderId]);
@@ -243,7 +239,6 @@ export default function ConfirmOrder() {
               <Grid
                 container
                 style={{
-                  // border: "1px solid black",
                   boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                   padding: 20,
                 }}

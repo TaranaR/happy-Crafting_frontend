@@ -1,31 +1,30 @@
 import { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Moment from "moment";
+import { makeStyles } from "@material-ui/core";
+import { Container, Divider, Grid, Button } from "@mui/material";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ProductByOrderId from "../components/ProductsByOrderId";
+import TrackOrder from "../components/TrackOrder";
+import {
+  GET_CART_DATA_BY_USER_RESET,
+  GET_ORDER_MASTER_RESET,
+} from "../constants/userConstants";
 import {
   getCartDataByUser,
   getOrderMasterByUser,
   getOrderDetailsByOrderMaster,
   addReviewForProduct,
 } from "../redux/actions/userAction";
-import {
-  GET_CART_DATA_BY_USER_RESET,
-  GET_ORDER_MASTER_RESET,
-  GET_PRODUCT_BY_ID_RESET,
-} from "../constants/userConstants";
-import { useDispatch, useSelector } from "react-redux";
-import { makeStyles } from "@material-ui/core";
-import { Container, Divider, Grid, Button, ButtonBase } from "@mui/material";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useNavigate } from "react-router-dom";
-import ProductByOrderId from "../components/ProductsByOrderId";
-import TrackOrder from "../components/TrackOrder";
+
 const useStyles = makeStyles(() => ({
   root: {
     height: "100%",
     marginTop: "3%",
-    // border: "1px solid black",
   },
 }));
 
@@ -133,7 +132,7 @@ export default function MyOrder() {
                 })}
               {!orderMasterData?.length && (
                 <Grid item xs={12} lg={8} md={8}>
-                  You don't have any orders
+                  You haven't placed any orders yet.
                   <Button
                     onClick={() => {
                       navigate("/WallArt");

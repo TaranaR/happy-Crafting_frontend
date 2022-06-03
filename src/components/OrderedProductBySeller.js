@@ -1,5 +1,5 @@
-import { Box, Grid, Button } from "@mui/material";
 import { Fragment } from "react";
+import { Box, Grid, Button } from "@mui/material";
 import { Divider, makeStyles } from "@material-ui/core";
 import { useTheme } from "@mui/material/styles";
 
@@ -7,7 +7,6 @@ const useStyles = makeStyles(() => ({
   root: {
     height: "100%",
     marginTop: "3%",
-    // border: "1px solid black",
   },
 }));
 

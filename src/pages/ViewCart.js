@@ -1,9 +1,12 @@
 import { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { getCartDataByUser } from "../redux/actions/userAction";
 import { Container, Divider, Grid, Button } from "@mui/material";
 import ProductInCart from "../components/ProductInCart";
+import { useTheme } from "@mui/material/styles";
+import { Preview } from "@mui/icons-material";
+import CartSummary from "../components/CartSummary";
 import {
   GET_CART_DATA_BY_USER_RESET,
   GET_PRODUCT_BY_ID_RESET,
@@ -13,16 +16,12 @@ import {
   addToCart,
   removeProductFromCart,
 } from "../redux/actions/userAction";
-import { useTheme } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
-import { Preview } from "@mui/icons-material";
-import CartSummary from "../components/CartSummary";
+import { getCartDataByUser } from "../redux/actions/userAction";
 
 const useStyles = makeStyles(() => ({
   root: {
     height: "100%",
     marginTop: "3%",
-    //border: "1px solid black",
   },
 }));
 
@@ -33,12 +32,6 @@ export default function ViewCart() {
   const classes = useStyles();
   const [prodQty, setProdQty] = useState(0);
   const [cartUpdated, setCartUpdated] = useState(false);
-
-  //Cart calculation
-  //const [cartAmount, setCartAmount] = useState(0);
-  // const [totalCartAmount, setTotalCartAmount] = useState(0);
-  // const [shippingAmount, setShippingAmount] = useState(0);
-  // const [totalBillAmount, setTotalBillAmount] = useState(0);
 
   //selectors
   const userGetCartDataByUser = useSelector(
@@ -52,7 +45,11 @@ export default function ViewCart() {
   const { cartData, success: cartDataUpdate } = userGetCartDataByUser;
   const { success } = userRemoveProductFromCart;
   const { prodInfo } = userGetProductById;
-  // const { success: updateCart } = userUpdateCartByProduct;
+
+  useEffect(() => {
+    dispatch({ type: GET_PRODUCT_BY_ID_RESET });
+    dispatch({ type: GET_CART_DATA_BY_USER_RESET });
+  }, []);
 
   useEffect(() => {
     if (prodInfo?.length) {
@@ -75,6 +72,7 @@ export default function ViewCart() {
   useEffect(() => {
     if (success) {
       dispatch({ type: GET_CART_DATA_BY_USER_RESET });
+      dispatch({ type: GET_PRODUCT_BY_ID_RESET });
       dispatch(getCartDataByUser());
     }
   }, [success]);
@@ -82,11 +80,13 @@ export default function ViewCart() {
   useEffect(() => {
     if (cartData?.length && !prodInfo?.length) {
       cartData.map((item, index) => {
-        //console.log("----", prodInfo?.length, item["product"]);
+        dispatch({ type: GET_PRODUCT_BY_ID_RESET });
         dispatch(getProductById(item["product"]));
       });
     }
   }, [cartData]);
+
+  console.log(prodInfo);
 
   const incrementQtyHandler = (prodId, price) => {
     setProdQty((prevState) => prevState + 1);
@@ -125,7 +125,6 @@ export default function ViewCart() {
     dispatch(removeProductFromCart(prodId));
   };
 
-  // console.log(prodInfo);
   return (
     <Fragment>
       <Container className={classes.root}>
@@ -175,14 +174,12 @@ export default function ViewCart() {
               md={4}
               sx={{
                 padding: 3,
-                // boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                 [theme.breakpoints.down("md")]: { marginTop: 10 },
               }}
             >
               <Grid
                 container
                 style={{
-                  // border: "1px solid black",
                   boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                   padding: 20,
                 }}

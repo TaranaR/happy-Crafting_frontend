@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { NavLink, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -46,9 +46,6 @@ export default function SignUp(props) {
       return;
     }
     setSnackOpen(false);
-    // if (userInfo) {
-    //   navigate("/login");
-    // }
   };
 
   if (userInfo) {
@@ -193,22 +190,6 @@ export default function SignUp(props) {
           </Grid>
         </Grid>
       </Box>
-      {/* {userInfo && (
-        <Snackbar
-          open={snackOpen}
-          autoHideDuration={5000}
-          onClose={handleSnackClose}
-        >
-          <Alert
-            onClose={handleSnackClose}
-            severity="success"
-            sx={{ width: "100%" }}
-          >
-            <AlertTitle>Success</AlertTitle>
-            {userInfo.detail}
-          </Alert>
-        </Snackbar>
-      )} */}
 
       {error && (
         <Snackbar

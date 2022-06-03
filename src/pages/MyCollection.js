@@ -1,19 +1,15 @@
 import { Fragment, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Container, Divider, Grid } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
 import {
   getProductsFromMyCollection,
   addToCart,
   getCartDataByUser,
   removeProductFromCollection,
 } from "../redux/actions/userAction";
-import {
-  GET_PRODUCTS_FROM_MYCOLLECTION_RESET,
-  GET_CART_DATA_BY_USER_RESET,
-} from "../constants/userConstants";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import { NavLink, useNavigate } from "react-router-dom";
+import { GET_PRODUCTS_FROM_MYCOLLECTION_RESET } from "../constants/userConstants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,8 +74,6 @@ export default function MyCollection() {
       dispatch(getProductsFromMyCollection());
     }
   }, [success]);
-
-  console.log(myCollection);
 
   return (
     <Fragment>

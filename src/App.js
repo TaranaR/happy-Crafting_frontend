@@ -1,11 +1,9 @@
-import { useDebugValue, useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Header from "./pages/global/Header";
 import Home from "./pages/Home";
 import { makeStyles } from "@material-ui/core/styles";
 import LoginSignup from "./pages/LoginSignUp/LoginSignup";
 import { useDispatch, useSelector } from "react-redux";
-import backImg from "./Images/BackgroundApp.jpeg";
 import CssBaseline from "@mui/material/CssBaseline";
 import Footer from "./pages/global/Footer";
 import Profile from "./pages/UserProfile/Profile";
@@ -15,7 +13,10 @@ import MyShop from "./pages/CreateShop/MyShop";
 import SellerProfile from "./pages/SellerProfile/SellerProfile";
 import { useEffect } from "react";
 import { getAdminDetail } from "./redux/actions/adminAction";
-import { getMainCategory } from "./redux/actions/sellerAction";
+import {
+  getMainCategory,
+  getSellerProfile,
+} from "./redux/actions/sellerAction";
 import AdminHome from "./pages/Admin/AdminHome";
 import AdminHeader from "./pages/Admin/global/AdminHeader";
 import ManageSeller from "./pages/Admin/ManageSeller";
@@ -25,14 +26,13 @@ import ManageSubCategory from "./pages/Admin/ManageSubCategory";
 import ProductDetails from "./pages/ProductDetails";
 import AllProductsBySubCategory from "./pages/AllProductsBySubCategory";
 import ProductCategoryPage from "./pages/ProductCategoryPage";
-import { getCartDataByUser, getUserProfile } from "./redux/actions/userAction";
+import { getUserProfile } from "./redux/actions/userAction";
 import ViewCart from "./pages/ViewCart";
 import Checkout from "./pages/Checkout";
 import ConfirmOrder from "./pages/ConfirmOrder";
 import MyOrder from "./pages/MyOrder";
 import MyCollection from "./pages/MyCollection";
 import DiscoverMore from "./pages/DiscoverMore";
-import AdminFooter from "./pages/Admin/global/AdminFooter";
 import AdminProfile from "./pages/Admin/AdminProfile/AdminProfile";
 import ForgotPassword from "./pages/LoginSignUp/ForgotPassword";
 
@@ -41,18 +41,13 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "100vh",
     background: "none",
     width: "100%",
-    // backgroundImage: `url(${backImg})`,
-    // backgroundRepeat: "no-repeat",
-    // backgroundSize: "cover",
     backgroundColor: "#F8F9FB",
-    //fontFamily: ["El Messiri", "sans-serif"].join(","),
     fontFamily: ["Roboto Flex", "sans-serif"].join(","),
   },
 }));
 
-function App() {
+export default function App() {
   const dispatch = useDispatch();
-  // const [cartCount, setCartCount] = useState(0);
   let sections = [{ title: "Home", url: "/" }];
   const sellerGetMainCategory = useSelector(
     (state) => state.sellerGetMainCategory
@@ -67,6 +62,7 @@ function App() {
 
   const userProfileInfo = useSelector((state) => state.userProfile);
   const adminDetail = useSelector((state) => state.adminDetail);
+  const sellerProfile = useSelector((state) => state.sellerProfile);
 
   const sellerDeactivateShop = useSelector(
     (state) => state.sellerDeactivateShop
@@ -76,6 +72,7 @@ function App() {
 
   const { admin, error } = adminDetail;
   const { user } = userProfileInfo;
+  const { seller } = sellerProfile;
 
   const token = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -97,11 +94,10 @@ function App() {
   }
 
   useEffect(() => {
-    //dispatch(getAdminDetail());
     dispatch(getMainCategory());
+    dispatch(getSellerProfile());
     if (token) {
       dispatch(getAdminDetail());
-      //console.log(admin);
     }
   }, [dispatch]);
 
@@ -177,8 +173,6 @@ function App() {
           );
         })}
 
-        {/* {sections.map((item, index) => {
-          return ( */}
         <Route
           path={`/:subname`}
           element={
@@ -189,8 +183,6 @@ function App() {
             </>
           }
         />
-        {/* );
-        })} */}
 
         <Route
           path="/manageseller"
@@ -341,7 +333,11 @@ function App() {
             (token && (
               <>
                 <Header title="Happy Crafting" sections={sections} />
-                {user && user.is_seller ? <SellerProfile /> : <Profile />}
+                {user && user.is_seller && seller?.is_verified ? (
+                  <SellerProfile />
+                ) : (
+                  <Profile />
+                )}
 
                 <Footer />
               </>
@@ -457,5 +453,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

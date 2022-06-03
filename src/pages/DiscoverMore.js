@@ -1,5 +1,7 @@
+import { Fragment, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  Box,
   Container,
   Divider,
   Grid,
@@ -7,12 +9,8 @@ import {
   ImageListItem,
   ImageListItemBar,
 } from "@mui/material";
-import { Fragment, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllRandomProducts } from "../redux/actions/userAction";
-import { useTheme } from "@mui/material/styles";
 import { makeStyles } from "@material-ui/core/styles";
-import { NavLink } from "react-router-dom";
+import { getAllRandomProducts } from "../redux/actions/userAction";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -24,7 +22,6 @@ const useStyles = makeStyles(() => ({
 export default function DiscoverMore() {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const theme = useTheme();
 
   const userGetAllRandomProducts = useSelector(
     (state) => state.userGetAllRandomProducts
@@ -66,16 +63,11 @@ export default function DiscoverMore() {
                 key={item.image}
                 style={{
                   padding: 10,
-                  //   boxShadow:
-                  //     "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px",
-
                   boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                 }}
               >
                 <NavLink to={`/products/${item.id}`}>
                   <img
-                    // src={`${item.image}?w=248&fit=crop&auto=format`}
-                    // srcSet={`${item.image}?w=248&fit=crop&auto=format&dpr=1 1x`}
                     src={`${item.image}`}
                     alt={item.name}
                     style={{ height: "100%", width: "100%" }}

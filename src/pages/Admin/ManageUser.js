@@ -1,16 +1,10 @@
-import { Fragment, useDebugValue, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllUserDetail,
-  updateUserStatus,
-} from "../../redux/actions/adminAction";
+import { makeStyles } from "@material-ui/core/styles";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Button, Container, Divider, Grid } from "@mui/material";
-import {
-  GET_ALL_USER_RESET,
-  UPDATE_USER_STATUS_RESET,
-} from "../../constants/adminConstants";
+import { Box, Divider, Grid } from "@mui/material";
+import { GET_ALL_USER_RESET } from "../../constants/adminConstants";
+import { getAllUserDetail } from "../../redux/actions/adminAction";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
     },
     textAlign: "center",
     border: "1px solid #B8C1BA",
-    //boxShadow: "5px 5px #B8C1BA",
     boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
   },
   activeBtn: {
@@ -82,9 +75,6 @@ export default function ManageUser() {
                 pagination
                 disableColumnSelector
                 rowHeight={90}
-                // onCellClick={(row) => {
-                //   setSellerId(row.id);
-                // }}
                 columns={[
                   {
                     field: "email",
@@ -104,35 +94,8 @@ export default function ManageUser() {
                     renderCell: (params) =>
                       params.value ? params.value : "---",
                   },
-                  // {
-                  //   field: "is_active",
-                  //   headerName: "STATUS",
-                  //   sortable: false,
-                  //   width: 200,
-                  //   renderCell: (params) => (
-                  //     <Button
-                  //       variant="conained"
-                  //       style={{
-                  //         backgroundColor: params.value ? "#278A2E" : "#BA2C3C",
-                  //         color: "#ffffff",
-                  //       }}
-                  //       onClick={() => {
-                  //         const status = {
-                  //           id: params.id,
-                  //           is_active: !params.value,
-                  //         };
-                  //         dispatch(updateUserStatus(status));
-                  //         dispatch({ type: UPDATE_USER_STATUS_RESET });
-                  //         dispatch(getAllUserDetail());
-                  //       }}
-                  //     >
-                  //       {params.value ? "Active" : "InActive"}
-                  //     </Button>
-                  //   ),
-                  // },
                 ]}
                 rows={user ? user : []}
-                // getRowId={(row) => row.internalId}
               />
             </Box>
           </Grid>

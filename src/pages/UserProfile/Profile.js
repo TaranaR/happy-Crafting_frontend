@@ -1,24 +1,15 @@
 import { Fragment, useEffect } from "react";
-import {
-  Box,
-  Button,
-  Container,
-  CssBaseline,
-  Divider,
-  IconButton,
-} from "@mui/material";
-import { makeStyles } from "@material-ui/core/styles";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import Avatar from "@mui/material/Avatar";
-import { Typography } from "@material-ui/core";
-import CreateIcon from "@mui/icons-material/Create";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Box, Button, Container, Divider, IconButton } from "@mui/material";
+import { makeStyles } from "@material-ui/core/styles";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { Typography } from "@material-ui/core";
+import CreateIcon from "@mui/icons-material/Create";
 import {
   getUserProfile,
   getCartDataByUser,
 } from "../../redux/actions/userAction";
-import userLogo from "../../Images/userProfile.gif";
 import {
   GET_CART_DATA_BY_USER_RESET,
   GET_USER_BY_ID_RESET,
@@ -40,7 +31,7 @@ const useStyles = makeStyles(() => ({
   containerWrapper: {
     marginTop: "5rem",
     backgroundColor: "#D5C6B1",
-    //backgroundColor: "#ECE5DB",
+
     borderRadius: 5,
     textAlign: "center",
     padding: "30px",
@@ -48,7 +39,6 @@ const useStyles = makeStyles(() => ({
   },
   typographyClass: {
     fontFamily: ["El Messiri", "sans-serif"].join(","),
-    //fontFamily: ["Greycliff", "sans-serif"].join(","),
   },
 }));
 
@@ -75,14 +65,13 @@ export default function Profile() {
   const editProfileHandler = () => {
     navigate("/myaccount");
   };
-
+  console.log(user);
   return (
     <Fragment>
       <Box className={classes.root}>
         <Box
           style={{
             marginTop: "4rem",
-            //border: "1px solid black",
             height: "20vh",
             fontSize: 100,
             textAlign: "center",
@@ -96,13 +85,6 @@ export default function Profile() {
             }}
           />
 
-          {/* <Avatar
-            src={`${userLogo}`}
-            fontSize="large"
-            style={{
-              transform: "scale(3)",
-            }}
-          /> */}
           <Typography variant="h3" className={classes.typographyClass}>
             {user.username}
             <IconButton onClick={editProfileHandler}>
@@ -116,23 +98,37 @@ export default function Profile() {
             variant="h5"
             style={{ padding: "10px" }}
           >
-            Welcome, {user.username}! Let's get started.
+            Welcome, {user.username}! {!user?.is_seller && "Let's get started."}
           </Typography>
-          <Typography
-            style={{ padding: "10px" }}
-            className={classes.typographyClass}
-          >
-            Start selling your artwork as art prints and other products on
-            HappyCrafting by creating your own shop, where people explore you
-            products and you can get benefits from it.
-          </Typography>
-          <Button
-            sx={{ mt: 5, borderRadius: 5 }}
-            className={classes.btnClass}
-            onClick={createShopHandler}
-          >
-            Create Shop
-          </Button>
+          {user?.is_seller && (
+            <Typography
+              className={classes.typographyClass}
+              variant="h5"
+              style={{ padding: "10px", marginTop: "5%" }}
+            >
+              Wait for the authority to verify your shop. If It is taking too
+              long then feel free to contact us on happycrafting@yopmail.com
+            </Typography>
+          )}
+          {!user?.is_seller && (
+            <Typography
+              style={{ padding: "10px" }}
+              className={classes.typographyClass}
+            >
+              Start selling your artwork as art prints and other products on
+              HappyCrafting by creating your own shop, where people explore you
+              products and you can get benefits from it.
+            </Typography>
+          )}
+          {!user.is_seller && (
+            <Button
+              sx={{ mt: 5, borderRadius: 5 }}
+              className={classes.btnClass}
+              onClick={createShopHandler}
+            >
+              Create Shop
+            </Button>
+          )}
         </Container>
         <Container
           style={{
@@ -143,13 +139,25 @@ export default function Profile() {
             height: "50vh",
           }}
         >
-          <Typography
-            className={classes.typographyClass}
-            variant="h5"
-            style={{ padding: "10px" }}
-          >
-            Not ready to start selling? You can always start discovering.
-          </Typography>
+          {!user?.is_seller && (
+            <Typography
+              className={classes.typographyClass}
+              variant="h5"
+              style={{ padding: "10px" }}
+            >
+              Not ready to start selling? You can always start discovering.
+            </Typography>
+          )}
+          {user?.is_seller && (
+            <Typography
+              className={classes.typographyClass}
+              variant="h5"
+              style={{ padding: "10px" }}
+            >
+              While you wait start looking at others products for inspiration.
+            </Typography>
+          )}
+
           <Typography
             style={{ padding: "10px" }}
             className={classes.typographyClass}

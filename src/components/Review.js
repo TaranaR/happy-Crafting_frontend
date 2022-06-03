@@ -1,11 +1,7 @@
+import { Fragment } from "react";
 import { Grid } from "@mui/material";
 import { Divider } from "@material-ui/core";
-import { Fragment, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserById } from "../redux/actions/userAction";
-import { GET_USER_BY_ID_RESET } from "../constants/userConstants";
 import Rating from "@mui/material/Rating";
-import { useTheme } from "@mui/material/styles";
 
 export default function Review(props) {
   return (

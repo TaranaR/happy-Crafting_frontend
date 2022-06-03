@@ -1,3 +1,5 @@
+import { Fragment, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Alert,
   Box,
@@ -9,10 +11,7 @@ import {
   Radio,
   TextField,
 } from "@mui/material";
-import { Fragment, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch, useSelector } from "react-redux";
-import { getCartDataByUser } from "../redux/actions/userAction";
 import HomeIcon from "@mui/icons-material/Home";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -20,32 +19,29 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import RadioGroup from "@mui/material/RadioGroup";
 import Modal from "@mui/material/Modal";
-
-import {
-  GET_CART_DATA_BY_USER_RESET,
-  GET_SHIPPING_ADDRESS_BY_USER_RESET,
-} from "../constants/userConstants";
-import {
-  getShippingAddressByUser,
-  addShippingAddress,
-  removeShippingAddress,
-} from "../redux/actions/userAction";
-import ViewCart from "./ViewCart";
-import CartSummary from "../components/CartSummary";
 import { useTheme } from "@mui/material/styles";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { NavLink } from "react-router-dom";
+import {
+  GET_CART_DATA_BY_USER_RESET,
+  GET_SHIPPING_ADDRESS_BY_USER_RESET,
+} from "../constants/userConstants";
+import CartSummary from "../components/CartSummary";
 import RemoveAddress from "../components/RemoveAddress";
+import {
+  getShippingAddressByUser,
+  addShippingAddress,
+  removeShippingAddress,
+} from "../redux/actions/userAction";
+import { getCartDataByUser } from "../redux/actions/userAction";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
     marginTop: "3%",
-    // border: "1px solid black",
   },
   formData: {
     "& .MuiOutlinedInput-root": {
@@ -69,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
       height: "70%",
     },
     [theme.breakpoints.down("md")]: {
-      height: "100%",
+      height: "80%",
     },
     backgroundColor: "white",
     boxShadow: 24,
@@ -160,6 +156,10 @@ export default function Checkout() {
       setError("Enter all information.");
       return;
     }
+    if (phone.length != 10) {
+      setError("Phone number should be of 10 digit.");
+      return;
+    }
 
     const add = {
       title: title,
@@ -183,6 +183,7 @@ export default function Checkout() {
     setCity("");
     setPinCode("");
     setPhone("");
+    setTitle("");
   };
 
   const handleOpen = () => {
@@ -194,7 +195,7 @@ export default function Checkout() {
 
   const removeShippingAddressHandler = (id) => {
     dispatch(removeShippingAddress(id));
-    console.log(id);
+
     setOpen(false);
   };
 
@@ -469,7 +470,6 @@ export default function Checkout() {
               <Grid
                 container
                 style={{
-                  // border: "1px solid black",
                   boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                   padding: 20,
                 }}

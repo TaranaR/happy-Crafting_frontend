@@ -1,26 +1,22 @@
-import { Fragment, useEffect, useState, useCallback } from "react";
-import { Button, Grid, Box, IconButton } from "@mui/material";
+import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Grid, Box, IconButton } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import { styled } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  updateSellerProduct,
-  getProductsBySeller,
-  deleteSellerProduct,
-} from "../../../redux/actions/sellerAction";
 import { useTheme } from "@mui/material/styles";
 import { DataGrid } from "@mui/x-data-grid";
 import Modal from "@mui/material/Modal";
 import { ButtonBase, Divider } from "@material-ui/core";
 import UploadProductsForm from "../../CreateShop/Forms/UploadProductsForm";
-import {
-  CREATE_PRODUCT_RESET,
-  SELLER_PRODUCT_UPDATE_RESET,
-} from "../../../constants/sellerConstants";
+import { SELLER_PRODUCT_UPDATE_RESET } from "../../../constants/sellerConstants";
 import { GET_PRODUCT_DETAILS_RESET } from "../../../constants/userConstants";
+import {
+  getProductsBySeller,
+  deleteSellerProduct,
+} from "../../../redux/actions/sellerAction";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,18 +37,12 @@ const useStyles = makeStyles((theme) => ({
     transform: "translate(-50%, -50%)",
     borderRadius: 5,
     width: "45%",
-    // [theme.breakpoints.down("xs")]: {
-    //   width: "90%",
-    //   maxHeight: "100%",
-    //   overflow: "scroll",
-    // },
     [theme.breakpoints.down("md")]: {
       width: "80%",
       maxHeight: "100%",
       overflow: "scroll",
     },
     maxHeight: "99%",
-    //bgcolor: "background.paper",
     backgroundColor: "white",
     boxShadow: 24,
     p: 4,
@@ -118,7 +108,6 @@ export default function ManageProducts() {
   const sellerDeleteProduct = useSelector((state) => state.sellerDeleteProduct);
   const { success: deleteSuccess } = sellerDeleteProduct;
   const { prodInfo } = productBySeller;
-  const { success } = updatedProduct;
 
   const handleOpen = () => {
     setProdId(null);
@@ -136,35 +125,11 @@ export default function ManageProducts() {
     dispatch(getProductsBySeller());
   }, [open]);
 
-  // useEffect(() => {
-  //   if (!prodInfo || success || deleteSuccess) {
-  //     dispatch({ type: SELLER_PRODUCT_UPDATE_RESET });
-  //     dispatch(getProductsBySeller());
-  //   }
-  // }, [dispatch, success, prodInfo]);
   useEffect(() => {
     if (!prodInfo || deleteSuccess) {
       dispatch(getProductsBySeller());
     }
   }, [dispatch, deleteSuccess]);
-
-  prodId && console.log("prodid", prodId);
-
-  // const updateProductHandler = (row) => {
-  //   const dataField = `${row.field}`;
-  //   const prod = {
-  //     id: row.id,
-  //     [dataField]: row.props.value,
-  //   };
-  //   if (row.props.value) {
-  //     dispatch(updateSellerProduct(prod));
-  //   }
-  //   dispatch({ type: SELLER_PRODUCT_UPDATE_RESET });
-  //   dispatch(getProductsBySeller());
-  //   // setData(prodUpdatedInfo);
-  //   // console.log(row.id);
-  //   // console.log(row.field, row.props.value);
-  // };
 
   const deleteProductHandler = (id) => {
     dispatch(deleteSellerProduct(id));
@@ -197,11 +162,6 @@ export default function ManageProducts() {
       )}
 
       <Box className={classes.root}>
-        {/* {prodInfo && (
-          <div
-            dangerouslySetInnerHTML={{ __html: prodInfo[0]["description"] }}
-          ></div>
-        )} */}
         <Grid container>
           <Grid item xs={12} style={{ fontSize: 20 }}>
             Manage Products
@@ -278,7 +238,6 @@ export default function ManageProducts() {
                       headerName: "COLOR",
                       width: 100,
                       renderCell: (params) =>
-                        // params.value ? params.value : "---",
                         params.value ? (
                           <div
                             style={{
@@ -328,7 +287,6 @@ export default function ManageProducts() {
                     },
                   ]}
                   rows={prodInfo ? prodInfo : []}
-                  // getRowId={(row) => row.internalId}
                 />
               </Box>
             </Grid>

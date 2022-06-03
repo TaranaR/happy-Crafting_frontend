@@ -1,11 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
 import { getMainCategory } from "../../redux/actions/sellerAction";
-import {
-  createMainCategory,
-  deleteMainCategory,
-} from "../../redux/actions/adminAction";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ButtonBase, IconButton, TextField } from "@mui/material";
@@ -16,6 +12,10 @@ import Modal from "@mui/material/Modal";
 import { Box, Button, Container, Divider, Grid } from "@mui/material";
 import { CREATE_MAIN_CATEGORY_RESET } from "../../constants/adminConstants";
 import { GET_MAINCATEGORY_RESET } from "../../constants/sellerConstants";
+import {
+  createMainCategory,
+  deleteMainCategory,
+} from "../../redux/actions/adminAction";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
     },
     textAlign: "center",
     border: "1px solid #B8C1BA",
-    //boxShadow: "5px 5px #B8C1BA",
     boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
   },
   modelWrapper: {
@@ -44,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
     width: "45%",
     [theme.breakpoints.down("md")]: { width: "80%" },
     maxHeight: "50%",
-    //bgcolor: "background.paper",
     backgroundColor: "white",
     boxShadow: 24,
     p: 4,
@@ -103,8 +101,6 @@ export default function ManageCategory() {
   const [open, setOpen] = useState(false);
   const [pageSize, setPageSize] = useState(5);
   const [mainCatName, setMainCatName] = useState("");
-  const [data, setData] = useState("");
-  const [mainCatId, setmainCatId] = useState("");
 
   const getMainCategoryInfo = useSelector(
     (state) => state.sellerGetMainCategory
@@ -202,7 +198,6 @@ export default function ManageCategory() {
               </Grid>
               <Grid item xs={12}>
                 {loading && "Loading...."}
-                {/* {mainCategoryInfo && mainCategoryInfo.message} */}
                 {mainCategoryInfo && setOpen(false)}
                 {error && error}
               </Grid>
@@ -220,19 +215,6 @@ export default function ManageCategory() {
             <Divider style={{ width: "100%" }} />
           </Grid>
           <Grid item xs={12} style={{ textAlign: "right", marginTop: "20px" }}>
-            {/* <Button
-              style={{
-                border: "2px solid #06113C",
-                borderRadius: 25,
-                color: "#06113C",
-                width: "30%",
-                height: "4vh",
-              }}
-              onClick={handleOpen}
-            >
-              <AddIcon style={{ marginRight: "5px" }} />
-              Add Category
-            </Button> */}
             <AddBtn onClick={handleOpen} style={{ marginRight: "1%" }}>
               <AddIcon style={{ marginRight: "5px" }} />
               Add Product
@@ -243,8 +225,6 @@ export default function ManageCategory() {
               style={{
                 height: "100%",
                 width: "100%",
-                // boxShadow:
-                //   "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px",
               }}
             >
               <DataGrid

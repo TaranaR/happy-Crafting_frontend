@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
-import { Container, Divider, Grid, Button, Alert } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Divider, Grid, Button, Alert } from "@mui/material";
 
 export default function CartSummary(props) {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ export default function CartSummary(props) {
   const [totalCartAmount, setTotalCartAmount] = useState(0);
   const [shippingAmount, setShippingAmount] = useState(0);
   const [error, setError] = useState("");
-  //const [totalBillAmount, setTotalBillAmount] = useState(0);
+
   const cartData = props.cartData;
 
   useEffect(() => {
@@ -147,7 +147,7 @@ export default function CartSummary(props) {
             marginTop: 10,
           }}
         >
-          You have to item in your cart.
+          You have no item in your cart.
         </Grid>
       )}
     </Fragment>

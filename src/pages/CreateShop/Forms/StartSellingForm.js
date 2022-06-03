@@ -1,5 +1,5 @@
-import { Container, Grid } from "@mui/material";
 import { Fragment } from "react";
+import { Container, Grid } from "@mui/material";
 
 export default function StartSellingForm(props) {
   return (
@@ -15,7 +15,8 @@ export default function StartSellingForm(props) {
           >
             You are all set to sell your products. You created your shop and
             uploaded a product. You can upload more of your products from your
-            shop profile. Now sit back and enjoy your earings.
+            shop profile. Now sit back and wait for the authority to verify your
+            shop.
           </Grid>
         </Grid>
       </Container>

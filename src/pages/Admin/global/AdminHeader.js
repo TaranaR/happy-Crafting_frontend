@@ -1,7 +1,9 @@
+import React, { useState, useEffect } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AppBar,
   Container,
-  CssBaseline,
   IconButton,
   Toolbar,
   Grid,
@@ -12,33 +14,17 @@ import { Drawer } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Menu, MenuItem } from "@material-ui/core";
 import { AccountCircle } from "@mui/icons-material";
-import { useDispatch, useSelector } from "react-redux";
-import { InputBase } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
 import { Button } from "@material-ui/core";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import SearchIcon from "@mui/icons-material/Search";
-import { logout } from "../../../redux/actions/userAction";
-import { Avatar } from "@mui/material";
-import { Divider, ListItemIcon } from "@material-ui/core";
-import { PersonAdd } from "@mui/icons-material";
-import CreateIcon from "@mui/icons-material/Create";
+import { Divider } from "@material-ui/core";
 import { Logout } from "@mui/icons-material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { getAdminDetail } from "../../../redux/actions/adminAction";
-import {
-  ADMIN_DETAILS_RESET,
-  ADMIN_LOGOUT,
-} from "../../../constants/adminConstants";
+import { logout } from "../../../redux/actions/userAction";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
     background: "none",
     height: "12rem",
     width: "100%",
-    // backgroundColor: "#2D2D2D",
-    // backgroundColor: "#3A3845",
     backgroundColor: "#242F9B",
   },
   appBarHamBurger: {
@@ -59,20 +45,16 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   titleLink: {
-    // color: "#F76C27",
-    // color: "#F7CCAC",
     color: "#ffffff",
     fontFamily: ["Dancing Script", "cursive"].join(","),
     textDecoration: "none",
   },
   appBarWrapper: {
     width: "100 %",
-    // margin: "0 auto",
     marginTop: "3%",
   },
   navlink: {
     textDecoration: "none",
-    // color: "#B0B0B0 ",
     color: "#ffffff",
     "&:hover": {
       color: "#b0b0b0",
@@ -96,15 +78,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AdminHeader(props) {
-  const location = useLocation();
   const classes = useStyles();
   const [showNavBar, setShowNavBar] = useState(false);
   const [showDrawer, setShowDrawer] = useState(false);
-  const { sections, title } = props;
+  const { sections } = props;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
-  const userLogin = useSelector((state) => state.userLogin);
 
   const token = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -134,7 +114,6 @@ export default function AdminHeader(props) {
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
-    // console.log(anchorEl);
   };
 
   const handleClose = (e) => {
@@ -318,20 +297,13 @@ export default function AdminHeader(props) {
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
-                    // onClick={handleClose}
                     getContentAnchorEl={null}
                     transformOrigin={{ horizontal: "right", vertical: "top" }}
                     anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                   >
                     <MenuItem onClick={handleClose} id="Profile">
-                      {/* <PersonAdd /> */}
                       <Typography style={{ padding: 5 }}>Profile</Typography>
                     </MenuItem>
-
-                    {/* <MenuItem onClick={handleClose}> */}
-                    {/* <CreateIcon /> */}
-                    {/* <Typography style={{ padding: 5 }}>My Account</Typography>
-                    </MenuItem> */}
 
                     <Divider />
 

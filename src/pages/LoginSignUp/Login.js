@@ -1,10 +1,8 @@
+import React, { useState, useRef } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
-import React, { useState, useRef, Fragment } from "react";
 import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { NavLink, useNavigate } from "react-router-dom";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -35,10 +33,6 @@ export default function Login(props) {
   };
 
   const { token, error, loading } = props.userLoginData;
-
-  // if (token) {
-  //   console.log(token);
-  // }
 
   let errorArr = [];
 
@@ -80,11 +74,6 @@ export default function Login(props) {
               flex: 1,
               fontFamily: ["Dancing Script", "cursive"].join(","),
               fontWeight: "bold",
-              // color: "#00000",
-              // backgroundColor: "#f3ec78",
-              // backgroundImage:
-              //   "linear-gradient(to left, #ccccff 0%, #9900cc 100%)",
-              // backgroundImage: "conic-gradient(#af4261, #af4261)",
               backgroundImage:
                 "repeating-conic-gradient( #af4261 1%, #764C47 5%)",
               backgroundSize: "100%",
@@ -125,7 +114,6 @@ export default function Login(props) {
           onSubmit={handleSubmit}
           sx={{ mt: "10%" }}
         >
-          {/* <Grid container spacing={2} style={{ marginLeft: "4rem" }}> */}
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -150,12 +138,7 @@ export default function Login(props) {
               />
             </Grid>
           </Grid>
-          {/* <Grid item xs={12}>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-          </Grid> */}
+
           <Grid
             item
             xs={12}

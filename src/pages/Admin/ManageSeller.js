@@ -1,17 +1,17 @@
 import { Fragment, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@mui/material/styles";
-import {
-  getAllSellerDetail,
-  updateSellerStatus,
-} from "../../redux/actions/adminAction";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Button, Container, Divider, Grid } from "@mui/material";
+import { Box, Button, Divider, Grid } from "@mui/material";
 import {
   GET_ALL_SELLERS_RESET,
   UPDATE_SELLER_STATUS_RESET,
 } from "../../constants/adminConstants";
+import {
+  getAllSellerDetail,
+  updateSellerStatus,
+} from "../../redux/actions/adminAction";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
     },
     textAlign: "center",
     border: "1px solid #B8C1BA",
-    //boxShadow: "5px 5px #B8C1BA",
     boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
   },
   activeBtn: {
@@ -40,25 +39,13 @@ const useStyles = makeStyles((theme) => ({
 export default function ManageSeller() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const theme = useTheme();
 
   const [pageSize, setPageSize] = useState(5);
-  // const [sellerId, setSellerId] = useState("");
 
   const allSellerDetails = useSelector((state) => state.getAllSellerDetails);
   const updatedSeller = useSelector((state) => state.updateSellerStatus);
   const { seller } = allSellerDetails;
   const { success } = updatedSeller;
-
-  // useEffect(() => {
-  //   dispatch(getAllSellerDetail());
-  //   if (!seller || success) {
-  //     dispatch({ type: UPDATE_SELLER_STATUS_RESET });
-  //     dispatch(getAllSellerDetail());
-  //   } else {
-  //     setData(seller);
-  //   }
-  // }, [dispatch, seller, success]);
 
   useEffect(() => {
     dispatch(getAllSellerDetail());
@@ -90,8 +77,6 @@ export default function ManageSeller() {
               style={{
                 height: "50vh",
                 width: "100%",
-                // boxShadow:
-                //   "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px",
               }}
             >
               <DataGrid
@@ -104,9 +89,6 @@ export default function ManageSeller() {
                 pagination
                 disableColumnSelector
                 rowHeight={90}
-                // onCellClick={(row) => {
-                //   setSellerId(row.id);
-                // }}
                 columns={[
                   {
                     field: "shop_logo",
@@ -128,12 +110,13 @@ export default function ManageSeller() {
                   {
                     field: "location",
                     headerName: "LOCATION",
-                    width: 200,
+                    width: 150,
                     sortable: false,
                   },
                   {
                     field: "is_active",
                     headerName: "STATUS",
+
                     sortable: false,
                     renderCell: (params) => (
                       <Button
@@ -156,9 +139,34 @@ export default function ManageSeller() {
                       </Button>
                     ),
                   },
+                  {
+                    field: "is_verified",
+                    headerName: "VERIFICATION",
+                    sortable: false,
+                    width: 150,
+                    renderCell: (params) => (
+                      <Button
+                        variant="conained"
+                        style={{
+                          backgroundColor: params.value ? "#278A2E" : "#BA2C3C",
+                          color: "#ffffff",
+                        }}
+                        onClick={() => {
+                          const data = {
+                            id: params.id,
+                            is_verified: true,
+                          };
+                          dispatch(updateSellerStatus(data));
+                          dispatch({ type: UPDATE_SELLER_STATUS_RESET });
+                          dispatch(getAllSellerDetail());
+                        }}
+                      >
+                        {params.value ? "Verified" : "Disprove"}
+                      </Button>
+                    ),
+                  },
                 ]}
                 rows={seller ? seller : []}
-                // getRowId={(row) => row.internalId}
               />
             </Box>
           </Grid>

@@ -63,8 +63,6 @@ export const createSellerShop = (shop) => async (dispatch) => {
       type: CREATE_SHOP_REQUEST,
     });
 
-    //const { token } = store.getState().userLogin;
-
     const token = JSON.parse(localStorage.getItem("userInfo"));
 
     const config = {
@@ -97,8 +95,6 @@ export const uploadShopLogo = (shoplogo) => async (dispatch) => {
     dispatch({
       type: IMAGE_UPLOAD_REQUEST,
     });
-
-    // const { token } = store.getState().userLogin;
 
     const token = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -175,37 +171,12 @@ export const getSubCategory = (id) => async (dispatch) => {
   }
 };
 
-export const getTypeOfProduct = (id) => async (dispatch) => {
-  try {
-    dispatch({ type: GET_TYPEOFPROD_REQUEST });
-
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-      },
-    };
-
-    const { data } = await axios.get(
-      `${LOCAL_URL}/api/adminapi/getTypeOfProduct/${id}`,
-      config
-    );
-
-    dispatch({ type: GET_TYPEOFPROD_SUCCESS, payload: data });
-  } catch (error) {
-    dispatch({
-      type: GET_TYPEOFPROD_FAIL,
-      payload: error,
-    });
-  }
-};
-
 export const createSellerProduct = (product) => async (dispatch) => {
   try {
     dispatch({
       type: CREATE_PRODUCT_REQUEST,
     });
 
-    // const { token } = store.getState().userLogin;
     const token = JSON.parse(localStorage.getItem("userInfo"));
 
     const config = {
@@ -237,7 +208,6 @@ export const getSellerProfile = () => async (dispatch) => {
   try {
     dispatch({ type: SELLER_DETAILS_REQUEST });
 
-    //const { token } = store.getState().userLogin;
     const token = JSON.parse(localStorage.getItem("userInfo"));
 
     const config = {
@@ -270,7 +240,6 @@ export const updateSellerProfile = (shop) => async (dispatch) => {
       type: SELLER_UPDATE_PROFILE_REQUEST,
     });
 
-    // const { token } = store.getState().userLogin;
     const token = JSON.parse(localStorage.getItem("userInfo"));
 
     const config = {
@@ -302,8 +271,6 @@ export const getProductsBySeller = () => async (dispatch) => {
   try {
     dispatch({ type: GET_PRODUCTBYSELLER_REQUEST });
 
-    // const { token } = store.getState().userLogin;
-
     const token = JSON.parse(localStorage.getItem("userInfo"));
 
     const config = {
@@ -332,8 +299,6 @@ export const updateSellerProduct = (product) => async (dispatch) => {
     dispatch({
       type: SELLER_PRODUCT_UPDATE_REQUEST,
     });
-
-    // const { token } = store.getState().userLogin;
 
     const token = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -368,8 +333,6 @@ export const deleteSellerProduct = (id) => async (dispatch) => {
       type: SELLER_PRODUCT_DELETE_REQUEST,
     });
 
-    // const { token } = store.getState().userLogin;
-
     const token = JSON.parse(localStorage.getItem("userInfo"));
 
     const config = {
@@ -399,8 +362,6 @@ export const deleteSellerProduct = (id) => async (dispatch) => {
 export const getOrderedProductBySeller = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ORDERED_PRODUCT_SELLER_REQUEST });
-
-    // const { token } = store.getState().userLogin;
 
     const token = JSON.parse(localStorage.getItem("userInfo"));
 

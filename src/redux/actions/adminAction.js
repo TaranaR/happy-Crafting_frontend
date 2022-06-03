@@ -2,7 +2,6 @@ import {
   ADMIN_DETAILS_REQUEST,
   ADMIN_DETAILS_SUCCESS,
   ADMIN_DETAILS_FAIL,
-  ADMIN_LOGOUT,
   GET_ALL_SELLERS_REQUEST,
   GET_ALL_SELLERS_SUCCESS,
   GET_ALL_SELLERS_FAIL,
@@ -39,21 +38,13 @@ import {
 } from "../../constants/adminConstants";
 import axios from "axios";
 import { LOCAL_URL } from "../../constants/global";
-import {
-  GET_ORDER_DETAILS_FAIL,
-  GET_ORDER_DETAILS_REQUEST,
-  GET_ORDER_DETAILS_SUCCESS,
-  USER_LOGOUT,
-} from "../../constants/userConstants";
 
 export const getAdminDetail = () => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_DETAILS_REQUEST });
 
-    //const { token } = store.getState().userLogin;
-
     const token = JSON.parse(localStorage.getItem("userInfo"));
-    // const username = localStorage.getItem("username");
+
     const config = {
       headers: {
         "Content-type": "application/json",
@@ -82,10 +73,8 @@ export const getAllSellerDetail = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ALL_SELLERS_REQUEST });
 
-    //const { token } = store.getState().userLogin;
-
     const token = JSON.parse(localStorage.getItem("userInfo"));
-    // const username = localStorage.getItem("username");
+
     const config = {
       headers: {
         "Content-type": "application/json",
@@ -141,10 +130,8 @@ export const getAllUserDetail = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ALL_USER_REQUEST });
 
-    //const { token } = store.getState().userLogin;
-
     const token = JSON.parse(localStorage.getItem("userInfo"));
-    // const username = localStorage.getItem("username");
+
     const config = {
       headers: {
         "Content-type": "application/json",
@@ -203,8 +190,6 @@ export const createMainCategory = (main) => async (dispatch) => {
     dispatch({
       type: CREATE_MAIN_CATEGORY_REQUEST,
     });
-
-    //const { token } = store.getState().userLogin;
 
     const token = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -270,8 +255,6 @@ export const createSubCategory = (sub) => async (dispatch) => {
     dispatch({
       type: CREATE_SUB_CATEGORY_REQUEST,
     });
-
-    //const { token } = store.getState().userLogin;
 
     const token = JSON.parse(localStorage.getItem("userInfo"));
 

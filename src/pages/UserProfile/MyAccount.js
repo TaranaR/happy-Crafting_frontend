@@ -115,7 +115,6 @@ const useStyles = makeStyles((theme) => ({
   },
 
   links: {
-    // border: "1px solid black",
     color: "#583053",
     textDecoration: "none",
     fontSize: 23,
@@ -170,11 +169,9 @@ export default function MyAccount() {
     if (!token.access) {
       navigate("/login");
     } else {
-      console.log(user);
       if (!user || !user.email || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserProfile());
-        console.log(user);
       } else {
         setName(user.name);
         setEmail(user.email);
@@ -235,7 +232,6 @@ export default function MyAccount() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {/* {"Use Google's location service?"} */}
           Are you sure, you want to deactivate your account?
         </DialogTitle>
         <DialogContent>

@@ -3,18 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@mui/material/styles";
-import {
-  changePassword,
-  getUserProfile,
-} from "../../../redux/actions/userAction";
 import Snackbar from "@mui/material/Snackbar";
 import AlertTitle from "@mui/material/AlertTitle";
 import Alert from "@mui/material/Alert";
-import { updateUserProfile } from "../../../redux/actions/userAction";
-import {
-  CHANGE_PASSWORD_RESET,
-  USER_UPDATE_PROFILE_RESET,
-} from "../../../constants/userConstants";
 import {
   Container,
   Grid,
@@ -25,6 +16,15 @@ import {
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import ChangePassword from "../../../components/ChangePassword";
+import {
+  changePassword,
+  getUserProfile,
+} from "../../../redux/actions/userAction";
+import { updateUserProfile } from "../../../redux/actions/userAction";
+import {
+  CHANGE_PASSWORD_RESET,
+  USER_UPDATE_PROFILE_RESET,
+} from "../../../constants/userConstants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -316,9 +316,6 @@ export default function SellerAccount() {
                 textAlign: "left",
                 [theme.breakpoints.down("sm")]: { textAlign: "center" },
                 [theme.breakpoints.down("md")]: { textAlign: "center" },
-                // [theme.breakpoints.only("sm")]: {
-                //   textAlign: "left",
-                // },
               }}
             >
               <Button
@@ -334,21 +331,6 @@ export default function SellerAccount() {
               </Button>
             </Grid>
           </Grid>
-          {/* <Grid container style={{ margin: "20px", textAlign: "center" }}>
-            <Grid
-              item
-              xs={12}
-              sx={{
-                textAlign: "left",
-                [theme.breakpoints.down("sm")]: { textAlign: "center" },
-                [theme.breakpoints.down("md")]: { textAlign: "center" },
-              }}
-            >
-              <Button className={classes.deactivateBtn}>
-                Deactivate Account
-              </Button>
-            </Grid>
-          </Grid> */}
         </Grid>
 
         {userInfo && (

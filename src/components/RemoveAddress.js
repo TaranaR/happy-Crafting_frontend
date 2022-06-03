@@ -1,15 +1,14 @@
-import { Box, Button, Grid } from "@mui/material";
 import { Fragment, useState } from "react";
+import { Button, Grid } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import { useSelector } from "react-redux";
-import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
 
 export default function RemoveAddress(props) {
   const theme = useTheme();
-  const [id, setId] = useState();
+
   const userGetShippingAddressByUser = useSelector(
     (state) => state.userGetShippingAddressByUser
   );
@@ -41,10 +40,6 @@ export default function RemoveAddress(props) {
                     height: "100%",
                     minHeight: "100%",
                     boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-                    [theme.breakpoints.down("sm")]: {
-                      // height: "70%",
-                      // minHeight: "100%",
-                    },
                   }}
                 >
                   <CardContent>

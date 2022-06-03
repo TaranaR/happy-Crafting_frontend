@@ -1,12 +1,12 @@
 import { Fragment, useEffect, useState } from "react";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Button, Container, Divider } from "@material-ui/core";
+import { Box, Container, Divider } from "@material-ui/core";
 import {
   getAllProductsBySubCategoryName,
   getSubCategoryBySubCategoryName,
 } from "../redux/actions/userAction";
-import { NavLink, useLocation, useParams } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Grid, MenuItem, Select } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -125,7 +125,7 @@ export default function AllProductsBySubCategory(props) {
               >
                 <Grid container>
                   {subCatName &&
-                    subCatName.map((item) => {
+                    subCatName.map((item, index) => {
                       return (
                         <>
                           <Grid
@@ -141,7 +141,7 @@ export default function AllProductsBySubCategory(props) {
                                 marginTop: 0,
                               },
                             }}
-                            key={item.id}
+                            key={index}
                           >
                             <NavLink
                               to={`/${item.sub_cat_name}`}
@@ -169,16 +169,15 @@ export default function AllProductsBySubCategory(props) {
                 }}
               >
                 {allProdSub &&
-                  allProdSub.map((item) => {
+                  allProdSub.map((item, index) => {
                     return (
                       <Grid
                         item
                         xs={6}
                         md={6}
                         lg={4}
-                        key={item.id}
+                        key={index}
                         sx={{
-                          // border: "1px solid black",
                           padding: "30px",
                           [theme.breakpoints.down("sm")]: {
                             padding: 1,

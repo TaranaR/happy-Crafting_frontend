@@ -1,19 +1,16 @@
 import { Fragment, useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch, createDispatchHook } from "react-redux";
-import { Grid, Container, Button } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { v4 } from "uuid";
+import { HexColorPicker } from "react-colorful";
+import { Grid, Container, Button, Snackbar, AlertTitle } from "@mui/material";
 import { Alert } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
 import { TextField } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { styled } from "@mui/material/styles";
-import { withStyles } from "@material-ui/styles";
-import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { storage } from "../../../constants/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { v4 } from "uuid";
 import {
   getMainCategory,
   getSubCategory,
@@ -22,7 +19,6 @@ import {
 } from "../../../redux/actions/sellerAction";
 import { getProductDetails } from "../../../redux/actions/userAction";
 import { GET_PRODUCT_DETAILS_RESET } from "../../../constants/userConstants";
-import { HexColorPicker } from "react-colorful";
 
 export default function UploadProductsForm(props) {
   const dispatch = useDispatch();
@@ -43,15 +39,12 @@ export default function UploadProductsForm(props) {
     (state) => state.sellerCreateProduct
   );
 
-  const { user } = userProfileInfo;
   const { mainCatInfo } = sellerGetMainCategory;
   const { subCatInfo } = sellerGetSubCategory;
 
-  const { loading, prodInfo, error } = sellerCreateProdInfo;
+  const { loading, prodInfo } = sellerCreateProdInfo;
 
   const username = window.localStorage.getItem("username");
-
-  console.log(username);
 
   //Create Product
   const [prodName, setProdName] = useState("");
@@ -69,6 +62,9 @@ export default function UploadProductsForm(props) {
   const [prodSize, setProdSize] = useState("");
   const [prodColor, setProdColor] = useState("");
   const [isCustomizable, setIsCustomizable] = useState(false);
+
+  const [snackOpen, setSnackOpen] = useState(false);
+
   let main = [];
   let sub = [];
 
@@ -78,8 +74,6 @@ export default function UploadProductsForm(props) {
     setErrormsg("");
     dispatch({ type: GET_PRODUCT_DETAILS_RESET });
     dispatch(getMainCategory());
-    // dispatch(getSubCategory());
-    // dispatch(getTypeOfProduct());
   }, []);
 
   useEffect(() => {
@@ -122,6 +116,13 @@ export default function UploadProductsForm(props) {
     }
   };
 
+  const handleSnackClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackOpen(false);
+  };
+
   const uploadShopLogohandler = () => {
     //Image Upload
 
@@ -133,9 +134,6 @@ export default function UploadProductsForm(props) {
     ) {
       return;
     }
-    //if (prodInfo) return;
-
-    console.log(selectedFile);
 
     const imageRef = ref(
       storage,
@@ -143,17 +141,14 @@ export default function UploadProductsForm(props) {
     );
 
     if (!prodImage) {
-      console.log("first time");
       uploadBytes(imageRef, selectedFile).then(() => {
-        alert("Image uploaded");
+        setSnackOpen(true);
         getDownloadURL(imageRef).then((url) => {
           setProdImage(url);
         });
       });
     }
   };
-
-  //console.log(props.prodId);
 
   if (selectedFile) {
     let t = selectedFile.name.split(".");
@@ -164,7 +159,6 @@ export default function UploadProductsForm(props) {
     //create shop
 
     if (props.prodId) {
-      // console.log("Update");
       const product = {
         id: prodDetail["id"],
         sub_cat_id: prodSubCat,
@@ -178,7 +172,6 @@ export default function UploadProductsForm(props) {
       };
       dispatch(updateSellerProduct(product));
     } else {
-      // console.log("create");
       if (
         prodName === undefined ||
         prodPrice === undefined ||
@@ -196,7 +189,6 @@ export default function UploadProductsForm(props) {
         );
         return;
       } else {
-        // console.log(prodPrice);
         const product = {
           sub_cat_id: prodSubCat,
           name: prodName,
@@ -290,7 +282,6 @@ export default function UploadProductsForm(props) {
             </Select>
             {subCatInfo && (
               <Select
-                // value={prodSubCat}
                 onChange={(e) => {
                   setProdSubCat(e.target.value);
                 }}
@@ -324,9 +315,7 @@ export default function UploadProductsForm(props) {
               onInit={(evt, editor) => (editorRef.current = editor)}
               value={props.prodId && prodDescription}
               onChange={() => {
-                //console.log(editorRef.current.getContent());
                 setProdDescription(editorRef.current.getContent());
-                //setProdDescription(e.target.getContent());
               }}
               init={{
                 height: 200,
@@ -381,7 +370,6 @@ export default function UploadProductsForm(props) {
               Select Image
               <label id="filename" style={{ marginLeft: "10px" }}>
                 {selectedFile["name"]}
-                {/* {selectedFile && selectedFile.length} */}
               </label>
             </label>
             <Button
@@ -490,6 +478,19 @@ export default function UploadProductsForm(props) {
             </Grid>
           )}
         </Grid>
+        <Snackbar
+          open={snackOpen}
+          autoHideDuration={1000}
+          onClose={handleSnackClose}
+        >
+          <Alert
+            onClose={handleSnackClose}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            <AlertTitle>Success</AlertTitle>Image Uploaded
+          </Alert>
+        </Snackbar>
       </Container>
     </Fragment>
   );

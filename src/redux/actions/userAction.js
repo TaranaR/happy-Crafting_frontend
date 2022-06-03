@@ -196,10 +196,7 @@ export const getUserProfile = () => async (dispatch) => {
   try {
     dispatch({ type: USER_DETAILS_REQUEST });
 
-    //const { token } = store.getState().userLogin;
-
     const token = JSON.parse(localStorage.getItem("userInfo"));
-    // const username = localStorage.getItem("username");
 
     const config = {
       headers: {
@@ -230,8 +227,6 @@ export const updateUserProfile = (user) => async (dispatch) => {
     dispatch({
       type: USER_UPDATE_PROFILE_REQUEST,
     });
-
-    // const { token } = store.getState().userLogin;
 
     const token = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -1111,7 +1106,7 @@ export const setNewPassword = (newPasswordData) => async (dispatch) => {
     };
 
     const { data } = await axios.put(
-      `${LOCAL_URL}/api/userapi/changePassword/`,
+      `${LOCAL_URL}/api/userapi/setNewPassword/`,
       newPasswordData,
       config
     );

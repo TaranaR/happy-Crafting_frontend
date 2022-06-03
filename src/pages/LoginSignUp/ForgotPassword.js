@@ -1,8 +1,10 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Button,
   Alert,
-  Container,
   Divider,
   Grid,
   Modal,
@@ -10,26 +12,20 @@ import {
   Typography,
 } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
-import backLogin from "../../Images/backLogin1.jpeg";
 import { useTheme } from "@mui/material/styles";
-import { useDispatch, useSelector } from "react-redux";
-import { changePassword, verifyEmailId } from "../../redux/actions/userAction";
-import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
-import { NavLink } from "react-router-dom";
-import { faL } from "@fortawesome/free-solid-svg-icons";
+import backLogin from "../../Images/backLogin1.jpeg";
+import { verifyEmailId, setNewPassword } from "../../redux/actions/userAction";
 import { sendEmail } from "../../redux/actions/sellerAction";
-import ChangePassword from "../../components/ChangePassword";
+
 import {
-  CHANGE_PASSWORD_RESET,
   SET_NEW_PASSWORD_RESET,
+  VERIFY_EMAILID_RESET,
 } from "../../constants/userConstants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
-    // marginTop: "10%",
-    // border: "1px solid black",
   },
   bgImage: {
     backgroundImage: `url(${backLogin})`,
@@ -75,15 +71,15 @@ export default function ForgotPassword() {
   const classes = useStyles();
   const theme = useTheme();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState(0);
   const [open, setOpen] = useState(false);
   const [enteredOTP, setEnteredOTP] = useState("");
-  const [showError, setShowError] = useState(false);
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   const [newPwd, setNewPwd] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPwd, setConfirmPwd] = useState("");
   const [error, setError] = useState("");
 
   const userVerifyEmail = useSelector((state) => state.userVerifyEmail);
@@ -91,7 +87,11 @@ export default function ForgotPassword() {
 
   const { loading, verified } = userVerifyEmail;
   const { setNewPasswordData, success } = userSetNewPassword;
-  let errorContent = "";
+  const [errorContent, setErrorContent] = useState("");
+
+  useEffect(() => {
+    dispatch({ type: VERIFY_EMAILID_RESET });
+  }, []);
 
   useEffect(() => {
     if (verified) {
@@ -99,19 +99,18 @@ export default function ForgotPassword() {
     }
   }, [verified]);
 
-  //   useEffect(() => {
-  //     if (setNewPasswordDa ta) {
-  //       setError(setNewPasswordData);
-  //     }
-  //   }, [setNewPasswordData]);
-
-  console.log("---", setNewPasswordData);
+  useEffect(() => {
+    if (success && error === "") {
+      setTimeout(() => {
+        handleClose();
+        navigate("/login");
+      }, 2000);
+    }
+  }, [success, error]);
 
   const verifyEmailIdHandler = () => {
     dispatch(verifyEmailId(email));
   };
-
-  console.log(otp);
 
   const generateOtp = () => {
     const generatedOTP = Math.floor(100000 + Math.random() * 900000);
@@ -135,30 +134,29 @@ export default function ForgotPassword() {
   const handleClose = () => setOpen(false);
 
   const verifyOtp = () => {
-    debugger;
     if (parseInt(enteredOTP) === otp) {
-      console.log("OTP Varified", otp);
       handleOpen();
+      setError("");
     } else {
-      errorContent = <Alert severity="error">OTP didn't match</Alert>;
+      setErrorContent("OTP didn't match");
     }
   };
 
   const setNewPasswordHandler = () => {
     setError("");
-    if (newPwd === "" || confirmPassword === "") {
+    if (newPwd === "" || confirmPwd === "") {
       setError("Enter all the data");
-    } else if (newPwd !== confirmPassword) {
-      console.log(newPwd, confirmPassword);
+    } else if (newPwd !== confirmPwd) {
+      console.log(newPwd, confirmPwd);
       setError("New Password and Confirm Password must be same.");
     } else {
       const data = {
         email: email,
         new_password: newPwd,
-        confirm_password: confirmPassword,
+        confirm_password: confirmPwd,
       };
       dispatch({ type: SET_NEW_PASSWORD_RESET });
-      dispatch(setNewPasswordData(data));
+      dispatch(setNewPassword(data));
     }
   };
 
@@ -211,7 +209,7 @@ export default function ForgotPassword() {
                 variant="outlined"
                 placeholder="Confirm Password"
                 onChange={(e) => {
-                  setConfirmPassword(e.target.value);
+                  setConfirmPwd(e.target.value);
                 }}
               />
             </Grid>
@@ -242,7 +240,7 @@ export default function ForgotPassword() {
               </Grid>
             )}
 
-            {success && (
+            {success && error === "" && (
               <Grid
                 item
                 xs={12}
@@ -331,19 +329,6 @@ export default function ForgotPassword() {
                   </LoadingButton>
                 )}
               </Grid>
-              {/* {!verified && showError && (
-                <Grid
-                  item
-                  xs={12}
-                  sx={{
-                    marginTop: "3%",
-                    fontFamily: ["Lora", "serif"].join(","),
-                  }}
-                >
-                  Entered Email Id is not registered. First register yourself.
-                  <NavLink to="/signup">SignUp</NavLink>
-                </Grid>
-              )} */}
               {verified && (
                 <>
                   <Grid
@@ -385,8 +370,16 @@ export default function ForgotPassword() {
                       Verify OTP
                     </Button>
                   </Grid>
+
                   {errorContent && (
-                    <Grid item xs={12}>
+                    <Grid
+                      item
+                      xs={12}
+                      sx={{
+                        marginTop: "3%",
+                        fontFamily: ["Lora", "serif"].join(","),
+                      }}
+                    >
                       {errorContent}
                     </Grid>
                   )}

@@ -1,19 +1,27 @@
 import { Fragment, useState, useRef } from "react";
-import { Grid, Container, Button } from "@mui/material";
-import { TextField } from "@mui/material";
-import { createSellerShop } from "../../../redux/actions/sellerAction";
-import { Editor } from "@tinymce/tinymce-react";
 import { useSelector, useDispatch } from "react-redux";
-import { storage } from "../../../constants/firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { Editor } from "@tinymce/tinymce-react";
 import { v4 } from "uuid";
 import { useTheme } from "@mui/material/styles";
+import {
+  Grid,
+  Container,
+  Button,
+  Snackbar,
+  Alert,
+  AlertTitle,
+} from "@mui/material";
+import { TextField } from "@mui/material";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../../constants/firebase";
+import { createSellerShop } from "../../../redux/actions/sellerAction";
 
 export default function CreateShopForm(props) {
   const dispatch = useDispatch();
-  const theme = useTheme();
 
   const [selectedFile, setSelectedFile] = useState("");
+  const [snackOpen, setSnackOpen] = useState(false);
+
   const editorRef = useRef(null);
 
   const sellerCreateShopInfo = useSelector((state) => state.sellerCreateShop);
@@ -35,6 +43,13 @@ export default function CreateShopForm(props) {
     }
   };
 
+  const handleSnackClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackOpen(false);
+  };
+
   const uploadShopLogohandler = () => {
     //Image Upload
     console.log(selectedFile);
@@ -49,7 +64,7 @@ export default function CreateShopForm(props) {
 
     if (!shopLogo) {
       uploadBytes(imageRef, selectedFile).then(() => {
-        alert("Image uploaded");
+        setSnackOpen(true);
         getDownloadURL(imageRef).then((url) => {
           setShopLogo(url);
         });
@@ -221,6 +236,19 @@ export default function CreateShopForm(props) {
             {error && error}
           </Grid>
         </Grid>
+        <Snackbar
+          open={snackOpen}
+          autoHideDuration={1000}
+          onClose={handleSnackClose}
+        >
+          <Alert
+            onClose={handleSnackClose}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            <AlertTitle>Success</AlertTitle>Image Uploaded
+          </Alert>
+        </Snackbar>
       </Container>
     </Fragment>
   );

@@ -1,6 +1,5 @@
-import { TableCell } from "@material-ui/core";
 import Moment from "moment";
-import { InsertEmoticon } from "@mui/icons-material";
+import { TableCell } from "@material-ui/core";
 import { TableRow, Typography } from "@mui/material";
 
 export default function OrderDetails(props) {

@@ -1,7 +1,7 @@
-import { Fragment, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@mui/material/styles";
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Grid, TextField, Alert } from "@mui/material";
 import { Divider } from "@material-ui/core";
 import { CHANGE_PASSWORD_RESET } from "../../../../constants/userConstants";
@@ -37,7 +37,7 @@ export default function ChangePassword() {
 
   const changePasswordHandler = () => {
     setError("");
-    console.log("hiii");
+
     if (oldPassword === "" || newPassword === "" || confirmPassword === "") {
       setError("Enter all the data");
     } else if (newPassword !== confirmPassword) {
@@ -68,8 +68,6 @@ export default function ChangePassword() {
       }, 3000);
     }
   }, [success]);
-
-  console.log(success);
 
   return (
     <Container className={classes.root}>

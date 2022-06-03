@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Editor } from "@tinymce/tinymce-react";
 import {
   Container,
@@ -8,7 +9,6 @@ import {
   Stepper,
   Button,
   Box,
-  TextField,
   Select,
   MenuItem,
   IconButton,
@@ -18,8 +18,6 @@ import Modal from "@mui/material/Modal";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import { useTheme } from "@mui/material/styles";
-import { ConstructionOutlined } from "@mui/icons-material";
-import { useDispatch, useSelector } from "react-redux";
 import { ADD_REVIEW_FOR_PRODUCT_RESET } from "../constants/userConstants";
 
 const steps = [
@@ -122,8 +120,6 @@ export default function TrackOrder(props) {
 
     setTimeout(handleClose, 3000);
   };
-
-  console.log(props.reviewInfo);
 
   return (
     <Fragment>

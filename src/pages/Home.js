@@ -1,15 +1,16 @@
 import React, { Fragment, useEffect } from "react";
-import Paper from "@mui/material/Paper";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import { Container } from "@material-ui/core";
-import { useMediaQuery, useTheme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import { Button } from "@mui/material";
 import startImage from "../Images/mainPage1.jpeg";
+import ProductByCategory from "../components/ProductsByCategory";
 import { getAdminDetail } from "../redux/actions/adminAction";
 import {
   getRandomSubCategory,
@@ -18,14 +19,7 @@ import {
   getCartDataByUser,
   getFeaturedProducts,
 } from "../redux/actions/userAction";
-import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
-import { ADMIN_DETAILS_RESET } from "../constants/adminConstants";
-import { Button } from "@mui/material";
-import ProductByCategory from "../components/ProductsByCategory";
 import { getMainCategory } from "../redux/actions/sellerAction";
-import { GET_RANDOM_PRODUCT_BY_CATEGORY_RESET } from "../constants/userConstants";
-import { red, green, blue } from "@mui/material/colors";
 
 const TextSize = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -44,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
   },
 
   typeLink: {
-    //textDecoration: "none",
     color: "#22577E",
     "&:hover": {
       textDecoration: "none",
@@ -144,7 +137,7 @@ const ImageMarked = styled("span")(({ theme }) => ({
   transition: theme.transitions.create("opacity"),
 }));
 
-const Home = (props) => {
+export default function Home(props) {
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -279,8 +272,6 @@ const Home = (props) => {
         </Container>
       </Box>
 
-      {/* <img src={startImage} className={classes.startImg} /> */}
-      {/* </div> */}
       <Box
         className={classes.root}
         style={{ backgroundColor: "#C4DDFF", textAlign: "center" }}
@@ -448,6 +439,4 @@ const Home = (props) => {
         })}
     </Fragment>
   );
-};
-
-export default Home;
+}

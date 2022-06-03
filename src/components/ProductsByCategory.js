@@ -1,10 +1,7 @@
-import { Fragment, useEffect } from "react";
-import { Button, Grid } from "@mui/material";
+import { Fragment } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { getRandomProductByCategory } from "../redux/actions/userAction";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Grid } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
-import { GET_RANDOM_PRODUCT_BY_CATEGORY_RESET } from "../constants/userConstants";
 
 const useStyles = makeStyles(() => ({
   nameLink: {
@@ -61,7 +58,6 @@ const useStyles = makeStyles(() => ({
 
 export default function ProductByCategory(props) {
   const navigate = useNavigate();
-  //const dispatch = useDispatch();
   const randProdCat = props.randProdCat;
   const classes = useStyles();
 

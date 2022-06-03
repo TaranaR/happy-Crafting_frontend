@@ -1,11 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Button, Divider, Grid } from "@material-ui/core";
-import {
-  getSellerProfile,
-  getOrderedProductBySeller,
-} from "../../redux/actions/sellerAction";
-import { useDispatch, useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import Setting from "./Forms/Setting";
 import ManageProducts from "./Forms/ManageProducts";
@@ -13,6 +9,10 @@ import SellerAccount from "./Forms/SellerAccount";
 import SellerOrder from "./Forms/SellerOrder";
 import { GET_ORDERED_PRODUCT_SELLER_RESET } from "../../constants/sellerConstants";
 import ShopDeactivatePage from "../../components/ShopDeactivatePage";
+import {
+  getSellerProfile,
+  getOrderedProductBySeller,
+} from "../../redux/actions/sellerAction";
 
 const useStyles = makeStyles(() => ({
   root: {

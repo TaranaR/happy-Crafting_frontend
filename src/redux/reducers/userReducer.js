@@ -34,9 +34,6 @@ import {
   GET_RANDOM_PRODUCT_BY_CATEGORY_SUCCESS,
   GET_RANDOM_PRODUCT_BY_CATEGORY_FAIL,
   GET_RANDOM_PRODUCT_BY_CATEGORY_RESET,
-  GET_ALL_PRODUCT_BY_CATEGORY_REQUEST,
-  GET_ALL_PRODUCT_BY_CATEGORY_SUCCESS,
-  GET_ALL_PRODUCT_BY_CATEGORY_FAIL,
   GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_REQUEST,
   GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_SUCCESS,
   GET_SUBCATEGORY_BY_MAINCATEGORY_NAME_FAIL,
@@ -61,9 +58,6 @@ import {
   REMOVE_PRODUCT_FROM_CART_SUCCESS,
   REMOVE_PRODUCT_FROM_CART_FAIL,
   GET_PRODUCT_DETAILS_RESET,
-  UPDATE_CART_BY_PRODUCT_REQUEST,
-  UPDATE_CART_BY_PRODUCT_SUCCESS,
-  UPDATE_CART_BY_PRODUCT_FAIL,
   GET_SHIPPING_ADDRESS_BY_USER_REQUEST,
   GET_SHIPPING_ADDRESS_BY_USER_SUCCESS,
   GET_SHIPPING_ADDRESS_BY_USER_FAIL,
@@ -108,9 +102,6 @@ import {
   ADD_REVIEW_FOR_PRODUCT_SUCCESS,
   ADD_REVIEW_FOR_PRODUCT_FAIL,
   ADD_REVIEW_FOR_PRODUCT_RESET,
-  GET_USER_DATA_REQUEST,
-  GET_USER_DATA_SUCCESS,
-  GET_USER_DATA_FAIL,
   CHANGE_PASSWORD_REQUEST,
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD_FAIL,
@@ -134,6 +125,7 @@ import {
   SET_NEW_PASSWORD_SUCCESS,
   SET_NEW_PASSWORD_FAIL,
   SET_NEW_PASSWORD_RESET,
+  VERIFY_EMAILID_RESET,
 } from "../../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -202,11 +194,7 @@ export const userProfileReducer = (state = { user: {} }, action) => {
         error: action.payload,
       };
     case USER_DETAILS_RESET:
-      return {
-        // user: {},
-      };
-    // case USER_LOGOUT:
-    //   return {};
+      return {};
     default:
       return state;
   }
@@ -503,10 +491,7 @@ export const userGetCartDataByUserReducer = (state = {}, action) => {
         error: action.payload,
       };
     case GET_CART_DATA_BY_USER_RESET:
-      return {
-        // success: false,
-        // cartData: {},
-      };
+      return {};
     case USER_LOGOUT:
       return {};
     default:
@@ -1019,6 +1004,8 @@ export const userVerifyEmailReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
+    case VERIFY_EMAILID_RESET:
+      return {};
     default:
       return state;
   }
