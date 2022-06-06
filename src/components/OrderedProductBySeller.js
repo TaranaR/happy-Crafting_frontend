@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Box, Grid, Button } from "@mui/material";
-import { Divider, makeStyles } from "@material-ui/core";
+import { Divider, makeStyles, Typography } from "@material-ui/core";
 import { useTheme } from "@mui/material/styles";
 
 const useStyles = makeStyles(() => ({
@@ -20,7 +20,10 @@ export default function OrderedProductBySeller(props) {
     billAmount,
     isDispatched,
     isDelivered,
-    user,
+    owner,
+    users,
+    addressId,
+    address,
   } = props;
 
   const dispatchOrder = () => {
@@ -29,7 +32,7 @@ export default function OrderedProductBySeller(props) {
 
   const generateOtp = () => {
     const otp = Math.floor(100000 + Math.random() * 900000);
-    props.onGenerateOTP(user, otp, orderId);
+    props.onGenerateOTP(owner, otp, orderId);
   };
 
   return (
@@ -43,6 +46,287 @@ export default function OrderedProductBySeller(props) {
                 xs={12}
                 lg={3}
                 md={3}
+                style={{ fontWeight: "bold" }}
+                display={{ xs: "none", lg: "block", md: "block" }}
+              >
+                UserName
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                lg={3}
+                md={3}
+                style={{ fontWeight: "bold" }}
+                display={{ xs: "none", lg: "block", md: "block" }}
+              >
+                Email Id
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                style={{ marginTop: 10 }}
+                display={{ xs: "none", lg: "block", md: "block" }}
+              >
+                <Divider />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sx={{
+                  marginTop: "1%",
+                  [theme.breakpoints.down("md")]: {
+                    marginTop: 0,
+                  },
+                }}
+              >
+                {users &&
+                  users.map((item, index) => {
+                    return (
+                      item.id === owner && (
+                        <Grid container key={index}>
+                          <Grid
+                            item
+                            xs={6}
+                            lg={3}
+                            md={3}
+                            display={{
+                              xs: "none",
+                              lg: "block",
+                              md: "block",
+                            }}
+                          >
+                            <Typography style={{ textTransform: "capitalize" }}>
+                              {item.name}
+                            </Typography>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={6}
+                            lg={3}
+                            md={3}
+                            display={{
+                              xs: "block",
+                              lg: "none",
+                              md: "none",
+                            }}
+                          >
+                            <Typography
+                              style={{
+                                textTransform: "capitalize",
+                                textAlign: "left",
+                              }}
+                            >
+                              Username: {item.name}
+                            </Typography>
+                            <Typography
+                              style={{
+                                textTransform: "capitalize",
+                                textAlign: "left",
+                              }}
+                            >
+                              Email Id: {item.email}
+                            </Typography>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={6}
+                            lg={3}
+                            md={3}
+                            display={{
+                              xs: "none",
+                              lg: "block",
+                              md: "block",
+                            }}
+                          >
+                            {item.email}
+                          </Grid>
+                        </Grid>
+                      )
+                    );
+                  })}
+              </Grid>
+            </Grid>
+            <Grid container sx={{ marginTop: "3%" }}>
+              <Grid
+                item
+                xs={12}
+                lg={3}
+                md={3}
+                style={{ fontWeight: "bold" }}
+                display={{ xs: "none", lg: "block", md: "block" }}
+              >
+                Address
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                lg={2}
+                md={2}
+                style={{ fontWeight: "bold" }}
+                display={{ xs: "none", lg: "block", md: "block" }}
+              >
+                Country
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                lg={2}
+                md={2}
+                style={{ fontWeight: "bold" }}
+                display={{ xs: "none", lg: "block", md: "block" }}
+              >
+                State
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                lg={2}
+                md={2}
+                style={{ fontWeight: "bold" }}
+                display={{ xs: "none", lg: "block", md: "block" }}
+              >
+                City
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                lg={2}
+                md={2}
+                style={{ fontWeight: "bold" }}
+                display={{ xs: "none", lg: "block", md: "block" }}
+              >
+                Pincode
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                style={{ marginTop: 10 }}
+                display={{ xs: "none", lg: "block", md: "block" }}
+              >
+                <Divider />
+              </Grid>
+              <Grid item xs={12} style={{ marginTop: 10 }}>
+                {address &&
+                  address.map((item, index) => {
+                    return (
+                      item.id === addressId && (
+                        <Grid container key={index}>
+                          <Grid
+                            item
+                            xs={6}
+                            lg={3}
+                            md={3}
+                            display={{
+                              xs: "none",
+                              lg: "block",
+                              md: "block",
+                            }}
+                          >
+                            <Typography style={{ textTransform: "capitalize" }}>
+                              {item.address}
+                            </Typography>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={6}
+                            lg={3}
+                            md={3}
+                            display={{
+                              xs: "block",
+                              lg: "none",
+                              md: "none",
+                            }}
+                          >
+                            <Typography
+                              style={{
+                                textTransform: "capitalize",
+                                textAlign: "left",
+                              }}
+                            >
+                              {item.address},
+                            </Typography>
+                            <Typography
+                              style={{
+                                textTransform: "capitalize",
+                                textAlign: "left",
+                              }}
+                            >
+                              {item.city}-{item.pincode}
+                            </Typography>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={6}
+                            lg={2}
+                            md={2}
+                            display={{
+                              xs: "none",
+                              lg: "block",
+                              md: "block",
+                            }}
+                          >
+                            <Typography style={{ textTransform: "capitalize" }}>
+                              {item.country}
+                            </Typography>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={6}
+                            lg={2}
+                            md={2}
+                            display={{
+                              xs: "none",
+                              lg: "block",
+                              md: "block",
+                            }}
+                          >
+                            <Typography style={{ textTransform: "capitalize" }}>
+                              {item.state}
+                            </Typography>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={6}
+                            lg={2}
+                            md={2}
+                            display={{
+                              xs: "none",
+                              lg: "block",
+                              md: "block",
+                            }}
+                          >
+                            <Typography style={{ textTransform: "capitalize" }}>
+                              {item.city}
+                            </Typography>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={6}
+                            lg={2}
+                            md={2}
+                            display={{
+                              xs: "none",
+                              lg: "block",
+                              md: "block",
+                            }}
+                          >
+                            <Typography style={{ textTransform: "capitalize" }}>
+                              {item.pincode}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      )
+                    );
+                  })}
+              </Grid>
+            </Grid>
+            <Grid container sx={{ marginTop: "5%" }}>
+              <Grid
+                item
+                xs={12}
+                lg={3}
+                md={3}
+                style={{ fontWeight: "bold" }}
                 display={{ xs: "none", lg: "block", md: "block" }}
               >
                 Image
@@ -52,6 +336,7 @@ export default function OrderedProductBySeller(props) {
                 xs={12}
                 lg={3}
                 md={3}
+                style={{ fontWeight: "bold" }}
                 display={{ xs: "none", lg: "block", md: "block" }}
               >
                 Name
@@ -61,6 +346,7 @@ export default function OrderedProductBySeller(props) {
                 xs={12}
                 lg={3}
                 md={3}
+                style={{ fontWeight: "bold" }}
                 display={{ xs: "none", lg: "block", md: "block" }}
               >
                 Quantity
@@ -70,6 +356,7 @@ export default function OrderedProductBySeller(props) {
                 xs={12}
                 lg={3}
                 md={3}
+                style={{ fontWeight: "bold" }}
                 display={{ xs: "none", lg: "block", md: "block" }}
               >
                 Price

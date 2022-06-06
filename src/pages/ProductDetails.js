@@ -58,7 +58,7 @@ export default function ProductDetails() {
   const [isLiked, setIsLiked] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [reviews, setReviews] = useState([]);
-  const [likes, setLikes] = useState([]);
+  // const [likes, setLikes] = useState([]);
 
   const usergetProductDetails = useSelector(
     (state) => state.userGetProductDetails
@@ -83,6 +83,17 @@ export default function ProductDetails() {
 
   const token = JSON.parse(localStorage.getItem("userInfo"));
 
+  // const [anonyCartData, setAnonyCartData] = useState([
+  //   {
+  //     quantity: prodQty,
+  //     product: prodInfo?.id,
+  //     price: prodInfo?.price,
+  //     totalAmount: prodInfo?.price * prodQty,
+  //   },
+  // ]);
+
+  const [anonyCartData, setAnonyCartData] = useState([]);
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -100,7 +111,8 @@ export default function ProductDetails() {
   }, []);
 
   useEffect(() => {
-    setLikes(false);
+    // setLikes(false);
+    setIsLiked(false);
     if (prodInfo && user) {
       prodInfo["likes"].map((item) => {
         if (item.owner === user.id) {
@@ -129,7 +141,7 @@ export default function ProductDetails() {
   useEffect(() => {
     if (prodInfo) {
       setReviews(prodInfo["reviews"]);
-      setLikes(prodInfo["likes"]);
+      // setLikes(prodInfo["likes"]);
       if (prodInfo["reviews"]?.length >= 1) {
         prodInfo["reviews"].map((item) => {
           dispatch(getUserById(item.owner));
@@ -159,14 +171,14 @@ export default function ProductDetails() {
   };
 
   const addToCartHandler = () => {
-    if (token) {
-      const cart = {
-        quantity: prodQty,
-        product: prodInfo["id"],
-        price: prodInfo["price"],
-        totalAmount: prodInfo["price"] * prodQty,
-      };
+    let cart = {
+      quantity: prodQty,
+      product: prodInfo["id"],
+      price: prodInfo["price"],
+      totalAmount: prodInfo["price"] * prodQty,
+    };
 
+    if (token) {
       dispatch(addToCart(cart));
 
       if (!cartLoading) {
@@ -175,7 +187,11 @@ export default function ProductDetails() {
         dispatch(getCartDataByUser());
       }
     } else {
-      navigate("/login");
+      // navigate("/login");
+      // setAnonyCartData([...anonyCartData, cart]);
+      setAnonyCartData((prevState) => [...prevState, cart]);
+      console.log(anonyCartData);
+      window.localStorage.setItem("cart", JSON.stringify(anonyCartData));
     }
   };
 

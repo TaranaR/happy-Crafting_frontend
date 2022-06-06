@@ -333,12 +333,11 @@ export default function App() {
             (token && (
               <>
                 <Header title="Happy Crafting" sections={sections} />
-                {user && user.is_seller && seller?.is_verified ? (
+                {user?.is_seller || (seller?.is_verified && user?.is_seller) ? (
                   <SellerProfile />
                 ) : (
                   <Profile />
                 )}
-
                 <Footer />
               </>
             )) ||

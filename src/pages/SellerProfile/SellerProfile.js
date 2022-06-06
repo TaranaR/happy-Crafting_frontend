@@ -59,8 +59,6 @@ export default function SellerProfile() {
 
   let content = "";
 
-  console.log(seller);
-
   if (page === "SHOP PROFILE" && seller.is_active) {
     content = <Setting seller={seller} />;
   } else if (page === "MANAGE PRODUCTS" && seller.is_active) {

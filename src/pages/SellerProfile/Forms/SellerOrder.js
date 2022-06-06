@@ -13,6 +13,7 @@ import {
   Box,
   TextField,
   Button,
+  Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
@@ -80,7 +81,7 @@ export default function SellerOrder() {
 
   const { success } = sellerOrderDispatchedBySeller;
   const { orderedProduct } = sellerGetOrderedProductBySeller;
-  const { orderMaster, orderDetail, products, users } = orderedProduct;
+  const { orderMaster, orderDetail, products, users, address } = orderedProduct;
   const { success: deliveredSuccess } = sellerOrderDelivered;
   const [errorContent, setErrorContent] = useState("");
 
@@ -133,6 +134,8 @@ export default function SellerOrder() {
 
     handleOpen();
   };
+
+  console.log(users, orderMaster, address);
 
   const verifyOtp = () => {
     if (parseInt(enteredOTP) === otp) {
@@ -226,6 +229,17 @@ export default function SellerOrder() {
                       >
                         Order Date &nbsp;&nbsp;&nbsp;
                         {Moment(item["created"]).format("DD-MM-YYYY, HH:mm")}
+                        {users &&
+                          users.map(
+                            (i) =>
+                              i.id === item.owner && (
+                                <Typography
+                                  style={{ textTransform: "capitalize" }}
+                                >
+                                  &nbsp;&nbsp;&nbsp;By: {i.name}
+                                </Typography>
+                              )
+                          )}
                       </AccordionSummary>
                       <AccordionDetails>
                         <OrderedProductBySeller
@@ -237,7 +251,10 @@ export default function SellerOrder() {
                           isDelivered={item.isDelivered}
                           onDispatchOrder={dispatchOrder}
                           onGenerateOTP={generateOtp}
-                          user={item.owner}
+                          owner={item.owner}
+                          addressId={item.address}
+                          users={users}
+                          address={address}
                         />
                       </AccordionDetails>
                     </Accordion>
